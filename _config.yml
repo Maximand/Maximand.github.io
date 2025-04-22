@@ -16,19 +16,20 @@
 
 ## => Site Settings
 ##############################
-text_skin: default # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
-highlight_theme: default # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
-url     : https://maximand.github.io
+text_skin: dark # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
+highlight_theme: tomorrow-night # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
 baseurl : /
 title   : Limn
 description: > # this means to ignore newlines until "Language & timezone"
   Test
 
+toc:
+  selectors: "h1,h2,h3"
 
 ## => Language and Timezone
 ##############################
-lang: # the language of your site, default as "en"
-timezone: # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the available values
+lang: en # the language of your site, default as "en"
+timezone: Europe/Amsterdam # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for the available values
 
 
 ## => Author and Social
@@ -36,10 +37,10 @@ timezone: # see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for
 author:
   type      : # "person" (default), "organization"
   name      : Max
-  url       :
-  avatar    : # path or url of avatar image (square)
+  url       : https://maximand.github.io
+  avatar    : https://avatars.githubusercontent.com/u/25766540?v=4 # path or url of avatar image (square)
   bio       : Scan all the things
-  email     :
+  email     : mhvanderhorst@tudelft.nl
   facebook  : # "user_name" the last part of your profile url, e.g. https://www.facebook.com/user_name
   twitter   : # "user_name" the last part of your profile url, e.g. https://twitter.com/user_name
   weibo     : # "user_id"   the last part of your profile url, e.g. https://www.weibo.com/user_id/profile?...
@@ -48,8 +49,8 @@ author:
   medium    : # "user_name" the last part of your profile url, e.g. https://medium.com/user_name
   zhihu     : # "user_name" the last part of your profile url, e.g. https://www.zhihu.com/people/user_name
   douban    : # "user_name" the last part of your profile url, e.g. https://www.douban.com/people/user_name
-  linkedin  : # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name
-  github    : # "user_name" the last part of your profile url, e.g. https://github.com/user_name
+  linkedin  : https://linkedin.com/in/maxhorst # "user_name" the last part of your profile url, e.g. https://www.linkedin.com/in/user_name
+  github    : https://github.com/Maximand# "user_name" the last part of your profile url, e.g. https://github.com/user_name
   npm       : # "user_name" the last part of your profile url, e.g. https://www.npmjs.com/~user_name
 
 
@@ -84,14 +85,14 @@ toc:
 ## => Markdown Enhancements
 ##############################
 ## Mathjax
-mathjax: # false (default), true
-mathjax_autoNumber: # false (default), true
+mathjax: true# false (default), true
+mathjax_autoNumber: true # false (default), true
 
 ## Mermaid
-mermaid: # false (default), true
+mermaid: true # false (default), true
 
 ## Chart
-chart: # false (default), true
+chart: true # false (default), true
 
 
 ## => Paginate
