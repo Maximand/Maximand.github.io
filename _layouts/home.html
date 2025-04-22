@@ -1,14 +1,16 @@
 ---
 layout: articles
-title: Page - Article Header Image (Immersive + Translucent Header)
-mode: immersive
-header:
-  theme: dark
+titles:
+  # @start locale config
+  en      : &EN       Home
+  en-GB   : *EN
+  en-US   : *EN
+  # @end locale config
 show_title: false
 articles:
   data_source: paginator.posts
   article_type: BlogPosting
-  show_cover: false
+  show_cover: true
   show_excerpt: true
   show_readmore: true
   show_info: true
