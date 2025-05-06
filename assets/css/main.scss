@@ -2,19 +2,19 @@
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
 
-@mixin logo-size($width: 175px, $height: auto) {
+@mixin logo-size($width: 200px, $height: auto) {
   width: $width;
   height: $height;
   max-width: 100%;
 }
 
 .logo-wrapper svg {
-  @include logo-size(175px);
+  @include logo-size(200px);
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 
   @media (max-width: 768px) {
-    @include logo-size(175px);
+    @include logo-size(200px);
   }
 }
 
