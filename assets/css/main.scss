@@ -5,7 +5,6 @@
 @mixin logo-size($width: 200px, $height: auto) {
   width: $width;
   height: $height;
-  max-width: 100%;
 }
 
 .logo-wrapper svg {
