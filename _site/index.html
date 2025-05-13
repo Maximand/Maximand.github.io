@@ -1,0 +1,892 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Home - Disclosing.Observer</title>
+
+<meta name="description" content="Test
+">
+<link rel="canonical" href="http://localhost:4000/"><link rel="alternate" type="application/rss+xml" title="Disclosing.Observer" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css" ><!-- start custom head snippets -->
+
+<!-- end custom head snippets -->
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.isFormElement = function(node) {
+    var tagName = node.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i;
+      loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cbs[i]();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();
+(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();
+(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();
+</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="header__title">
+        <div class="header__brand">
+          <div class="logo-wrapper"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" zoomAndPan="magnify" viewBox="0 0 1440 299.999988" height="400" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><g/><clipPath id="2179c428b5"><path d="M 762.960938 78.03125 L 893 78.03125 L 893 209.28125 L 762.960938 209.28125 Z M 762.960938 78.03125 " clip-rule="nonzero"/></clipPath><clipPath id="6ca335b253"><path d="M 762.960938 78.03125 L 893.460938 78.03125 L 893.460938 209.28125 L 762.960938 209.28125 Z M 762.960938 78.03125 " clip-rule="nonzero"/></clipPath></defs><g clip-path="url(#2179c428b5)"><path fill="#fcfcfc" d="M 833.011719 140.859375 L 833.011719 78.03125 C 871.160156 80.519531 893.441406 110.007812 892.820312 140.859375 Z M 782.65625 147.527344 L 762.964844 147.527344 C 762.964844 181.753906 790.710938 209.5 824.9375 209.5 L 824.9375 189.808594 C 801.585938 189.808594 782.65625 170.878906 782.65625 147.527344 Z M 801.441406 147.527344 L 790.496094 147.527344 C 790.496094 166.546875 805.917969 181.96875 824.9375 181.96875 L 824.9375 171.023438 C 811.960938 171.023438 801.441406 160.503906 801.441406 147.527344 Z M 801.441406 147.527344 " fill-opacity="1" fill-rule="evenodd"/></g><g clip-path="url(#6ca335b253)"><path fill="#ffb000" d="M 801.441406 140.476562 L 790.496094 140.476562 C 790.496094 121.453125 805.917969 106.035156 824.9375 106.035156 L 824.9375 116.976562 C 811.960938 116.976562 801.441406 127.5 801.441406 140.476562 Z M 831.359375 189.808594 L 831.359375 209.5 C 865.585938 209.5 893.332031 181.753906 893.332031 147.527344 L 873.640625 147.527344 C 873.640625 170.878906 854.710938 189.808594 831.359375 189.808594 Z M 831.359375 171.023438 L 831.359375 181.96875 C 850.382812 181.96875 865.800781 166.546875 865.800781 147.527344 L 854.855469 147.527344 C 854.855469 160.503906 844.335938 171.023438 831.359375 171.023438 Z M 782.65625 140.476562 L 762.964844 140.476562 C 762.964844 106.246094 790.710938 78.5 824.9375 78.5 L 824.9375 98.195312 C 801.585938 98.195312 782.65625 117.125 782.65625 140.476562 Z M 782.65625 140.476562 " fill-opacity="1" fill-rule="evenodd"/></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(15.000028, 207.849388)"><g><path d="M 10.1875 0 L 10.1875 -100.359375 C 23.957031 -101.234375 36.945312 -101.671875 49.15625 -101.671875 C 65.15625 -101.671875 76.28125 -97.984375 82.53125 -90.609375 C 88.789062 -83.242188 91.921875 -69.765625 91.921875 -50.171875 C 91.921875 -30.585938 88.789062 -17.109375 82.53125 -9.734375 C 76.28125 -2.367188 65.15625 1.3125 49.15625 1.3125 C 36.945312 1.3125 23.957031 0.875 10.1875 0 Z M 32.296875 -84.21875 L 32.296875 -16.296875 C 33.941406 -16.296875 36.628906 -16.269531 40.359375 -16.21875 C 44.097656 -16.164062 47.03125 -16.140625 49.15625 -16.140625 C 56.625 -16.140625 61.738281 -18.515625 64.5 -23.265625 C 67.269531 -28.023438 68.65625 -37 68.65625 -50.1875 C 68.65625 -63.375 67.269531 -72.363281 64.5 -77.15625 C 61.738281 -81.957031 56.625 -84.359375 49.15625 -84.359375 Z M 32.296875 -84.21875 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(113.906046, 207.849388)"><g><path d="M 15.265625 -103.421875 L 24.875 -103.421875 C 29.039062 -103.421875 31.125 -101.332031 31.125 -97.15625 L 31.125 -89.3125 C 31.125 -85.132812 29.039062 -83.046875 24.875 -83.046875 L 15.265625 -83.046875 C 11.097656 -83.046875 9.015625 -85.132812 9.015625 -89.3125 L 9.015625 -97.15625 C 9.015625 -101.332031 11.097656 -103.421875 15.265625 -103.421875 Z M 30.84375 0 L 9.453125 0 L 9.453125 -71.703125 L 30.84375 -71.703125 Z M 30.84375 0 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(154.050241, 207.849388)"><g><path d="M 40.734375 -26.625 L 22.84375 -31.421875 C 16.25 -33.359375 11.6875 -36 9.15625 -39.34375 C 6.632812 -42.6875 5.375 -47.316406 5.375 -53.234375 C 5.375 -60.703125 7.675781 -65.988281 12.28125 -69.09375 C 16.894531 -72.195312 24.773438 -73.75 35.921875 -73.75 C 48.816406 -73.550781 59.875 -72.628906 69.09375 -70.984375 L 67.640625 -57.15625 C 55.421875 -57.351562 46.207031 -57.453125 40 -57.453125 C 36.601562 -57.453125 34.25 -57.425781 32.9375 -57.375 C 31.632812 -57.332031 30.328125 -57.164062 29.015625 -56.875 C 27.703125 -56.582031 26.898438 -56.117188 26.609375 -55.484375 C 26.328125 -54.859375 26.1875 -53.914062 26.1875 -52.65625 C 26.1875 -52.164062 26.207031 -51.726562 26.25 -51.34375 C 26.300781 -50.957031 26.421875 -50.59375 26.609375 -50.25 C 26.804688 -49.914062 26.976562 -49.648438 27.125 -49.453125 C 27.269531 -49.253906 27.535156 -49.035156 27.921875 -48.796875 C 28.316406 -48.554688 28.632812 -48.382812 28.875 -48.28125 C 29.113281 -48.1875 29.546875 -48.019531 30.171875 -47.78125 C 30.804688 -47.539062 31.289062 -47.367188 31.625 -47.265625 C 31.96875 -47.171875 32.597656 -47.003906 33.515625 -46.765625 C 34.441406 -46.523438 35.148438 -46.351562 35.640625 -46.25 L 53.96875 -41.3125 C 60.363281 -39.46875 64.914062 -37.015625 67.625 -33.953125 C 70.34375 -30.898438 71.703125 -26.367188 71.703125 -20.359375 C 71.703125 -11.828125 69.226562 -6.035156 64.28125 -2.984375 C 59.34375 0.0664062 50.863281 1.59375 38.84375 1.59375 C 27.195312 1.59375 16.476562 0.769531 6.6875 -0.875 L 8 -14.84375 C 11.488281 -14.644531 19.78125 -14.546875 32.875 -14.546875 C 40.34375 -14.546875 45.210938 -14.859375 47.484375 -15.484375 C 49.765625 -16.117188 50.90625 -17.597656 50.90625 -19.921875 C 50.90625 -20.410156 50.878906 -20.847656 50.828125 -21.234375 C 50.785156 -21.617188 50.664062 -21.984375 50.46875 -22.328125 C 50.28125 -22.671875 50.085938 -22.9375 49.890625 -23.125 C 49.691406 -23.320312 49.375 -23.539062 48.9375 -23.78125 C 48.507812 -24.019531 48.171875 -24.210938 47.921875 -24.359375 C 47.679688 -24.503906 47.222656 -24.695312 46.546875 -24.9375 C 45.867188 -25.1875 45.332031 -25.359375 44.9375 -25.453125 C 44.550781 -25.546875 43.875 -25.710938 42.90625 -25.953125 C 41.9375 -26.203125 41.210938 -26.425781 40.734375 -26.625 Z M 40.734375 -26.625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(230.702414, 207.849388)"><g><path d="M 67.640625 -17.015625 L 69.53125 -3.046875 C 62.15625 0.148438 52.894531 1.75 41.75 1.75 C 28.5625 1.75 19.273438 -1.082031 13.890625 -6.75 C 8.503906 -12.425781 5.8125 -22.148438 5.8125 -35.921875 C 5.8125 -49.796875 8.523438 -59.566406 13.953125 -65.234375 C 19.390625 -70.910156 28.75 -73.75 42.03125 -73.75 C 52.894531 -73.75 61.722656 -72.242188 68.515625 -69.234375 L 66.1875 -55.859375 C 55.707031 -56.046875 48.867188 -56.140625 45.671875 -56.140625 C 39.078125 -56.140625 34.539062 -54.734375 32.0625 -51.921875 C 29.59375 -49.109375 28.359375 -43.773438 28.359375 -35.921875 C 28.359375 -28.066406 29.59375 -22.734375 32.0625 -19.921875 C 34.539062 -17.109375 39.078125 -15.703125 45.671875 -15.703125 C 54.109375 -15.703125 61.429688 -16.140625 67.640625 -17.015625 Z M 67.640625 -17.015625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(304.445572, 207.849388)"><g><path d="M 30.40625 -101.8125 L 30.40625 -23.421875 C 30.40625 -18.566406 33.117188 -16.140625 38.546875 -16.140625 L 44.359375 -16.140625 L 46.828125 -1.15625 C 43.148438 0.78125 37.429688 1.75 29.671875 1.75 C 23.273438 1.75 18.234375 0.03125 14.546875 -3.40625 C 10.859375 -6.851562 9.015625 -11.726562 9.015625 -18.03125 L 9.015625 -101.8125 Z M 30.40625 -101.8125 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(352.007724, 207.849388)"><g><path d="M 42.765625 -73.75 C 56.140625 -73.75 65.613281 -70.863281 71.1875 -65.09375 C 76.769531 -59.320312 79.5625 -49.550781 79.5625 -35.78125 C 79.5625 -22.007812 76.769531 -12.285156 71.1875 -6.609375 C 65.613281 -0.941406 56.140625 1.890625 42.765625 1.890625 C 29.285156 1.890625 19.753906 -0.941406 14.171875 -6.609375 C 8.597656 -12.285156 5.8125 -22.007812 5.8125 -35.78125 C 5.8125 -49.644531 8.597656 -59.4375 14.171875 -65.15625 C 19.753906 -70.882812 29.285156 -73.75 42.765625 -73.75 Z M 42.765625 -57.59375 C 37.046875 -57.59375 33.210938 -56.140625 31.265625 -53.234375 C 29.328125 -50.328125 28.359375 -44.507812 28.359375 -35.78125 C 28.359375 -27.25 29.328125 -21.523438 31.265625 -18.609375 C 33.210938 -15.703125 37.046875 -14.25 42.765625 -14.25 C 48.285156 -14.25 52.039062 -15.703125 54.03125 -18.609375 C 56.019531 -21.523438 57.015625 -27.25 57.015625 -35.78125 C 57.015625 -44.414062 56.046875 -50.207031 54.109375 -53.15625 C 52.171875 -56.113281 48.390625 -57.59375 42.765625 -57.59375 Z M 42.765625 -57.59375 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(437.386889, 207.849388)"><g><path d="M 40.734375 -26.625 L 22.84375 -31.421875 C 16.25 -33.359375 11.6875 -36 9.15625 -39.34375 C 6.632812 -42.6875 5.375 -47.316406 5.375 -53.234375 C 5.375 -60.703125 7.675781 -65.988281 12.28125 -69.09375 C 16.894531 -72.195312 24.773438 -73.75 35.921875 -73.75 C 48.816406 -73.550781 59.875 -72.628906 69.09375 -70.984375 L 67.640625 -57.15625 C 55.421875 -57.351562 46.207031 -57.453125 40 -57.453125 C 36.601562 -57.453125 34.25 -57.425781 32.9375 -57.375 C 31.632812 -57.332031 30.328125 -57.164062 29.015625 -56.875 C 27.703125 -56.582031 26.898438 -56.117188 26.609375 -55.484375 C 26.328125 -54.859375 26.1875 -53.914062 26.1875 -52.65625 C 26.1875 -52.164062 26.207031 -51.726562 26.25 -51.34375 C 26.300781 -50.957031 26.421875 -50.59375 26.609375 -50.25 C 26.804688 -49.914062 26.976562 -49.648438 27.125 -49.453125 C 27.269531 -49.253906 27.535156 -49.035156 27.921875 -48.796875 C 28.316406 -48.554688 28.632812 -48.382812 28.875 -48.28125 C 29.113281 -48.1875 29.546875 -48.019531 30.171875 -47.78125 C 30.804688 -47.539062 31.289062 -47.367188 31.625 -47.265625 C 31.96875 -47.171875 32.597656 -47.003906 33.515625 -46.765625 C 34.441406 -46.523438 35.148438 -46.351562 35.640625 -46.25 L 53.96875 -41.3125 C 60.363281 -39.46875 64.914062 -37.015625 67.625 -33.953125 C 70.34375 -30.898438 71.703125 -26.367188 71.703125 -20.359375 C 71.703125 -11.828125 69.226562 -6.035156 64.28125 -2.984375 C 59.34375 0.0664062 50.863281 1.59375 38.84375 1.59375 C 27.195312 1.59375 16.476562 0.769531 6.6875 -0.875 L 8 -14.84375 C 11.488281 -14.644531 19.78125 -14.546875 32.875 -14.546875 C 40.34375 -14.546875 45.210938 -14.859375 47.484375 -15.484375 C 49.765625 -16.117188 50.90625 -17.597656 50.90625 -19.921875 C 50.90625 -20.410156 50.878906 -20.847656 50.828125 -21.234375 C 50.785156 -21.617188 50.664062 -21.984375 50.46875 -22.328125 C 50.28125 -22.671875 50.085938 -22.9375 49.890625 -23.125 C 49.691406 -23.320312 49.375 -23.539062 48.9375 -23.78125 C 48.507812 -24.019531 48.171875 -24.210938 47.921875 -24.359375 C 47.679688 -24.503906 47.222656 -24.695312 46.546875 -24.9375 C 45.867188 -25.1875 45.332031 -25.359375 44.9375 -25.453125 C 44.550781 -25.546875 43.875 -25.710938 42.90625 -25.953125 C 41.9375 -26.203125 41.210938 -26.425781 40.734375 -26.625 Z M 40.734375 -26.625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(514.039086, 207.849388)"><g><path d="M 15.265625 -103.421875 L 24.875 -103.421875 C 29.039062 -103.421875 31.125 -101.332031 31.125 -97.15625 L 31.125 -89.3125 C 31.125 -85.132812 29.039062 -83.046875 24.875 -83.046875 L 15.265625 -83.046875 C 11.097656 -83.046875 9.015625 -85.132812 9.015625 -89.3125 L 9.015625 -97.15625 C 9.015625 -101.332031 11.097656 -103.421875 15.265625 -103.421875 Z M 30.84375 0 L 9.453125 0 L 9.453125 -71.703125 L 30.84375 -71.703125 Z M 30.84375 0 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(554.183307, 207.849388)"><g><path d="M 26.328125 -71.703125 L 27.921875 -61.09375 C 38.296875 -69.53125 48.53125 -73.75 58.625 -73.75 C 65.113281 -73.75 70.078125 -72.050781 73.515625 -68.65625 C 76.960938 -65.257812 78.6875 -60.3125 78.6875 -53.8125 L 78.6875 0 L 57.3125 0 L 57.3125 -47.125 C 57.3125 -50.320312 56.800781 -52.523438 55.78125 -53.734375 C 54.757812 -54.953125 52.941406 -55.5625 50.328125 -55.5625 C 45.765625 -55.5625 39.125 -53.378906 30.40625 -49.015625 L 30.40625 0 L 8.875 0 L 8.875 -71.703125 Z M 26.328125 -71.703125 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(641.307871, 207.849388)"><g><path d="M 81.3125 -62.25 L 72.296875 -61.09375 C 73.453125 -58.375 74.03125 -54.929688 74.03125 -50.765625 C 74.03125 -42.421875 71.53125 -36.503906 66.53125 -33.015625 C 61.539062 -29.523438 52.796875 -27.78125 40.296875 -27.78125 C 36.117188 -27.78125 31.992188 -28.023438 27.921875 -28.515625 C 26.765625 -26.960938 26.546875 -25.210938 27.265625 -23.265625 C 27.992188 -21.328125 29.617188 -20.210938 32.140625 -19.921875 L 58.1875 -16.875 C 65.550781 -16 70.859375 -13.863281 74.109375 -10.46875 C 77.359375 -7.070312 78.984375 -2.078125 78.984375 4.515625 C 78.984375 13.628906 76.242188 19.785156 70.765625 22.984375 C 65.285156 26.179688 55.46875 27.78125 41.3125 27.78125 C 26.570312 27.78125 16.582031 26.253906 11.34375 23.203125 C 6.101562 20.148438 3.484375 14.550781 3.484375 6.40625 C 3.484375 2.71875 4.332031 -0.3125 6.03125 -2.6875 C 7.726562 -5.0625 10.664062 -7.21875 14.84375 -9.15625 C 11.539062 -12.363281 10.203125 -16.316406 10.828125 -21.015625 C 11.460938 -25.722656 13.570312 -29.140625 17.15625 -31.265625 C 10.082031 -34.566406 6.546875 -41.019531 6.546875 -50.625 C 6.546875 -59.050781 9.066406 -65.007812 14.109375 -68.5 C 19.148438 -72 27.925781 -73.75 40.4375 -73.75 C 48 -73.75 54.253906 -73.066406 59.203125 -71.703125 L 82.328125 -71.703125 Z M 40.296875 -41.453125 C 45.523438 -41.453125 49.132812 -42.128906 51.125 -43.484375 C 53.113281 -44.847656 54.109375 -47.273438 54.109375 -50.765625 C 54.109375 -54.347656 53.140625 -56.769531 51.203125 -58.03125 C 49.265625 -59.289062 45.628906 -59.921875 40.296875 -59.921875 C 34.960938 -59.921875 31.300781 -59.289062 29.3125 -58.03125 C 27.320312 -56.769531 26.328125 -54.347656 26.328125 -50.765625 C 26.328125 -47.273438 27.320312 -44.847656 29.3125 -43.484375 C 31.300781 -42.128906 34.960938 -41.453125 40.296875 -41.453125 Z M 46.6875 -2.765625 L 28.65625 -4.65625 C 25.550781 -2.132812 24 0.628906 24 3.640625 C 24 7.128906 25.066406 9.359375 27.203125 10.328125 C 29.335938 11.296875 33.941406 11.78125 41.015625 11.78125 C 48.097656 11.78125 52.773438 11.269531 55.046875 10.25 C 57.328125 9.238281 58.46875 7.128906 58.46875 3.921875 C 58.46875 1.398438 57.738281 -0.195312 56.28125 -0.875 C 54.832031 -1.550781 51.632812 -2.179688 46.6875 -2.765625 Z M 46.6875 -2.765625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(725.52342, 207.849388)"><g><path d="M 14.984375 -21.96875 L 20.796875 -21.96875 C 23.609375 -21.96875 25.570312 -21.429688 26.6875 -20.359375 C 27.800781 -19.296875 28.359375 -17.359375 28.359375 -14.546875 L 28.359375 -7.5625 C 28.359375 -4.75 27.800781 -2.785156 26.6875 -1.671875 C 25.570312 -0.554688 23.609375 0 20.796875 0 L 14.984375 0 C 12.171875 0 10.207031 -0.554688 9.09375 -1.671875 C 7.976562 -2.785156 7.421875 -4.75 7.421875 -7.5625 L 7.421875 -14.546875 C 7.421875 -17.359375 7.976562 -19.296875 9.09375 -20.359375 C 10.207031 -21.429688 12.171875 -21.96875 14.984375 -21.96875 Z M 14.984375 -21.96875 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(895.109668, 207.849388)"><g><path d="M 30.25 -101.8125 L 30.25 -78.984375 C 30.25 -72.285156 29.617188 -66.660156 28.359375 -62.109375 C 35.921875 -69.867188 44.40625 -73.75 53.8125 -73.75 C 63.125 -73.75 69.835938 -70.863281 73.953125 -65.09375 C 78.078125 -59.320312 80.140625 -49.796875 80.140625 -36.515625 C 80.140625 -24.191406 77.617188 -14.734375 72.578125 -8.140625 C 67.535156 -1.546875 58.375 1.75 45.09375 1.75 C 39.269531 1.75 32.742188 1.265625 25.515625 0.296875 C 18.296875 -0.671875 12.648438 -2.03125 8.578125 -3.78125 L 8.578125 -101.8125 Z M 30.109375 -50.46875 L 30.109375 -15.5625 C 35.054688 -14.5 39.90625 -14.0625 44.65625 -14.25 C 49.601562 -14.445312 53.066406 -16.097656 55.046875 -19.203125 C 57.035156 -22.304688 58.03125 -28.023438 58.03125 -36.359375 C 58.03125 -44.316406 57.207031 -49.675781 55.5625 -52.4375 C 53.914062 -55.195312 50.472656 -56.578125 45.234375 -56.578125 C 41.253906 -56.578125 36.210938 -54.539062 30.109375 -50.46875 Z M 30.109375 -50.46875 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(981.216087, 207.849388)"><g><path d="M 40.734375 -26.625 L 22.84375 -31.421875 C 16.25 -33.359375 11.6875 -36 9.15625 -39.34375 C 6.632812 -42.6875 5.375 -47.316406 5.375 -53.234375 C 5.375 -60.703125 7.675781 -65.988281 12.28125 -69.09375 C 16.894531 -72.195312 24.773438 -73.75 35.921875 -73.75 C 48.816406 -73.550781 59.875 -72.628906 69.09375 -70.984375 L 67.640625 -57.15625 C 55.421875 -57.351562 46.207031 -57.453125 40 -57.453125 C 36.601562 -57.453125 34.25 -57.425781 32.9375 -57.375 C 31.632812 -57.332031 30.328125 -57.164062 29.015625 -56.875 C 27.703125 -56.582031 26.898438 -56.117188 26.609375 -55.484375 C 26.328125 -54.859375 26.1875 -53.914062 26.1875 -52.65625 C 26.1875 -52.164062 26.207031 -51.726562 26.25 -51.34375 C 26.300781 -50.957031 26.421875 -50.59375 26.609375 -50.25 C 26.804688 -49.914062 26.976562 -49.648438 27.125 -49.453125 C 27.269531 -49.253906 27.535156 -49.035156 27.921875 -48.796875 C 28.316406 -48.554688 28.632812 -48.382812 28.875 -48.28125 C 29.113281 -48.1875 29.546875 -48.019531 30.171875 -47.78125 C 30.804688 -47.539062 31.289062 -47.367188 31.625 -47.265625 C 31.96875 -47.171875 32.597656 -47.003906 33.515625 -46.765625 C 34.441406 -46.523438 35.148438 -46.351562 35.640625 -46.25 L 53.96875 -41.3125 C 60.363281 -39.46875 64.914062 -37.015625 67.625 -33.953125 C 70.34375 -30.898438 71.703125 -26.367188 71.703125 -20.359375 C 71.703125 -11.828125 69.226562 -6.035156 64.28125 -2.984375 C 59.34375 0.0664062 50.863281 1.59375 38.84375 1.59375 C 27.195312 1.59375 16.476562 0.769531 6.6875 -0.875 L 8 -14.84375 C 11.488281 -14.644531 19.78125 -14.546875 32.875 -14.546875 C 40.34375 -14.546875 45.210938 -14.859375 47.484375 -15.484375 C 49.765625 -16.117188 50.90625 -17.597656 50.90625 -19.921875 C 50.90625 -20.410156 50.878906 -20.847656 50.828125 -21.234375 C 50.785156 -21.617188 50.664062 -21.984375 50.46875 -22.328125 C 50.28125 -22.671875 50.085938 -22.9375 49.890625 -23.125 C 49.691406 -23.320312 49.375 -23.539062 48.9375 -23.78125 C 48.507812 -24.019531 48.171875 -24.210938 47.921875 -24.359375 C 47.679688 -24.503906 47.222656 -24.695312 46.546875 -24.9375 C 45.867188 -25.1875 45.332031 -25.359375 44.9375 -25.453125 C 44.550781 -25.546875 43.875 -25.710938 42.90625 -25.953125 C 41.9375 -26.203125 41.210938 -26.425781 40.734375 -26.625 Z M 40.734375 -26.625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1057.86826, 207.849388)"><g><path d="M 54.546875 -28.65625 L 28.65625 -28.65625 C 29.332031 -23.414062 30.90625 -19.898438 33.375 -18.109375 C 35.851562 -16.316406 39.953125 -15.421875 45.671875 -15.421875 C 53.328125 -15.421875 62.25 -15.953125 72.4375 -17.015625 L 74.46875 -3.640625 C 67 -0.046875 56.578125 1.75 43.203125 1.75 C 29.722656 1.75 20.117188 -1.15625 14.390625 -6.96875 C 8.671875 -12.789062 5.8125 -22.394531 5.8125 -35.78125 C 5.8125 -49.84375 8.597656 -59.6875 14.171875 -65.3125 C 19.753906 -70.9375 29.140625 -73.75 42.328125 -73.75 C 54.253906 -73.75 62.882812 -71.6875 68.21875 -67.5625 C 73.550781 -63.4375 76.265625 -57.160156 76.359375 -48.734375 C 76.359375 -42.035156 74.632812 -37.015625 71.1875 -33.671875 C 67.75 -30.328125 62.203125 -28.65625 54.546875 -28.65625 Z M 28.21875 -41.59375 L 48.578125 -41.59375 C 51.203125 -41.59375 52.972656 -42.222656 53.890625 -43.484375 C 54.804688 -44.742188 55.265625 -46.585938 55.265625 -49.015625 C 55.265625 -52.410156 54.390625 -54.757812 52.640625 -56.0625 C 50.898438 -57.375 47.703125 -58.03125 43.046875 -58.03125 C 37.523438 -58.03125 33.742188 -56.9375 31.703125 -54.75 C 29.671875 -52.570312 28.507812 -48.1875 28.21875 -41.59375 Z M 28.21875 -41.59375 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1139.320266, 207.849388)"><g><path d="M 60.359375 -73.75 L 58.1875 -53.8125 L 52.359375 -53.8125 C 47.609375 -53.8125 40.289062 -52.164062 30.40625 -48.875 L 30.40625 0 L 8.875 0 L 8.875 -71.703125 L 25.59375 -71.703125 L 27.484375 -61.234375 C 37.285156 -69.578125 46.984375 -73.75 56.578125 -73.75 Z M 60.359375 -73.75 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1201.136523, 207.849388)"><g><path d="M 80.71875 -71.703125 L 57.15625 -5.09375 C 56 -1.695312 53.675781 0 50.1875 0 L 31.5625 0 C 28.070312 0 25.742188 -1.695312 24.578125 -5.09375 L 1.015625 -71.703125 L 23.859375 -71.703125 L 36.796875 -26.765625 C 37.867188 -22.785156 38.890625 -18.519531 39.859375 -13.96875 L 41.75 -13.96875 L 45.09375 -26.765625 L 58.03125 -71.703125 Z M 80.71875 -71.703125 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1281.715829, 207.849388)"><g><path d="M 54.546875 -28.65625 L 28.65625 -28.65625 C 29.332031 -23.414062 30.90625 -19.898438 33.375 -18.109375 C 35.851562 -16.316406 39.953125 -15.421875 45.671875 -15.421875 C 53.328125 -15.421875 62.25 -15.953125 72.4375 -17.015625 L 74.46875 -3.640625 C 67 -0.046875 56.578125 1.75 43.203125 1.75 C 29.722656 1.75 20.117188 -1.15625 14.390625 -6.96875 C 8.671875 -12.789062 5.8125 -22.394531 5.8125 -35.78125 C 5.8125 -49.84375 8.597656 -59.6875 14.171875 -65.3125 C 19.753906 -70.9375 29.140625 -73.75 42.328125 -73.75 C 54.253906 -73.75 62.882812 -71.6875 68.21875 -67.5625 C 73.550781 -63.4375 76.265625 -57.160156 76.359375 -48.734375 C 76.359375 -42.035156 74.632812 -37.015625 71.1875 -33.671875 C 67.75 -30.328125 62.203125 -28.65625 54.546875 -28.65625 Z M 28.21875 -41.59375 L 48.578125 -41.59375 C 51.203125 -41.59375 52.972656 -42.222656 53.890625 -43.484375 C 54.804688 -44.742188 55.265625 -46.585938 55.265625 -49.015625 C 55.265625 -52.410156 54.390625 -54.757812 52.640625 -56.0625 C 50.898438 -57.375 47.703125 -58.03125 43.046875 -58.03125 C 37.523438 -58.03125 33.742188 -56.9375 31.703125 -54.75 C 29.671875 -52.570312 28.507812 -48.1875 28.21875 -41.59375 Z M 28.21875 -41.59375 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1363.167861, 207.849388)"><g><path d="M 60.359375 -73.75 L 58.1875 -53.8125 L 52.359375 -53.8125 C 47.609375 -53.8125 40.289062 -52.164062 30.40625 -48.875 L 30.40625 0 L 8.875 0 L 8.875 -71.703125 L 25.59375 -71.703125 L 27.484375 -61.234375 C 37.285156 -69.578125 46.984375 -73.75 56.578125 -73.75 Z M 60.359375 -73.75 "/></g></g></g></svg></div>
+        </div><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></div><nav class="navigation">
+        <ul><li class="navigation__item navigation__item--active"><a href="/">Home</a></li><li class="navigation__item"><a href="/about.html">About</a></li><li class="navigation__item"><a href="/blog.html">Blog</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/WebPage"><header style="display:none;"><h1>Home</h1></header><meta itemprop="headline" content="Home"><meta itemprop="author" content="Max"/><div class="js-article-content"><div class="layout--articles"><div class="article-list items items--divided"><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><a href="/2025/05/10/unsolicited-vulnerability-disclosure-ethics.html"><h2 itemprop="headline" class="item__header">Unsolicited but Ethical: Threshold Deontology in Public Interest Vulnerability Disclosure</h2></a></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody">I often send emails to people I’ve never met, about systems they didn’t know were vulnerable, warning them about risks they never asked me to find. Often, they’re surprised. Mostly grateful. Occasionally hostile.
+
+I can understand the discomfort. On the surface, without more in-depth knowledge, it can feel intrusive. Who asked us to scan their i...</div><p><a href="/2025/05/10/unsolicited-vulnerability-disclosure-ethics.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/blog.html# "/archive.html" (default)?tag=Cybersecurity+Policy+%26+Ethics">Cybersecurity Policy & Ethics</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/blog.html# "/archive.html" (default)?tag=Vulnerability+Disclosure">Vulnerability Disclosure</a>
+            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>May 10, 2025</span>
+            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-05-10T00:00:00+02:00">
+    <meta itemprop="keywords" content="Cybersecurity Policy & Ethics,Vulnerability Disclosure"></div>
+      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
+          <header><a href="/2025/05/02/testpost.html"><h2 itemprop="headline" class="item__header">Document - Test Post</h2></a></header>
+          <div class="item__description"><div class="article__content" itemprop="description articleBody">Test. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae nulla non metus cursus consequat. Vivamus ornare eu lectus sit amet gravida. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam tempor augue quis urna tristique, ut condimentum orci egestas. Phasellus quis dictum magna. A...</div><p><a href="/2025/05/02/testpost.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/blog.html# "/archive.html" (default)?tag=Research+Process">Research Process</a>
+            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>May 02, 2025</span>
+            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-05-02T00:00:00+02:00">
+    <meta itemprop="keywords" content="Research Process"></div>
+      </article></div>
+</div><div class="layout--home"></div>
+<script>/*(function () {
+
+})();*/
+</script>
+
+
+
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Max"><meta itemprop="url" content="https://maximand.github.io"><meta itemprop="description" content="Scan all the things"><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://maximand.github.io"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:mhvanderhorst@tudelft.nl" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Linkedin.">
+        <a class="button button--circle linkedin-button" itemprop="sameAs" href="https://www.linkedin.com/in/maxhorst" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M260.096 155.648c0 27.307008-9.899008 50.516992-29.696 69.632-19.796992 19.115008-45.396992 28.672-76.8 28.672-30.036992 0-54.612992-9.556992-73.728-28.672-19.115008-19.115008-28.672-42.324992-28.672-69.632 0-28.672 9.556992-52.224 28.672-70.656 19.115008-18.432 44.372992-27.648 75.776-27.648 31.403008 0 56.32 9.216 74.752 27.648 18.432 18.432 28.331008 41.984 29.696 70.656 0 0 0 0 0 0m-202.752 808.96c0 0 0-632.832 0-632.832 0 0 196.608 0 196.608 0 0 0 0 632.832 0 632.832 0 0-196.608 0-196.608 0 0 0 0 0 0 0m313.344-430.08c0-58.708992-1.364992-126.292992-4.096-202.752 0 0 169.984 0 169.984 0 0 0 10.24 88.064 10.24 88.064 0 0 4.096 0 4.096 0 40.96-68.267008 105.812992-102.4 194.56-102.4 68.267008 0 123.220992 22.868992 164.864 68.608 41.643008 45.739008 62.464 113.664 62.464 203.776 0 0 0 374.784 0 374.784 0 0-196.608 0-196.608 0 0 0 0-350.208 0-350.208 0-91.476992-33.451008-137.216-100.352-137.216-47.787008 0-81.236992 24.576-100.352 73.728-4.096 8.192-6.144 24.576-6.144 49.152 0 0 0 364.544 0 364.544 0 0-198.656 0-198.656 0 0 0 0-430.08 0-430.08 0 0 0 0 0 0" />
+</svg>
+</div>
+        </a>
+      </li><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Maximand# "user_name" the last part of your profile url, e.g. https://github.com/user_name" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© Disclosing.Observer 2025,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div><script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $body = $('body'), $window = $(window);
+    var $pageRoot = $('.js-page-root'), $pageMain = $('.js-page-main');
+    var activeCount = 0;
+    function modal(options) {
+      var $root = this, visible, onChange, hideWhenWindowScroll = false;
+      var scrollTop;
+      function setOptions(options) {
+        var _options = options || {};
+        visible = _options.initialVisible === undefined ? false : show;
+        onChange = _options.onChange;
+        hideWhenWindowScroll = _options.hideWhenWindowScroll;
+      }
+      function init() {
+        setState(visible);
+      }
+      function setState(isShow) {
+        if (isShow === visible) {
+          return;
+        }
+        visible = isShow;
+        if (visible) {
+          activeCount++;
+          scrollTop = $(window).scrollTop() || $pageMain.scrollTop();
+          $root.addClass('modal--show');
+          $pageMain.scrollTop(scrollTop);
+          activeCount === 1 && ($pageRoot.addClass('show-modal'), $body.addClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.on('scroll', hide);
+          $window.on('keyup', handleKeyup);
+        } else {
+          activeCount > 0 && activeCount--;
+          $root.removeClass('modal--show');
+          $window.scrollTop(scrollTop);
+          activeCount === 0 && ($pageRoot.removeClass('show-modal'), $body.removeClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.off('scroll', hide);
+          $window.off('keyup', handleKeyup);
+        }
+        onChange && onChange(visible);
+      }
+      function show() {
+        setState(true);
+      }
+      function hide() {
+        setState(false);
+      }
+      function handleKeyup(e) {
+        // Char Code: 27  ESC
+        if (e.which ===  27) {
+          hide();
+        }
+      }
+      setOptions(options);
+      init();
+      return {
+        show: show,
+        hide: hide,
+        $el: $root
+      };
+    }
+    $.fn.modal = modal;
+  });
+})();
+</script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"><script>
+(function () {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    // search panel
+    var search = (window.search || (window.search = {}));
+    var useDefaultSearchBox = window.useDefaultSearchBox === undefined ?
+      true : window.useDefaultSearchBox ;
+
+    var $searchModal = $('.js-page-search-modal');
+    var $searchToggle = $('.js-search-toggle');
+    var searchModal = $searchModal.modal({ onChange: handleModalChange, hideWhenWindowScroll: true });
+    var modalVisible = false;
+    search.searchModal = searchModal;
+
+    var $searchBox = null;
+    var $searchInput = null;
+    var $searchClear = null;
+
+    function getModalVisible() {
+      return modalVisible;
+    }
+    search.getModalVisible = getModalVisible;
+
+    function handleModalChange(visible) {
+      modalVisible = visible;
+      if (visible) {
+        search.onShow && search.onShow();
+        useDefaultSearchBox && $searchInput[0] && $searchInput[0].focus();
+      } else {
+        search.onShow && search.onHide();
+        useDefaultSearchBox && $searchInput[0] && $searchInput[0].blur();
+        setTimeout(function() {
+          useDefaultSearchBox && ($searchInput.val(''), $searchBox.removeClass('not-empty'));
+          search.clear && search.clear();
+          window.pageAsideAffix && window.pageAsideAffix.refresh();
+        }, 400);
+      }
+    }
+
+    $searchToggle.on('click', function() {
+      modalVisible ? searchModal.hide() : searchModal.show();
+    });
+    // Char Code: 83  S, 191 /
+    $(window).on('keyup', function(e) {
+      if (!modalVisible && !window.isFormElement(e.target || e.srcElement) && (e.which === 83 || e.which === 191)) {
+        modalVisible || searchModal.show();
+      }
+    });
+
+    if (useDefaultSearchBox) {
+      $searchBox = $('.js-search-box');
+      $searchInput = $searchBox.children('input');
+      $searchClear = $searchBox.children('.js-icon-clear');
+      search.getSearchInput = function() {
+        return $searchInput.get(0);
+      };
+      search.getVal = function() {
+        return $searchInput.val();
+      };
+      search.setVal = function(val) {
+        $searchInput.val(val);
+      };
+
+      $searchInput.on('focus', function() {
+        $(this).addClass('focus');
+      });
+      $searchInput.on('blur', function() {
+        $(this).removeClass('focus');
+      });
+      $searchInput.on('input', window.throttle(function() {
+        var val = $(this).val();
+        if (val === '' || typeof val !== 'string') {
+          search.clear && search.clear();
+        } else {
+          $searchBox.addClass('not-empty');
+          search.onInputNotEmpty && search.onInputNotEmpty(val);
+        }
+      }, 400));
+      $searchClear.on('click', function() {
+        $searchInput.val(''); $searchBox.removeClass('not-empty');
+        search.clear && search.clear();
+      });
+    }
+  });
+})();
+</script><div class="search search--dark">
+  <div class="main">
+    <div class="search__header">Search</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--theme-dark button--pill search__cancel js-search-toggle">
+        Cancel</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var search = (window.search || (window.search = {}));
+  var searchData = window.TEXT_SEARCH_DATA || {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) { return null; }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function clear() {
+    $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+  function onInputNotEmpty(val) {
+    $result.html(render(searchByQuery(val)));
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+    $resultItems.eq(0).addClass('active');
+  }
+
+  search.clear = clear;
+  search.onInputNotEmpty = onInputNotEmpty;
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  // Char Code: 13  Enter, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇
+  $(window).on('keyup', function(e) {
+    var modalVisible = search.getModalVisible && search.getModalVisible();
+    if (modalVisible) {
+      if (e.which === 38) {
+        modalVisible && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        modalVisible && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        modalVisible && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+});
+</script>
+</div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function affix(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroll,
+        offsetBottom = 0, scrollTarget = window, scroll = window.document, disabled = false, isOverallScroller = true,
+        rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop,
+        hasInit = false, curState;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroll && (scroll = _options.scroll);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $scrollTarget = $(scrollTarget);
+        isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+        $scroll = $(scroll);
+      }
+      function preCalc() {
+        top();
+        rootHeight = $root.outerHeight();
+        rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+        rootLeft = $root.offset().left;
+      }
+      function calc(needPreCalc) {
+        needPreCalc && preCalc();
+        scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+        rootBottomTop = scrollBottom - rootTop;
+      }
+      function top() {
+        if (curState !== 'top') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: 0
+          });
+          curState = 'top';
+        }
+      }
+      function fixed() {
+        if (curState !== 'fixed') {
+          $root.addClass('fixed').css({
+            left: rootLeft + 'px',
+            top: 0
+          });
+          curState = 'fixed';
+        }
+      }
+      function bottom() {
+        if (curState !== 'bottom') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: rootBottomTop + 'px'
+          });
+          curState = 'bottom';
+        }
+      }
+      function setState() {
+        var scrollTop = $scrollTarget.scrollTop();
+        if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+          fixed();
+        } else if (scrollTop < rootTop) {
+          top();
+        } else {
+          bottom();
+        }
+      }
+      function init() {
+        if(!hasInit) {
+          var interval, timeout;
+          calc(true); setState();
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState();
+          });
+          $window.on('resize', function() {
+            disabled || (calc(true), setState());
+          });
+          hasInit = true;
+        }
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true, { animation: false }); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function toc(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroller, $tocUl = $('<ul class="toc toc--ellipsis"></ul>'), $tocLi, $headings, $activeLast, $activeCur,
+        selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false,
+        headingsPos, scrolling = false, hasRendered = false, hasInit = false;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.selectors && (selectors = _options.selectors);
+        _options.container && (container = _options.container);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroller && (scroller = _options.scroller);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $headings = $(container).find(selectors).filter('[id]');
+        $scrollTarget = $(scrollTarget);
+        $scroller = $(scroller);
+      }
+      function calc() {
+        headingsPos = [];
+        $headings.each(function() {
+          headingsPos.push(Math.floor($(this).position().top));
+        });
+      }
+      function setState(element, disabled) {
+        var scrollTop = $scrollTarget.scrollTop(), i;
+        if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+        if (element) {
+          $activeCur = element;
+        } else {
+          for (i = 0; i < headingsPos.length; i++) {
+            if (scrollTop >= headingsPos[i]) {
+              $activeCur = $tocLi.eq(i);
+            } else {
+              $activeCur || ($activeCur = $tocLi.eq(i));
+              break;
+            }
+          }
+        }
+        $activeLast && $activeLast.removeClass('active');
+        ($activeLast = $activeCur).addClass('active');
+      }
+      function render() {
+        if(!hasRendered) {
+          $root.append($tocUl);
+          $headings.each(function() {
+            var $this = $(this);
+            $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+              .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+          });
+          $tocLi = $tocUl.children('li');
+          $tocUl.on('click', 'a', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            scrolling = true;
+            setState($this.parent());
+            $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+              scrolling = false;
+            });
+          });
+        }
+        hasRendered = true;
+      }
+      function init() {
+        var interval, timeout;
+        if(!hasInit) {
+          render(); calc(); setState(null, scrolling);
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState(null, scrolling);
+          });
+          $window.on('resize', window.throttle(function() {
+            if (!disabled) {
+              render(); calc(); setState(null, scrolling);
+            }
+          }, 100));
+        }
+        hasInit = true;
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();
+/*(function () {
+
+})();*/
+</script><script>
+  window.Lazyload.js(['https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js', 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js'], function() {
+    var $canvas = null, $this = null, _ctx = null, _text = '';
+    $('.language-chart').each(function(){
+      $this = $(this);
+      $canvas = $('<canvas></canvas>');
+      _text = $this.text();
+      $this.text('').append($canvas);
+      _ctx = $canvas.get(0).getContext('2d');
+      (_ctx && _text) && (new Chart(_ctx, JSON.parse(_text)) && $this.attr('data-processed', true));
+    });
+  });
+</script>
+<script>
+  window.Lazyload.js('https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js', function() {
+    mermaid.initialize({
+      startOnLoad: true
+    });
+    mermaid.init(undefined, '.language-mermaid');
+  });
+</script>
+
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();
+</script>
+  </body>
+</html>
+

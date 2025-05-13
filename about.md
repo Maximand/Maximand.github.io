@@ -17,7 +17,7 @@ Prior to starting at TU Delft, I worked in various roles in the cybersecurity an
 
 This website will contain structured braindumps of topics I find interesting during my research and hope others will too. These topics will mostly fall into the following five categories:
 * Research Process
-* Vulnerability Disclosure & Management
+* Vulnerability Disclosure
 * Cybersecurity Policy & Ethics
 * Reflections on Academia
 * Observations on Cyber Threat Intelligence
