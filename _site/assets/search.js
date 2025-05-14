@@ -1,1 +1,1 @@
-window.TEXT_SEARCH_DATA={'posts':[{'title':"Document - Test Post",'url':"/2025/05/02/testpost.html"},{'title':"Unsolicited but Ethical: Threshold Deontology in Public Interest Vulnerability Disclosure",'url':"/2025/05/10/unsolicited-vulnerability-disclosure-ethics.html"}]};
+window.TEXT_SEARCH_DATA={'posts':[{'title':"Unsolicited but Ethical: Threshold Deontology in Public Interest Vulnerability Disclosure",'url':"/2025/05/10/unsolicited-vulnerability-disclosure-ethics.html"}]};
