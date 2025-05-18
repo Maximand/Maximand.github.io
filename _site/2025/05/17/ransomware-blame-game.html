@@ -1,10 +1,10 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Unsolicited but Ethical: Threshold Deontology in Public Interest Vulnerability Disclosure - Disclosing.Observer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>The Ransomware Blame Game: Who Bears the Burden of Sanction Enforcement? - Disclosing.Observer</title>
 
-<meta name="description" content="I often send emails to people I’ve never met, about systems they didn’t know were vulnerable, warning them about risks they never asked me to find. Often, th...">
-<link rel="canonical" href="http://localhost:4000/2025/05/10/unsolicited-vulnerability-disclosure-ethics.html"><link rel="alternate" type="application/rss+xml" title="Disclosing.Observer" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<meta name="description" content="When I worked in a Computer Emergency Response Team (CERT), ransomware cases were part of the routine. A company would be hit, backups failed, and the questi...">
+<link rel="canonical" href="http://localhost:4000/2025/05/17/ransomware-blame-game.html"><link rel="alternate" type="application/rss+xml" title="Disclosing.Observer" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
@@ -264,7 +264,7 @@
         <ul><li class="navigation__item"><a href="/">Home</a></li><li class="navigation__item"><a href="/about.html">About</a></li><li class="navigation__item"><a href="/blog.html">Blog</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
       </nav></div>
   </header>
-</div><div class="page__content"><img class="article__header--cover" src="/assets/ethics-cvd.png" /><div class ="main"><div class="grid grid--reverse">
+</div><div class="page__content"><img class="article__header--cover" src="/assets/ransomware_blog_banner.png" /><div class ="main"><div class="grid grid--reverse">
 
               <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
 </aside></div>
@@ -272,108 +272,96 @@
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Unsolicited but Ethical: Threshold Deontology in Public Interest Vulnerability Disclosure</h1></header></div><meta itemprop="headline" content="Unsolicited but Ethical: Threshold Deontology in Public Interest Vulnerability Disclosure"><div class="article__info clearfix"><ul class="left-col menu"><li>
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>The Ransomware Blame Game: Who Bears the Burden of Sanction Enforcement?</h1></header></div><meta itemprop="headline" content="The Ransomware Blame Game: Who Bears the Burden of Sanction Enforcement?"><div class="article__info clearfix"><ul class="left-col menu"><li>
               <a class="button button--secondary button--pill button--sm"
                 href="/blog.html# "/archive.html" (default)?tag=Cybersecurity+Policy+%26+Ethics">Cybersecurity Policy & Ethics</a>
             </li><li>
               <a class="button button--secondary button--pill button--sm"
-                href="/blog.html# "/archive.html" (default)?tag=Vulnerability+Disclosure">Vulnerability Disclosure</a>
-            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>May 10, 2025</span>
-            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-05-10T00:00:00+02:00">
-    <meta itemprop="keywords" content="Cybersecurity Policy & Ethics,Vulnerability Disclosure"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+                href="/blog.html# "/archive.html" (default)?tag=Observations+on+Cyber+Threat+Intelligence">Observations on Cyber Threat Intelligence</a>
+            </li><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/blog.html# "/archive.html" (default)?tag=Research+Process">Research Process</a>
+            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>May 17, 2025</span>
+            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-05-17T00:00:00+02:00">
+    <meta itemprop="keywords" content="Cybersecurity Policy & Ethics,Observations on Cyber Threat Intelligence,Research Process"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
 <!-- end custom article top snippet -->
-<div class="article__content" itemprop="articleBody"><p>I often send emails to people I’ve never met, about systems they didn’t know were vulnerable, warning them about risks they never asked me to find. Often, they’re surprised. Mostly grateful. Occasionally hostile.</p>
+<div class="article__content" itemprop="articleBody"><p>When I worked in a Computer Emergency Response Team (CERT), ransomware cases were part of the routine. A company would be hit, backups failed, and the question of ransom payment would come up. Every so often, the team would offer the option of a sanction checking service to verify whether payment was even legal. However, these sanction checks would depend on indicators like cryptocurrency wallet addresses, file hashes, IP addresses, and domain names. These were all indicators that were known to be volatile, so I wondered: <em>how effective is this really?</em>.</p>
 
-<p>I can understand the discomfort. On the surface, without more in-depth knowledge, it can feel intrusive. Who asked me to scan their infrastructure? Who gave me permission to notify them about something they didn’t request? I’ve come to realize that in cybersecurity, waiting for consent isn’t always an ethical luxury we can afford. Sometimes, when a vulnerability threatens publicly accessible systems, the consequences of inaction quickly outweigh the social comfort of protocol.</p>
+<p>These checks felt necessary but rarely brought clarity. Infrastructure changed constantly. Attribution was fragile and full of assumptions, and the same group might be known under a different name next week. Even when the style of a ransomware operation was recognized, it didn’t guarantee that we could connect it to a known actor. The attacker would disappear after the ransom payment, but the legal and financial risk remained, now shifted onto the victim.</p>
 
-<h1 id="ethics-of-vulnerability-disclosure">Ethics of Vulnerability Disclosure</h1>
-<p>At the <a href="https://divd.nl">Dutch Institute for Vulnerability Disclosure</a>, I work in a team that operates in that uncomfortable space between respecting boundaries and preventing harm. It’s not a line we walk casually, and one I’ve learned to approach with both caution and conviction. That’s why, at DIVD, we rely on a shared <a href="https://divd.nl/code">Code of Conduct</a> (CoC). This CoC is derived from a <a href="https://www.om.nl/documenten/richtlijnen/2020/december/14/om-beleidsbrief-ethisch-hacken#:~:text=Het%20Openbaar%20Ministerie%20heeft%20in,tegen%20een%20ethische%20hacker%20binnenkomt.">policy</a> that was published by the Dutch Public Prosecutor in 2020, which describes the circumstances under which computer hacking will be considered ethical and exempt from prosecution. This policy is based on years of debate and legal jurisprudence and has served the Dutch hacker community greatly up until now. The questions it provides to determine whether or not an action is ethical are as follows:</p>
+<p>That discomfort stuck with me. So when I had the opportunity to start working on <a href="https://www.usenix.org/conference/usenixsecurity25/presentation/van-der-horst">the paper this post is based on</a>, it wasn’t just about the fragility of different Indicators of Compromise (IoCs). 	It was about something deeper: what happens when policy assumes a level of certainty that defenders simply don’t have? This blogpost is an extension of the USENIX paper: a reflection on how our current enforcement and compliance frameworks place responsibility on those with the least access to reliable information. It is not a call to weaken sanctions policy, but a call to make it more just. If sanctions are meant to constrain attackers, then enforcement must be designed to reach them–not to retroactively penalize the victims.</p>
 
-<ul>
-  <li>Was the action taken in the context of a significant public interest?</li>
-  <li>Was the conduct proportionate (i.e., did the suspect not go further than necessary to achieve their objective)?</li>
-  <li>Was the requirement of subsidiarity met (i.e., were there no less intrusive means available to achieve the intended objective)?</li>
-</ul>
+<h1 id="the-limits-of-technical-attribution">The limits of technical attribution</h1>
+<p>In Threat Intelligence, attribution is a layered process. <em>Low-level IoCs</em>, pieces of evidence related to infrastructure, the attack, payment methods, and other operational details, are easy to collect and useful for detection. However, they are extremely volatile. These indicators can be changed with little effort by attackers, making them poor foundations for long-term attributions. This idea has been confirmed by frameworks like Bianco’s <a href="https://detect-respond.blogspot.com/2013/03/the-pyramid-of-pain.html">Pyramid of Pain</a> and Rid and Buchanan’s <a href="https://cs.brown.edu/courses/cs180/sources/Attributing_Cyber_Attacks.pdf">Q-Model</a>.</p>
 
-<p>The DIVD CoC guides our decisions to make sure we do not cross any ethical boundaries. This can get knotty quite quickly, as we attempt to locate everyone worldwide that may be vulnerable to a particular security vulnerability. Therefore we have to make well-thought-through decisions when it comes to worldwide vulnerability scans: we have to be sure that we do not intrude further than necessary and that our way of scanning is the least impactful one.</p>
+<p>Hence, it seems irresponsible to base sanctions lists on these low-level indicators, which is why the paper behind this post investigates the value of <em>high-level IoCs</em>. By contrast, high-level IoCs capture behavioral traits such as how attackers deploy their malware, how they move laterally, ransom note linguistics, negotiation attitudes, and Tactics, Techniques, and Procedures (TTPs). Both the Pyramid of Pain and the Q-Model mention high-level indicators to be harder to fake and therefore more persistent across rebrandings.</p>
 
-<p>I’ve found myself to be increasingly exacting about this. If a scan doesn’t meet the ethical standards we’ve committed to at DIVD, it’s not uncommon to argue against executing it–even if that means walking away from a serious case. That may seem cautious, but it raises a deeper ethical question: When is a vulnerability severe enough that inaction becomes the more problematic choice?</p>
+<h2 id="the-affiliate-wild-card">The affiliate wild-card</h2>
+<p>Many ransomware operations follow an affiliate model known as Ransomware-as-a-Service (RaaS), in which core developers lease their tools to independent partners. These affiliates vary widely in skill and methods, and while operators often provide deployment guidelines, affiliates may diverge from them in practice. As a result, high-level indicators, such as lateral movement techniques or tooling preferences, can differ significantly even within the same group, adding noise to attribution efforts.</p>
 
-<p>This post argues that the ethical frameworks implicitly used by DIVD, particularly threshold deontology, provide a defensible basis for more intrusive forms of unsolicited vulnerability disclosure when the public interest is at stake.</p>
-
-<h1 id="when-inaction-becomes-the-problem">When inaction becomes the problem</h1>
-<p>Ethics in the computer security landscape have always been a topic of discussion. Recently, this discussion seems to have picked up in the academic world around the three leading frameworks and their respective ideologies:</p>
+<h2 id="observations-from-the-paper">Observations from the paper</h2>
+<p>We analysed two very different datasets: 27 private incident reports from an incident response company and 13 public CISA advisories based on various other incident response organizations. Two findings stood out from this data:</p>
 
 <ul>
-  <li><strong>Consequentialism:</strong> Actions are morally right if it leads to the best overall outcomes or consequences. The use of consequentialism in this article mostly resembles utilitarianism, which is a type of consequentialism that focuses on the well-being of people.</li>
-  <li><strong>Deontology:</strong> Actions are morally right if it follows a set of moral rules or duties, regardless of the outcome.</li>
-  <li><strong>Virtue Ethics:</strong> Actions are morally right if it reflects the character and virtues of a good or morally exemplary person.</li>
+  <li><strong>Inside a single “brand,” the technical overlap was surprisingly low.</strong> Different incidents linked to the same group often shared fewer than half their TTPs.</li>
+  <li><strong>Across sources, the overlaps became even lower.</strong> What CISA published and what the responders from our partnering company observed for the same group only line up part of the time. This shows a significant discrepancy between the reporting of different organizations.</li>
 </ul>
 
-<p>While equally important, this post does not focus on virtue ethics. The challenge we face in Coordinated Vulnerability Disclosure is not about judging moral character. It’s about operationalizing structured processes, making ethically defensible decisions under pressure, and balancing duties with consequences. These are domains where rules and outcomes matter more directly than personal virtue.</p>
+<p>These discrepancies undermine the assumption that defenders (or regulators) have access to a consistent view of attacker behaviour at the time sanctions checks are performed.</p>
 
-<p>This is confirmed by various studies in the academic landscape such as <a href="https://www.dhs.gov/sites/default/files/publications/CSD-MenloPrinciplesCORE-20120803_1.pdf">The Menlo Report</a> and the (more recent) study on <a href="https://www.usenix.org/system/files/usenixsecurity23-kohno.pdf">Computer Security Trolley Problems</a> by Kohno et al. These studies emphasize the importance of consequentialism and deontology where they intentionally leave virtue ethics out of scope. In contrast, studies of cybercrime — where intent, personal responsibility, and moral development are central — often lean more heavily on virtue ethics.</p>
+<p>In short, the low-level indicators that sanctions lists currently lean on tend to expire quickly, while no one seems to have a comprehensive overview of the behavioural high-level indicators. While this dataset is of course not exhaustive, the consistency of these patterns across both public and private reporting streams underscores their broader relevance.</p>
 
-<p>The tension between doing what’s right according to principle and doing what’s necessary to prevent harm lies at the center of many dilemmas in computer security. Deontology and consequentialism are often seen as opposites that lead to different outcomes when applied to the same case studies, leading these case studies to be seen as moral dilemmas. For this reason, one may realise that an absolutist approach to either of these frameworks may not be sufficient in practice when the intent is preventing harm. The Stanford Encyclopedia of Philosophy emphasizes this limitation by describing a balance through what is known as <a href="https://plato.stanford.edu/entries/ethics-deontological/#DeoRelConRec">threshold deontology</a>. Threshold deontology begins with a commitment to deontological principles such as minimizing intrusion and acting transparently. However, it recognizes that these rules may need to be overridden when the potential harm of inaction crosses a critical threshold. In other words:</p>
+<h2 id="why-this-matters-for-sanctions">Why this matters for sanctions</h2>
+<p>Yet, most compliance frameworks, and even some insurance policies, continue to rely on indicators that appear to uniquely identify a ransomware group. This is an understandable position: enforcement systems require clear identifiers to function. However, this expectation favors indicators that are easily assigned over indicators that are more stable but less individually distinctive.</p>
 
-<blockquote>
-  <p>We follow the rules, until not following them becomes the more ethical choice.</p>
-</blockquote>
+<p>As a result, and as confirmed by our interviewees, high-level behavioural indicators are often excluded from compliance checks, not because they are unreliable, but because they lack the singularity needed to support legal or financial action. Sanctions enforcement, therefore, depends on low-level indicators not due to their robustness, but because they are uniquely attributable. This is true even when those same indicators can be changed by attackers with minimal effort.</p>
 
-<p>Threshold deontology doesn’t abandon principles. It does, however, ask us to honor them until the consequences of strict adherence become morally unacceptable, to then act with caution for a societal cause.</p>
+<p>Until enforcement frameworks find a way to operationalise high-level signals across rebrandings, defenders will have to deal with indicators that are known to change rapidly. In practice, this means working with the most accessible signals, not the most meaningful ones.</p>
 
-<h1 id="principles-in-practice">Principles in practice</h1>
-<p>But how would we know when that threshold is actually crossed? Threshold deontology provides us with the ‘philosophical permission’ to override a duty, but it doesn’t say when exactly that override is justified. This is where the principlist framework can provide some guidance. Instead of relying on a single guiding rule, it asks us to weigh multiple ethical principles that often come into tension in practice. This helps us to assess not just whether an action is justified, but also why and what ethical trade-offs we are accepting in the process.</p>
+<h1 id="rebranding-as-a-sanctions-evasion-strategy">Rebranding as a sanctions-evasion strategy</h1>
+<p>Ransomware groups don’t stay still. After public exposure, <a href="https://www.cisecurity.org/insights/blog/the-conti-leaks-a-case-of-cybercrimes-commercialization">internal conflict</a>, or sanctions, many simply dissolve and rebrand under a new name. The infamous Conti group, for instance, splintered into <a href="https://www.hhs.gov/sites/default/files/blacksuit-ransomware-analyst-note-tlpclear.pdf">several new entities</a>, including Royal and then BlackSuit, among others. These new groups often adopt new infrastructure, names, leak sites, and negotiation portals, but retain (some of) the same personnel, malware toolchains, and affiliate relationships.</p>
 
-<p>In 2021, Formosa et al. proposed <a href="https://www.sciencedirect.com/science/article/pii/S0167404821002066">a principlist framework</a> for cybersecurity that is composed of the following five principles:</p>
+<p>This rebranding breaks the link between old and new entities in legal and public intelligence contexts. While threat researchers may recognize the continuity, governments may typically require formal evidence of control or ownership to link a new group to a sanctioned predecessor. That process is slow, often opaque, and rarely public.</p>
+
+<p>Victims, meanwhile, are expected to know better. If they pay a ransom to a group that is later tied to a sanctioned actor, they may be penalized, even if the link was not publicly known at the time of payment. Various interviewees in the study mentioned this to be a great risk to the victim, as insurers can (and will) try to claw back a paid-out ransom months later if the recipient is sanctioned after the fact, effectively retro-dating the exclusion to the payment date. Moreover, the moment a ransomware group is sanctioned, it may trigger a rebrand, further obfuscating the public overview. This is the heart of the policy asymmetry: ransomware groups can easily obscure their identities whereas defenders and victims are expected to see through the smoke.</p>
+
+<h1 id="the-information-deficit-and-the-burden-of-compliance">The information deficit and the burden of compliance</h1>
+<p>This means that the position that a victim of ransomware finds themselves in can be framed as an information deficit. The entities responsible for enforcing compliance, such as governments, regulators, and insurers, operate on the assumption that attribution is clear and actionable. However, in ransomware cases, attribution is often incomplete, delayed, or ambiguous.</p>
+
+<p>The ransomware cases we’ve analyzed in our study show that low-level indicators rarely persisted across incidents, let alone rebrandings. In several cases, ransom payments were made to groups not publicly sanctioned at the time, only for links to sanctioned actors to emerge through later intelligence analysis. These links often relied on high-level behavior indicators like linguistics, panel design reuse, or TTPs, which were absent from standard sanction checks.</p>
+
+<p>This creates a critical gap: compliance decisions are expected to be based on indicators that are technically available but operationally unreliable. Meanwhile, indicators that could offer stronger attribution are often not included in threat feeds or sanctions designations, and are not legally recognized as sufficient evidence. Furthermore, because of phenomena like the Ransomware-as-a-Service (RaaS) ecosystem, slight deviations in reporting using frameworks like the <a href="https://attack.mitre.org">MITRE ATT&amp;CK Matrix</a>, and the commercialisation of the Threat Intelligence industry, data is so fragmented that no single organization appears to have a comprehensive view of high-level indicators, making coordinated enforcement even more difficult. This also means that even when TTP combinations appear distinctive on paper, the fragmentation and inconsistency across sources make them impractical for real-world sanctions checks.</p>
+
+<p>In practice, this means that defenders may act in good faith based on the best available data and still find themselves in violation of compliance expectations. While European countries are typically more forgiving than the U.S. by taking into account their <a href="https://finance.ec.europa.eu/document/download/65560de8-a13a-4a58-a87c-ddd27b14e6c1_en?filename=faqs-sanctions-russia-best-efforts-obligation_en.pdf"><em>Best Efforts regulation</em></a>, payment to a sanctioned entity still opens up a victim to legal or financial consequences. 	Several European and American cyber-insurance wordings now not only <a href="https://assets.lloyds.com/media/47dd9b48-e881-4169-8a98-8d305a1d6fce/Y5359.pdf">exclude reimbursement for ransoms that benefit a sanctioned party</a>, but also reserve the right to <a href="https://cilj.law.uconn.edu/wp-content/uploads/sites/2520/2022/04/Ransomware-Kenneally-CILJ-Vol.-28.1.pdf"><strong>recover a payout after the fact</strong></a> if new intelligence or a late-issued designation reveals that the attackers were sanctioned. Retroactive enforcement of these exclusions, whether via contract or regulation, shifts the risk back onto those least equipped to verify attribution in real time: the victims.</p>
+
+<h1 id="structural-asymmetry-in-ransomware-enforcement">Structural asymmetry in ransomware enforcement</h1>
+<p>The outcome is a deeply asymmetrical system. Attackers operate in a fluid, pseudonymous ecosystem. Defenders operate under legal obligations, audit trails, and policy scrutiny. Compliance rules are often applied rigidly. Not only by governments, but increasingly by cyber insurers, even when the available indicators are ambiguous.</p>
+
+<p>Our research calls attention to this structural misalignment. It is not simply a technical issue, but a policy failure. By placing the burden of accurate attribution on defenders, we ignore the reality that attribution is contested and delayed, even among experts.</p>
+
+<p>As I mentioned in the beginning of this article, this post does not argue against the principle of sanctions. It can be a legitimate tool of pressure, deprivation, and deterrence. Rather, it argues that sanctions policy must evolve to strike at the actors it was meant to constrain, not those it was meant to protect. Enforcement that punishes victims through uncertainty does not advance justice; it undermines it.</p>
+
+<h1 id="policy-recommendations-toward-risk-aware-compliance">Policy recommendations: toward risk-aware compliance</h1>
+<p>I am not arguing for abandoning sanctions policy altogether. Instead, it would be better to propose a more realistic and risk-aware approach:</p>
 
 <ul>
-  <li><strong>Beneficence:</strong> Promote well-being and prevent harm</li>
-  <li><strong>Non-maleficence</strong>: Avoid causing harm</li>
-  <li><strong>Autonomy:</strong> Respect individuals’ control over their systems and data</li>
-  <li><strong>Justice:</strong> Ensure fairness and equitable treatment</li>
-  <li><strong>Explicability:</strong> Act transparently and be accountable</li>
+  <li><strong>Recognize the limits of low-level indicators and require corroboration.</strong> Enforcement actions should not hinge on volatile indicators alone. Additional behavioral or contextual evidence should be required to support sanctions-related decisions.</li>
+  <li><strong>Promote the development and sharing of behavioral-level CTI.</strong> Encourage public-private sharing of ransomware tradecraft indicators and support open databases that track rebrand linkages, like the U.S. Cybersecurity and Infrastructure Security Agency’s (CISA) <a href="https://www.cisa.gov/stopransomware">#StopRansomware campaign</a>, where they share observed indicators from various organizations.</li>
+  <li><strong>Establish a cross-sector CTI clearing house.</strong> All 20 experts we interviewed independently called for a neutral, non-commercial platform to consolidate and curate ransomware attribution data. No single entity today has the necessary scope or trust to do this alone.</li>
+  <li><strong>Introduce proportionality and good-faith standards</strong> in compliance enforcement. If a victim acted on available information and had no access to classified or high-confidence attribution, they should be protected instead of penalized anywhere.</li>
+  <li><strong>Improve transparency of sanctions intelligence.</strong> Where governments establish control or continuity between groups, this information should be shared with defenders, not just for enforcement.</li>
 </ul>
 
-<p>Formosa’s principlist framework is derived from Beauchamp and Childress’s <a href="https://jme.bmj.com/content/28/5/332.2">“Four Principles” of biomedical ethics</a> and added a fifth principle of explicability, which is drawn from <a href="https://link.springer.com/article/10.1007/s11023-018-9482-5">AI ethics</a> (Floridi et al., 2018). When we’re considering something like a global vulnerability scan, these principles help us structure our ethical reasoning. DIVD’s scanning decisions are centered on the principle of beneficence: the obligation to prevent harm and promote public safety. When the potential benefit of scanning is low, for example when a vulnerability poses little risk or is unlikely to be exploited, we hold firm to the non-maleficence (avoiding harm) and autonomy (respecting consent and responsibility) principles. In such cases, we will refrain from scanning because the ethical cost outweighs the limited benefit.</p>
+<p>These are not radical departures from current policy. They are adjustments grounded in the technical and operational realities of the ransomware ecosystem.</p>
 
-<p>However, when the potential to prevent significant harm is high, such as when a vulnerability threatens large-scale exploitation or critical infrastructure, we may override non-maleficence and autonomy in service of that benefit. This is not a decision taken lightly. It reflects a careful ethical trade-off, where the duty to protect others justifies limited, well-controlled intrusion.</p>
+<h1 id="conclusion-enforcement-should-follow-evidence-not-assumption">Conclusion: enforcement should follow evidence, not assumption</h1>
+<p>Sanctions policy is not wrong in its goals, but it fails in implementation. It assumes that attribution is deterministic, that indicators are authoritative, and  that defenders are equipped to make perfect decisions under pressure. None of these assumptions hold in ransomware cases.</p>
 
-<h1 id="how-wide-is-my-fingerprint">How WIDE is my fingerprint?</h1>
-<p>To teach others about fingerprinting ethics, I often use a simple heuristic to assess the moral footprint of a fingerprinting technique called WIDE. WIDE stands for:</p>
+<p>If we want policy to support resilience rather than amplify harm, we must start by aligning it with how threat intelligence actually works. Until then, we risk not having the backs of ransomware victims, but punishing them a second time.</p>
 
-<ul>
-  <li><strong>Weaponized:</strong> Could this scanning methodology be used to (enable) harm? Or more practical: if the scanning methodology involves a public Proof of Concept, does it contain any malware that we would need to neutralize first? This reflects the principle of non-maleficence.</li>
-  <li><strong>Intrusive:</strong> Does this scanning methodology cross any boundaries of consent, privacy, or proportionality? Does it leave any unnecessary traces on the target system? This brings autonomy and justice into view.</li>
-  <li><strong>Deweaponized:</strong> Is this scanning methodology deliberately designed to reduce its exploitability? This ties to beneficence, the duty to protect.</li>
-  <li><strong>Ethical:</strong> Would this technique hold up under scrutiny from others? Is it proportionate and according to subsidiarity standards? Here, explicability becomes essential to ensure transparency on decisions and reasoning.</li>
-</ul>
-
-<p><img src="../../../assets/WIDE_heuristic_diagram_darkbg.svg" alt="" /></p>
-
-<p>When I ask myself, <em>“How WIDE is this fingerprint?”</em>, I’m not answering a closed question. I’m surfacing tensions. Even techniques that appear technically harmless can become ethically problematic if used carelessly, at scale, or without transparency. WIDE isn’t a substitute for principlism, but it does help bring the principles into everyday practice. It’s a kind of ethical gut check for ethical proportionality: quick, imperfect, but useful when decisions happen fast. Of course, ethics are subjective, which is why not everyone may agree with our framing. Especially when consent is missing, ethical objections matter.</p>
-
-<h1 id="addressing-ethical-objections">Addressing ethical objections</h1>
-<p>There are some <a href="https://www.hup.harvard.edu/books/9780674976009">counterarguments to unsolicited scanning</a>, such as concerns about overreach, digital trespassing, and the potential erosion of trust in security research. In the end, if subjectivity leads to the justification of compromising on the explicability principle, ethical boundaries are allowed to shift under pressure. How do we ensure they don’t shift too far?</p>
-
-<p>These are legitimate concerns. However, this is exactly why it is important to rely on structured frameworks like threshold deontology and principlism: not to escape ethical boundaries, but to make these boundaries visible, contestable, and constrained. The point isn’t that anything is allowed when societal safety is at play. It’s that sometimes, doing nothing carries a greater ethical cost than acting carefully without permission.</p>
-
-<h1 id="the-public-interest-threshold-of-log4shell">The public interest threshold of Log4Shell</h1>
-<p>When <a href="https://www.cisa.gov/news-events/news/apache-log4j-vulnerability-guidance">Log4Shell</a> was disclosed in late 2021, it posed a severe threat to global digital infrastructure. The vulnerability affected countless systems, many of which were unknown to be using this software, and exploitation began within hours of public disclosure as it was trivial to exploit. It became clear quickly that this vulnerability didn’t just pose a theoretical risk, but a real-world crisis.</p>
-
-<p>Log4J, the vulnerable software, was a logging component embedded in many other systems, making this a supply chain issue. The team at DIVD working on this case then faced a difficult question: how to responsibly notify affected organizations across the globe, many of which had no idea they were even using Log4J?</p>
-
-<p>In such a high-stakes context, the threshold for ethical intervention was clearly crossed. The potential for harm was immense, as this vulnerability could lead to ransomware, data breaches, and critical infrastructure failures, disrupting society on a large scale. Because Log4J was embedded in other software rather than a standalone component, scanning was not possible without triggering the vulnerability itself. The considerations central to the WIDE heuristic helped to assess this approach: where many actors were mass-exploiting systems at random to test for the vulnerability, DIVD’s scanning methodology was deliberately deweaponized to reduce exploitability and kept as non-intrusive as possible by avoiding persistence or harmful effects.</p>
-
-<p>To achieve this, DIVD created a Log4Shell exploit that triggered a single DNS request to a <a href="https://www.canarytokens.org/nest/">Canary Token</a> from inside the vulnerable system: an approach that was harmless and, of all options, the least intrusive. It only revealed the vulnerable IP address and nothing more. The actions taken were designed to be ethical: proportionate to the risk, grounded in subsidiarity, and subject to public scrutiny. In doing so, we aimed to maximize beneficence, minimize maleficence, respect justice, and uphold explicability—even where autonomy had to be limited for the sake of public safety.</p>
-
-<h1 id="conclusion-trust-through-transparent-ethics">Conclusion: Trust through transparent ethics</h1>
-<p>Coordinated Vulnerability Disclosure isn’t just a technical challenge: it’s an ethical one. At DIVD, we don’t treat unsolicited scanning and disclosure as a loophole or an afterthought. We treat it as an action that requires justification, restraint, and transparency.</p>
-
-<p>Threshold deontology provides us with the ethical architecture to act decisively when society is at risk. The principlist framework implicitly helps us navigate that threshold with clarity, so we’re not acting on instinct, but on structured ethical reasoning. I’m sharing this to explain how I think about the ethics behind unsolicited disclosure. Not because we see ourselves as above ethical rules at DIVD, but because we try to follow them as rigorously as possible, even when the path forward isn’t obvious.</p>
-
-</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2025-05-10T00:00:00+02:00"><!-- start custom article footer snippet -->
+<p>This is not an argument against sanctioning ransomware actors. It is an argument for ensuring that those sanctions reach the right targets. We can’t sanction what we can’t see, and we shouldn’t punish those who were never meant to be the target.</p>
+</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2025-05-17T00:00:00+02:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
 <div itemscope itemtype="http://schema.org/Person" class="author-profile card card--flat item"><a href="https://disclosing.observer" class="item__image"><img class="author-profile__avatar" itemprop="image" src="https://avatars.githubusercontent.com/u/25766540" /></a><div class="item__content"><meta itemprop="name" content="Max van der Horst">
@@ -410,7 +398,7 @@
       </a>
     </p>
   </div></div></footer>
-<div class="article__section-navigator clearfix"><div class="next"><span>NEXT</span><a href="/2025/05/17/ransomware-blame-game.html">The Ransomware Blame Game: Who Bears the Burden of Sanction Enforcement?</a></div></div></div>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2025/05/10/unsolicited-vulnerability-disclosure-ethics.html">Unsolicited but Ethical: Threshold Deontology in Public Interest Vulnerability Disclosure</a></div></div></div>
 
 </div>
 
