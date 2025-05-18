@@ -28,6 +28,8 @@ In Threat Intelligence, attribution is a layered process. *Low-level IoCs*, piec
 
 Hence, it seems irresponsible to base sanctions lists on these low-level indicators, which is why the paper behind this post investigates the value of *high-level IoCs*. By contrast, high-level IoCs capture behavioral traits such as how attackers deploy their malware, how they move laterally, ransom note linguistics, negotiation attitudes, and Tactics, Techniques, and Procedures (TTPs). Both the Pyramid of Pain and the Q-Model mention high-level indicators to be harder to fake and therefore more persistent across rebrandings.
 
+![](../../../assets/models.png)
+
 ## The affiliate wild-card
 Many ransomware operations follow an affiliate model known as Ransomware-as-a-Service (RaaS), in which core developers lease their tools to independent partners. These affiliates vary widely in skill and methods, and while operators often provide deployment guidelines, affiliates may diverge from them in practice. As a result, high-level indicators, such as lateral movement techniques or tooling preferences, can differ significantly even within the same group, adding noise to attribution efforts.
 
