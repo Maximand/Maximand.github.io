@@ -17,6 +17,38 @@
   }
 }
 
+.centered-img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.centered-text {
+  text-align: center;
+  font-style: italic; 
+  font-size: 0.8em;   
+  margin-top: 0.5em;
+}
+
+.figure-float-right {
+  float: right;
+  margin-left: 1em;
+  margin-bottom: 1em;
+  text-align: center;
+  width: fit-content; /* or a fixed width if needed */
+}
+
+.figure-float-right img {
+  display: block;
+  margin: 0 auto;
+}
+
+.figure-float-right figcaption {
+  font-size: 0.85em;
+  font-style: italic;
+  margin-top: 0.3em;
+}
+
 @import
 
     "skins/{{ site.text_skin | default: site.data.variables.default.text_skin }}",

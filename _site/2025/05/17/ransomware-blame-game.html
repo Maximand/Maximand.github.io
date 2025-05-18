@@ -295,22 +295,26 @@
 <h1 id="the-limits-of-technical-attribution">The limits of technical attribution</h1>
 <p>In Threat Intelligence, attribution is a layered process. <em>Low-level IoCs</em>, pieces of evidence related to infrastructure, the attack, payment methods, and other operational details, are easy to collect and useful for detection. However, they are extremely volatile. These indicators can be changed with little effort by attackers, making them poor foundations for long-term attributions. This idea has been confirmed by frameworks like Bianco’s <a href="https://detect-respond.blogspot.com/2013/03/the-pyramid-of-pain.html">Pyramid of Pain</a> and Rid and Buchanan’s <a href="https://cs.brown.edu/courses/cs180/sources/Attributing_Cyber_Attacks.pdf">Q-Model</a>.</p>
 
-<p>Hence, it seems irresponsible to base sanctions lists on these low-level indicators, which is why the paper behind this post investigates the value of <em>high-level IoCs</em>. By contrast, high-level IoCs capture behavioral traits such as how attackers deploy their malware, how they move laterally, ransom note linguistics, negotiation attitudes, and Tactics, Techniques, and Procedures (TTPs). Both the Pyramid of Pain and the Q-Model mention high-level indicators to be harder to fake and therefore more persistent across rebrandings.</p>
+<p>Hence, it seems irresponsible to base sanctions lists on these low-level indicators, which is why the paper behind this post investigates the value of <em>high-level IoCs</em>. By contrast, high-level IoCs capture behavioral traits such as how attackers deploy their malware, how they move laterally, ransom note linguistics, negotiation attitudes, and Tactics, Techniques, and Procedures (TTPs). Both models agree that high-level indicators are more resilient to evasion and thus more trustworthy across rebrandings.</p>
 
-<p><img src="../../../assets/models.png" alt="" /></p>
+<p><img src="../../../assets/models.png" alt="" class="centered-img" />
+<span class="centered-text">Figures 1 &amp; 2: The Pyramid of Pain and the Q-Model</span></p>
 
 <h2 id="the-affiliate-wild-card">The affiliate wild-card</h2>
 <p>Many ransomware operations follow an affiliate model known as Ransomware-as-a-Service (RaaS), in which core developers lease their tools to independent partners. These affiliates vary widely in skill and methods, and while operators often provide deployment guidelines, affiliates may diverge from them in practice. As a result, high-level indicators, such as lateral movement techniques or tooling preferences, can differ significantly even within the same group, adding noise to attribution efforts.</p>
 
 <h2 id="observations-from-the-paper">Observations from the paper</h2>
-<p>We analysed two very different datasets: 27 private incident reports from an incident response company and 13 public CISA advisories based on various other incident response organizations. Two findings stood out from this data:</p>
+<p>We analysed datasets containing information on ransomware incidents: 27 private incident reports from an incident response company and 13 public CISA advisories based on various other incident response organizations. Two findings stood out from this data:</p>
+
+<figure class="figure-float-right">
+  <img src="../../../assets/radar-chart-overlap-sim.png" alt="Radar chart" />
+  <figcaption>Figure 3: Similarity metrics across ransomware groups</figcaption>
+</figure>
 
 <ul>
   <li><strong>Inside a single “brand,” the technical overlap was surprisingly low.</strong> Different incidents linked to the same group often shared fewer than half their TTPs.</li>
-  <li><strong>Across sources, the overlaps became even lower.</strong> What CISA published and what the responders from our partnering company observed for the same group only line up part of the time. This shows a significant discrepancy between the reporting of different organizations.</li>
+  <li><strong>Across sources, the overlaps became even lower.</strong> What CISA published and what the responders from our partnering company observed for the same group only line up part of the time. This shows a significant discrepancy between the reporting of different organizations, which undermines the assumption that defenders (or regulators) have access to a consistent view of attacker behaviour at the time sanctions checks are performed.</li>
 </ul>
-
-<p>These discrepancies undermine the assumption that defenders (or regulators) have access to a consistent view of attacker behaviour at the time sanctions checks are performed.</p>
 
 <p>In short, the low-level indicators that sanctions lists currently lean on tend to expire quickly, while no one seems to have a comprehensive overview of the behavioural high-level indicators. While this dataset is of course not exhaustive, the consistency of these patterns across both public and private reporting streams underscores their broader relevance.</p>
 
@@ -324,7 +328,7 @@
 <h1 id="rebranding-as-a-sanctions-evasion-strategy">Rebranding as a sanctions-evasion strategy</h1>
 <p>Ransomware groups don’t stay still. After public exposure, <a href="https://www.cisecurity.org/insights/blog/the-conti-leaks-a-case-of-cybercrimes-commercialization">internal conflict</a>, or sanctions, many simply dissolve and rebrand under a new name. The infamous Conti group, for instance, splintered into <a href="https://www.hhs.gov/sites/default/files/blacksuit-ransomware-analyst-note-tlpclear.pdf">several new entities</a>, including Royal and then BlackSuit, among others. These new groups often adopt new infrastructure, names, leak sites, and negotiation portals, but retain (some of) the same personnel, malware toolchains, and affiliate relationships.</p>
 
-<p>This rebranding breaks the link between old and new entities in legal and public intelligence contexts. While threat researchers may recognize the continuity, governments may typically require formal evidence of control or ownership to link a new group to a sanctioned predecessor. That process is slow, often opaque, and rarely public.</p>
+<p>This rebranding breaks the link between old and new entities in legal and public intelligence contexts. While threat researchers may recognize the continuity, governments may typically require formal evidence of control or ownership to link a new group to a sanctioned predecessor. That process is slow, often opaque, and rarely public. Months can pass before rebranded groups are re-sanctioned, during which victims remain legally exposed.</p>
 
 <p>Victims, meanwhile, are expected to know better. If they pay a ransom to a group that is later tied to a sanctioned actor, they may be penalized, even if the link was not publicly known at the time of payment. Various interviewees in the study mentioned this to be a great risk to the victim, as insurers can (and will) try to claw back a paid-out ransom months later if the recipient is sanctioned after the fact, effectively retro-dating the exclusion to the payment date. Moreover, the moment a ransomware group is sanctioned, it may trigger a rebrand, further obfuscating the public overview. This is the heart of the policy asymmetry: ransomware groups can easily obscure their identities whereas defenders and victims are expected to see through the smoke.</p>
 
@@ -333,7 +337,7 @@
 
 <p>The ransomware cases we’ve analyzed in our study show that low-level indicators rarely persisted across incidents, let alone rebrandings. In several cases, ransom payments were made to groups not publicly sanctioned at the time, only for links to sanctioned actors to emerge through later intelligence analysis. These links often relied on high-level behavior indicators like linguistics, panel design reuse, or TTPs, which were absent from standard sanction checks.</p>
 
-<p>This creates a critical gap: compliance decisions are expected to be based on indicators that are technically available but operationally unreliable. Meanwhile, indicators that could offer stronger attribution are often not included in threat feeds or sanctions designations, and are not legally recognized as sufficient evidence. Furthermore, because of phenomena like the Ransomware-as-a-Service (RaaS) ecosystem, slight deviations in reporting using frameworks like the <a href="https://attack.mitre.org">MITRE ATT&amp;CK Matrix</a>, and the commercialisation of the Threat Intelligence industry, data is so fragmented that no single organization appears to have a comprehensive view of high-level indicators, making coordinated enforcement even more difficult. This also means that even when TTP combinations appear distinctive on paper, the fragmentation and inconsistency across sources make them impractical for real-world sanctions checks.</p>
+<p>This creates a <em>critical gap</em>: compliance decisions are expected to be based on indicators that are technically available but operationally unreliable. Meanwhile, indicators that could offer stronger attribution are often not included in threat feeds or sanctions designations, and are not legally recognized as sufficient evidence. Furthermore, because of phenomena like the Ransomware-as-a-Service (RaaS) ecosystem, slight deviations in reporting using frameworks like the <a href="https://attack.mitre.org">MITRE ATT&amp;CK Matrix</a>, and the commercialisation of the Threat Intelligence industry, data is so fragmented that no single organization appears to have a comprehensive view of high-level indicators, making coordinated enforcement even more difficult. This also means that even when TTP combinations appear distinctive on paper, the fragmentation and inconsistency across sources make them impractical for real-world sanctions checks.</p>
 
 <p>In practice, this means that defenders may act in good faith based on the best available data and still find themselves in violation of compliance expectations. While European countries are typically more forgiving than the U.S. by taking into account their <a href="https://finance.ec.europa.eu/document/download/65560de8-a13a-4a58-a87c-ddd27b14e6c1_en?filename=faqs-sanctions-russia-best-efforts-obligation_en.pdf"><em>Best Efforts regulation</em></a>, payment to a sanctioned entity still opens up a victim to legal or financial consequences. 	Several European and American cyber-insurance wordings now not only <a href="https://assets.lloyds.com/media/47dd9b48-e881-4169-8a98-8d305a1d6fce/Y5359.pdf">exclude reimbursement for ransoms that benefit a sanctioned party</a>, but also reserve the right to <a href="https://cilj.law.uconn.edu/wp-content/uploads/sites/2520/2022/04/Ransomware-Kenneally-CILJ-Vol.-28.1.pdf"><strong>recover a payout after the fact</strong></a> if new intelligence or a late-issued designation reveals that the attackers were sanctioned. Retroactive enforcement of these exclusions, whether via contract or regulation, shifts the risk back onto those least equipped to verify attribution in real time: the victims.</p>
 
@@ -345,7 +349,7 @@
 <p>As I mentioned in the beginning of this article, this post does not argue against the principle of sanctions. It can be a legitimate tool of pressure, deprivation, and deterrence. Rather, it argues that sanctions policy must evolve to strike at the actors it was meant to constrain, not those it was meant to protect. Enforcement that punishes victims through uncertainty does not advance justice; it undermines it.</p>
 
 <h1 id="policy-recommendations-toward-risk-aware-compliance">Policy recommendations: toward risk-aware compliance</h1>
-<p>I am not arguing for abandoning sanctions policy altogether. Instead, it would be better to propose a more realistic and risk-aware approach:</p>
+<p>Of course, I am not arguing that we should abandon sanctions policy altogether. Instead, it would be better to propose a more realistic and risk-aware approach:</p>
 
 <ul>
   <li><strong>Recognize the limits of low-level indicators and require corroboration.</strong> Enforcement actions should not hinge on volatile indicators alone. Additional behavioral or contextual evidence should be required to support sanctions-related decisions.</li>
@@ -358,11 +362,11 @@
 <p>These are not radical departures from current policy. They are adjustments grounded in the technical and operational realities of the ransomware ecosystem.</p>
 
 <h1 id="conclusion-enforcement-should-follow-evidence-not-assumption">Conclusion: enforcement should follow evidence, not assumption</h1>
-<p>Sanctions policy is not wrong in its goals, but it fails in implementation. It assumes that attribution is deterministic, that indicators are authoritative, and  that defenders are equipped to make perfect decisions under pressure. None of these assumptions hold in ransomware cases.</p>
+<p>Sanctions are a legitimate tool of deterrence. But in the ransomware context, their enforcement often assumes more clarity and certainty than defenders and victims actually possess. Attribution is rarely unambiguous. Indicators change, groups rebrand, and intelligence arrives too late to guide real-time decisions. Current enforcement frameworks place responsibility on victims to act with <em>perfect foresight</em> in an environment defined by uncertainty. This doesn’t advance justice—it undermines it.</p>
 
-<p>If we want policy to support resilience rather than amplify harm, we must start by aligning it with how threat intelligence actually works. Until then, we risk not having the backs of ransomware victims, but punishing them a second time.</p>
+<p>If policy is to support resilience rather than amplify harm, it must reflect how threat intelligence actually works. That means supporting enforcement with persistent, behavioral signals rather than fragile, low-level ones. It also means ensuring that all parties involved have access to the same information. It means recognizing the asymmetries between attackers who can vanish and reappear at will, and defenders who are left to navigate compliance obligations in the dark.</p>
 
-<p>This is not an argument against sanctioning ransomware actors. It is an argument for ensuring that those sanctions reach the right targets. We can’t sanction what we can’t see, and we shouldn’t punish those who were never meant to be the target.</p>
+<p>We can’t sanction what we can’t see. And we shouldn’t punish those who were never the intended target.</p>
 </div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2025-05-17T00:00:00+02:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
