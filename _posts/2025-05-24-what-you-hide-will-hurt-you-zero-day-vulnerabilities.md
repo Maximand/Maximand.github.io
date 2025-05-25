@@ -29,7 +29,7 @@ Over time, this role teaches you something about organizational maturity, commun
 
 
 ![](../../../assets/CNA-workflow.svg){: .centered-img }
-<span class="centered-text">Figures 1: CNA workflow</span>
+<span class="centered-text">Figure 1: CNA workflow</span>
 
 # The playbook of avoidance
 Not all companies react the same way to a vulnerability disclosure. Some respond with a clear acknowledgement, quick triage, and a patch timeline. Others will stall, deny, escalate to legal teams, or straight up ignore you hoping to demoralize so that you give up. All of this happens before anyone technical has even looked at the report. These tactics aren't just frustrating, they're risky. In the case of some critical vulnerabilities, the time to patch needs to be as short as possible. Every delay increases the window of exploitation and, paradoxically, draws more attention when the issue finally surfaces. 
