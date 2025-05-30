@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-05-30T22:30:44+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Disclosing.Observer</title><subtitle>Test
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-05-30T22:35:55+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Disclosing.Observer</title><subtitle>Test
 </subtitle><author><name>Max</name><email>mhvanderhorst@tudelft.nl</email></author><entry><title type="html">Ready, Retain, Fire? The Quiet Fallout of U.S. Offensive Cyber Policy</title><link href="http://localhost:4000/2025/05/30/us-cyber-policy-zero-day-retention.html" rel="alternate" type="text/html" title="Ready, Retain, Fire? The Quiet Fallout of U.S. Offensive Cyber Policy" /><published>2025-05-30T00:00:00+02:00</published><updated>2025-05-30T00:00:00+02:00</updated><id>http://localhost:4000/2025/05/30/us-cyber-policy-zero-day-retention</id><content type="html" xml:base="http://localhost:4000/2025/05/30/us-cyber-policy-zero-day-retention.html"><![CDATA[<p>Being a CNA administrator means having access to something most people never see: zero-day vulnerabilities. That access comes with responsibility, but also perspective. It’s made me think about how other actors, especially governments, handle this kind of knowledge, and what it means when one side holds a stockpile of vulnerabilities capable of large-scale surveillance or disruption. The U.S. military even <a href="https://cyber.army.mil/News/Article/1325442/stockpiling-zero-day-exploits-the-next-international-weapons-taboo/">considered</a> classifying zero-days as weapons subject to export controls.</p>
 
 <p>I was encouraged to see that some governments have public procedures designed to manage this power transparently. But lately, it feels like that transparency is under pressure.</p>
@@ -8,7 +8,7 @@
 <h1 id="the-zero-day-dreadnought">The zero-day dreadnought</h1>
 
 <figure class="figure-float-right">
-  <img style="padding:10px; max-width:80%;" src="../../../assets/VEP_Process.svg" alt="VEP Process" />
+  <img style="padding:10px; max-width:79%;" src="../../../assets/VEP_Process.png" alt="VEP Process" />
   <figcaption>Figure 1: The VEP Flowchart,<br /> taken from trumpwhitehouse.archives.gov</figcaption>
 </figure>
 

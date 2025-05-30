@@ -26,7 +26,7 @@ I was encouraged to see that some governments have public procedures designed to
 # The zero-day dreadnought
 
 <figure class="figure-float-right">
-  <img style="padding:10px; max-width:80%;" src="../../../assets/VEP_Process.svg" alt="VEP Process" />
+  <img style="padding:10px; max-width:79%;" src="../../../assets/VEP_Process.png" alt="VEP Process" />
   <figcaption>Figure 1: The VEP Flowchart,<br> taken from trumpwhitehouse.archives.gov</figcaption>
 </figure>
 
