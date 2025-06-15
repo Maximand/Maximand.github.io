@@ -437,7 +437,7 @@ requests:
 
 These files offered sufficient coverage to locate the DSLog backdoor in a scanning campaign. We did not have to approach the implant itself, which is always important from the ethics perspective. Instead of probing the implant directly, we scanned for signs of dropped index files using the method in Listing 13. Normally, the Ivanti Connect Secure appliances will return an HTTP 404 upon making a request to an endpoint that does not exist. Therefore, by scanning for HTTP 200 responses on the known indicators and verifying the content of the response, public systems could be scanned for this webshell. The only thing to take into account is to filter out the occasional WatchGuard WAF response.
 
-### Results
+### Results: little but interesting targets
 Two weeks after the vulnerability became public, on February 12th, 2024, we conducted a scan for the DSLog backdoor and found 50 backdoored instances in 17 countries. With such little results, it becomes interesting to look at the types of organizations that were backdoored. In this instance, most organizations that were compromised seemed to belong to either the steel, healthcare (robotics), telecommunications, or banking sector. 
 
 ```python
