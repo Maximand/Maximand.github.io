@@ -13,7 +13,7 @@ header:
 article_header:
   type: cover
   image:
-    src: /assets/backdoor_panda.png
+    src: /assets/backdoor_castle.png
 ---
 
 > **Summary:**  
