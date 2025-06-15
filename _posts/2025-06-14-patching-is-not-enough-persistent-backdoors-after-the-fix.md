@@ -14,6 +14,8 @@ article_header:
   type: cover
   image:
     src: /assets/backdoor_castle.png
+  og_image:
+    src: /assets/backdoor_castle.png
 ---
 
 > **Summary:**  
