@@ -1,0 +1,1347 @@
+<!DOCTYPE html><html lang="en">
+  <head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Turla’s Pelmeni Wrapper: How Weak Crypto Exposed Kazuar’s Payload - Disclosing.Observer</title>
+
+<meta name="description" content="Turla’s Pelmeni Wrapper reveals how flawed cryptographic choices in malware design can create tracking opportunities. This post dissects how a weak and predi...">
+<link rel="canonical" href="http://localhost:4000/2025/06/23/turla-pelmeni-wrapper-weak-crypto-kazuar-payload.html"><link rel="alternate" type="application/rss+xml" title="Disclosing.Observer" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+
+<meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
+
+<meta name="theme-color" content="#ffffff">
+<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css" ><!-- start custom head snippets -->
+
+<!-- end custom head snippets -->
+<script>(function() {
+  window.isArray = function(val) {
+    return Object.prototype.toString.call(val) === '[object Array]';
+  };
+  window.isString = function(val) {
+    return typeof val === 'string';
+  };
+
+  window.hasEvent = function(event) {
+    return 'on'.concat(event) in window.document;
+  };
+
+  window.isOverallScroller = function(node) {
+    return node === document.documentElement || node === document.body || node === window;
+  };
+
+  window.isFormElement = function(node) {
+    var tagName = node.tagName;
+    return tagName === 'INPUT' || tagName === 'SELECT' || tagName === 'TEXTAREA';
+  };
+
+  window.pageLoad = (function () {
+    var loaded = false, cbs = [];
+    window.addEventListener('load', function () {
+      var i;
+      loaded = true;
+      if (cbs.length > 0) {
+        for (i = 0; i < cbs.length; i++) {
+          cbs[i]();
+        }
+      }
+    });
+    return {
+      then: function(cb) {
+        cb && (loaded ? cb() : (cbs.push(cb)));
+      }
+    };
+  })();
+})();
+(function() {
+  window.throttle = function(func, wait) {
+    var args, result, thisArg, timeoutId, lastCalled = 0;
+
+    function trailingCall() {
+      lastCalled = new Date;
+      timeoutId = null;
+      result = func.apply(thisArg, args);
+    }
+    return function() {
+      var now = new Date,
+        remaining = wait - (now - lastCalled);
+
+      args = arguments;
+      thisArg = this;
+
+      if (remaining <= 0) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+        lastCalled = now;
+        result = func.apply(thisArg, args);
+      } else if (!timeoutId) {
+        timeoutId = setTimeout(trailingCall, remaining);
+      }
+      return result;
+    };
+  };
+})();
+(function() {
+  var Set = (function() {
+    var add = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (data[i] === item) {
+          return;
+        }
+      }
+      this.size ++;
+      data.push(item);
+      return data;
+    };
+
+    var Set = function(data) {
+      this.size = 0;
+      this._data = [];
+      var i;
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add.call(this, data[i]);
+        }
+      }
+    };
+    Set.prototype.add = add;
+    Set.prototype.get = function(index) { return this._data[index]; };
+    Set.prototype.has = function(item) {
+      var i, data = this._data;
+      for (i = 0; i < data.length; i++) {
+        if (this.get(i) === item) {
+          return true;
+        }
+      }
+      return false;
+    };
+    Set.prototype.is = function(map) {
+      if (map._data.length !== this._data.length) { return false; }
+      var i, j, flag, tData = this._data, mData = map._data;
+      for (i = 0; i < tData.length; i++) {
+        for (flag = false, j = 0; j < mData.length; j++) {
+          if (tData[i] === mData[j]) {
+            flag = true;
+            break;
+          }
+        }
+        if (!flag) { return false; }
+      }
+      return true;
+    };
+    Set.prototype.values = function() {
+      return this._data;
+    };
+    return Set;
+  })();
+
+  window.Lazyload = (function(doc) {
+    var queue = {js: [], css: []}, sources = {js: {}, css: {}}, context = this;
+    var createNode = function(name, attrs) {
+      var node = doc.createElement(name), attr;
+      for (attr in attrs) {
+        if (attrs.hasOwnProperty(attr)) {
+          node.setAttribute(attr, attrs[attr]);
+        }
+      }
+      return node;
+    };
+    var end = function(type, url) {
+      var s, q, qi, cbs, i, j, cur, val, flag;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        s[url] = true;
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (cur.urls.has(url)) {
+            qi = cur, val = qi.urls.values();
+            qi && (cbs = qi.callbacks);
+            for (flag = true, j = 0; j < val.length; j++) {
+              cur = val[j];
+              if (!s[cur]) {
+                flag = false;
+              }
+            }
+            if (flag && cbs && cbs.length > 0) {
+              for (j = 0; j < cbs.length; j++) {
+                cbs[j].call(context);
+              }
+              qi.load = true;
+            }
+          }
+        }
+      }
+    };
+    var load = function(type, urls, callback) {
+      var s, q, qi, node, i, cur,
+        _urls = typeof urls === 'string' ? new Set([urls]) : new Set(urls), val, url;
+      if (type === 'js' || type ==='css') {
+        s = sources[type], q = queue[type];
+        for (i = 0; i < q.length; i++) {
+          cur = q[i];
+          if (_urls.is(cur.urls)) {
+            qi = cur;
+            break;
+          }
+        }
+        val = _urls.values();
+        if (qi) {
+          callback && (qi.load || qi.callbacks.push(callback));
+          callback && (qi.load && callback());
+        } else {
+          q.push({
+            urls: _urls,
+            callbacks: callback ? [callback] : [],
+            load: false
+          });
+          for (i = 0; i < val.length; i++) {
+            node = null, url = val[i];
+            if (s[url] === undefined) {
+              (type === 'js' ) && (node = createNode('script', { src: url }));
+              (type === 'css') && (node = createNode('link', { rel: 'stylesheet', href: url }));
+              if (node) {
+                node.onload = (function(type, url) {
+                  return function() {
+                    end(type, url);
+                  };
+                })(type, url);
+                (doc.head || doc.body).appendChild(node);
+                s[url] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+    return {
+      js: function(url, callback) {
+        load('js', url, callback);
+      },
+      css: function(url, callback) {
+        load('css', url, callback);
+      }
+    };
+  })(this.document);
+})();
+</script><script>
+  (function() {
+    var TEXT_VARIABLES = {
+      version: '2.2.6',
+      sources: {
+        font_awesome: 'https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css',
+        jquery: 'https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js',
+        leancloud_js_sdk: '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js',
+        chart: 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js',
+        gitalk: {
+          js: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js',
+          css: 'https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css'
+        },
+        valine: 'https://unpkg.com/valine/dist/Valine.min.js',
+        mathjax: 'https://cdn.bootcss.com/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML',
+        mermaid: 'https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js'
+      },
+      site: {
+        toc: {
+          selectors: 'h1,h2,h3'
+        }
+      },
+      paths: {
+        search_js: '/assets/search.js'
+      }
+    };
+    window.TEXT_VARIABLES = TEXT_VARIABLES;
+  })();
+</script>
+</head>
+  <body>
+    <div class="root" data-is-touch="false">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
+
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header header--dark"><div class="main">
+      <div class="header__title">
+        <div class="header__brand">
+          <div class="logo-wrapper"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" zoomAndPan="magnify" viewBox="0 0 1440 299.999988" height="400" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><g/><clipPath id="2179c428b5"><path d="M 762.960938 78.03125 L 893 78.03125 L 893 209.28125 L 762.960938 209.28125 Z M 762.960938 78.03125 " clip-rule="nonzero"/></clipPath><clipPath id="6ca335b253"><path d="M 762.960938 78.03125 L 893.460938 78.03125 L 893.460938 209.28125 L 762.960938 209.28125 Z M 762.960938 78.03125 " clip-rule="nonzero"/></clipPath></defs><g clip-path="url(#2179c428b5)"><path fill="#fcfcfc" d="M 833.011719 140.859375 L 833.011719 78.03125 C 871.160156 80.519531 893.441406 110.007812 892.820312 140.859375 Z M 782.65625 147.527344 L 762.964844 147.527344 C 762.964844 181.753906 790.710938 209.5 824.9375 209.5 L 824.9375 189.808594 C 801.585938 189.808594 782.65625 170.878906 782.65625 147.527344 Z M 801.441406 147.527344 L 790.496094 147.527344 C 790.496094 166.546875 805.917969 181.96875 824.9375 181.96875 L 824.9375 171.023438 C 811.960938 171.023438 801.441406 160.503906 801.441406 147.527344 Z M 801.441406 147.527344 " fill-opacity="1" fill-rule="evenodd"/></g><g clip-path="url(#6ca335b253)"><path fill="#ffb000" d="M 801.441406 140.476562 L 790.496094 140.476562 C 790.496094 121.453125 805.917969 106.035156 824.9375 106.035156 L 824.9375 116.976562 C 811.960938 116.976562 801.441406 127.5 801.441406 140.476562 Z M 831.359375 189.808594 L 831.359375 209.5 C 865.585938 209.5 893.332031 181.753906 893.332031 147.527344 L 873.640625 147.527344 C 873.640625 170.878906 854.710938 189.808594 831.359375 189.808594 Z M 831.359375 171.023438 L 831.359375 181.96875 C 850.382812 181.96875 865.800781 166.546875 865.800781 147.527344 L 854.855469 147.527344 C 854.855469 160.503906 844.335938 171.023438 831.359375 171.023438 Z M 782.65625 140.476562 L 762.964844 140.476562 C 762.964844 106.246094 790.710938 78.5 824.9375 78.5 L 824.9375 98.195312 C 801.585938 98.195312 782.65625 117.125 782.65625 140.476562 Z M 782.65625 140.476562 " fill-opacity="1" fill-rule="evenodd"/></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(15.000028, 207.849388)"><g><path d="M 10.1875 0 L 10.1875 -100.359375 C 23.957031 -101.234375 36.945312 -101.671875 49.15625 -101.671875 C 65.15625 -101.671875 76.28125 -97.984375 82.53125 -90.609375 C 88.789062 -83.242188 91.921875 -69.765625 91.921875 -50.171875 C 91.921875 -30.585938 88.789062 -17.109375 82.53125 -9.734375 C 76.28125 -2.367188 65.15625 1.3125 49.15625 1.3125 C 36.945312 1.3125 23.957031 0.875 10.1875 0 Z M 32.296875 -84.21875 L 32.296875 -16.296875 C 33.941406 -16.296875 36.628906 -16.269531 40.359375 -16.21875 C 44.097656 -16.164062 47.03125 -16.140625 49.15625 -16.140625 C 56.625 -16.140625 61.738281 -18.515625 64.5 -23.265625 C 67.269531 -28.023438 68.65625 -37 68.65625 -50.1875 C 68.65625 -63.375 67.269531 -72.363281 64.5 -77.15625 C 61.738281 -81.957031 56.625 -84.359375 49.15625 -84.359375 Z M 32.296875 -84.21875 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(113.906046, 207.849388)"><g><path d="M 15.265625 -103.421875 L 24.875 -103.421875 C 29.039062 -103.421875 31.125 -101.332031 31.125 -97.15625 L 31.125 -89.3125 C 31.125 -85.132812 29.039062 -83.046875 24.875 -83.046875 L 15.265625 -83.046875 C 11.097656 -83.046875 9.015625 -85.132812 9.015625 -89.3125 L 9.015625 -97.15625 C 9.015625 -101.332031 11.097656 -103.421875 15.265625 -103.421875 Z M 30.84375 0 L 9.453125 0 L 9.453125 -71.703125 L 30.84375 -71.703125 Z M 30.84375 0 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(154.050241, 207.849388)"><g><path d="M 40.734375 -26.625 L 22.84375 -31.421875 C 16.25 -33.359375 11.6875 -36 9.15625 -39.34375 C 6.632812 -42.6875 5.375 -47.316406 5.375 -53.234375 C 5.375 -60.703125 7.675781 -65.988281 12.28125 -69.09375 C 16.894531 -72.195312 24.773438 -73.75 35.921875 -73.75 C 48.816406 -73.550781 59.875 -72.628906 69.09375 -70.984375 L 67.640625 -57.15625 C 55.421875 -57.351562 46.207031 -57.453125 40 -57.453125 C 36.601562 -57.453125 34.25 -57.425781 32.9375 -57.375 C 31.632812 -57.332031 30.328125 -57.164062 29.015625 -56.875 C 27.703125 -56.582031 26.898438 -56.117188 26.609375 -55.484375 C 26.328125 -54.859375 26.1875 -53.914062 26.1875 -52.65625 C 26.1875 -52.164062 26.207031 -51.726562 26.25 -51.34375 C 26.300781 -50.957031 26.421875 -50.59375 26.609375 -50.25 C 26.804688 -49.914062 26.976562 -49.648438 27.125 -49.453125 C 27.269531 -49.253906 27.535156 -49.035156 27.921875 -48.796875 C 28.316406 -48.554688 28.632812 -48.382812 28.875 -48.28125 C 29.113281 -48.1875 29.546875 -48.019531 30.171875 -47.78125 C 30.804688 -47.539062 31.289062 -47.367188 31.625 -47.265625 C 31.96875 -47.171875 32.597656 -47.003906 33.515625 -46.765625 C 34.441406 -46.523438 35.148438 -46.351562 35.640625 -46.25 L 53.96875 -41.3125 C 60.363281 -39.46875 64.914062 -37.015625 67.625 -33.953125 C 70.34375 -30.898438 71.703125 -26.367188 71.703125 -20.359375 C 71.703125 -11.828125 69.226562 -6.035156 64.28125 -2.984375 C 59.34375 0.0664062 50.863281 1.59375 38.84375 1.59375 C 27.195312 1.59375 16.476562 0.769531 6.6875 -0.875 L 8 -14.84375 C 11.488281 -14.644531 19.78125 -14.546875 32.875 -14.546875 C 40.34375 -14.546875 45.210938 -14.859375 47.484375 -15.484375 C 49.765625 -16.117188 50.90625 -17.597656 50.90625 -19.921875 C 50.90625 -20.410156 50.878906 -20.847656 50.828125 -21.234375 C 50.785156 -21.617188 50.664062 -21.984375 50.46875 -22.328125 C 50.28125 -22.671875 50.085938 -22.9375 49.890625 -23.125 C 49.691406 -23.320312 49.375 -23.539062 48.9375 -23.78125 C 48.507812 -24.019531 48.171875 -24.210938 47.921875 -24.359375 C 47.679688 -24.503906 47.222656 -24.695312 46.546875 -24.9375 C 45.867188 -25.1875 45.332031 -25.359375 44.9375 -25.453125 C 44.550781 -25.546875 43.875 -25.710938 42.90625 -25.953125 C 41.9375 -26.203125 41.210938 -26.425781 40.734375 -26.625 Z M 40.734375 -26.625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(230.702414, 207.849388)"><g><path d="M 67.640625 -17.015625 L 69.53125 -3.046875 C 62.15625 0.148438 52.894531 1.75 41.75 1.75 C 28.5625 1.75 19.273438 -1.082031 13.890625 -6.75 C 8.503906 -12.425781 5.8125 -22.148438 5.8125 -35.921875 C 5.8125 -49.796875 8.523438 -59.566406 13.953125 -65.234375 C 19.390625 -70.910156 28.75 -73.75 42.03125 -73.75 C 52.894531 -73.75 61.722656 -72.242188 68.515625 -69.234375 L 66.1875 -55.859375 C 55.707031 -56.046875 48.867188 -56.140625 45.671875 -56.140625 C 39.078125 -56.140625 34.539062 -54.734375 32.0625 -51.921875 C 29.59375 -49.109375 28.359375 -43.773438 28.359375 -35.921875 C 28.359375 -28.066406 29.59375 -22.734375 32.0625 -19.921875 C 34.539062 -17.109375 39.078125 -15.703125 45.671875 -15.703125 C 54.109375 -15.703125 61.429688 -16.140625 67.640625 -17.015625 Z M 67.640625 -17.015625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(304.445572, 207.849388)"><g><path d="M 30.40625 -101.8125 L 30.40625 -23.421875 C 30.40625 -18.566406 33.117188 -16.140625 38.546875 -16.140625 L 44.359375 -16.140625 L 46.828125 -1.15625 C 43.148438 0.78125 37.429688 1.75 29.671875 1.75 C 23.273438 1.75 18.234375 0.03125 14.546875 -3.40625 C 10.859375 -6.851562 9.015625 -11.726562 9.015625 -18.03125 L 9.015625 -101.8125 Z M 30.40625 -101.8125 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(352.007724, 207.849388)"><g><path d="M 42.765625 -73.75 C 56.140625 -73.75 65.613281 -70.863281 71.1875 -65.09375 C 76.769531 -59.320312 79.5625 -49.550781 79.5625 -35.78125 C 79.5625 -22.007812 76.769531 -12.285156 71.1875 -6.609375 C 65.613281 -0.941406 56.140625 1.890625 42.765625 1.890625 C 29.285156 1.890625 19.753906 -0.941406 14.171875 -6.609375 C 8.597656 -12.285156 5.8125 -22.007812 5.8125 -35.78125 C 5.8125 -49.644531 8.597656 -59.4375 14.171875 -65.15625 C 19.753906 -70.882812 29.285156 -73.75 42.765625 -73.75 Z M 42.765625 -57.59375 C 37.046875 -57.59375 33.210938 -56.140625 31.265625 -53.234375 C 29.328125 -50.328125 28.359375 -44.507812 28.359375 -35.78125 C 28.359375 -27.25 29.328125 -21.523438 31.265625 -18.609375 C 33.210938 -15.703125 37.046875 -14.25 42.765625 -14.25 C 48.285156 -14.25 52.039062 -15.703125 54.03125 -18.609375 C 56.019531 -21.523438 57.015625 -27.25 57.015625 -35.78125 C 57.015625 -44.414062 56.046875 -50.207031 54.109375 -53.15625 C 52.171875 -56.113281 48.390625 -57.59375 42.765625 -57.59375 Z M 42.765625 -57.59375 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(437.386889, 207.849388)"><g><path d="M 40.734375 -26.625 L 22.84375 -31.421875 C 16.25 -33.359375 11.6875 -36 9.15625 -39.34375 C 6.632812 -42.6875 5.375 -47.316406 5.375 -53.234375 C 5.375 -60.703125 7.675781 -65.988281 12.28125 -69.09375 C 16.894531 -72.195312 24.773438 -73.75 35.921875 -73.75 C 48.816406 -73.550781 59.875 -72.628906 69.09375 -70.984375 L 67.640625 -57.15625 C 55.421875 -57.351562 46.207031 -57.453125 40 -57.453125 C 36.601562 -57.453125 34.25 -57.425781 32.9375 -57.375 C 31.632812 -57.332031 30.328125 -57.164062 29.015625 -56.875 C 27.703125 -56.582031 26.898438 -56.117188 26.609375 -55.484375 C 26.328125 -54.859375 26.1875 -53.914062 26.1875 -52.65625 C 26.1875 -52.164062 26.207031 -51.726562 26.25 -51.34375 C 26.300781 -50.957031 26.421875 -50.59375 26.609375 -50.25 C 26.804688 -49.914062 26.976562 -49.648438 27.125 -49.453125 C 27.269531 -49.253906 27.535156 -49.035156 27.921875 -48.796875 C 28.316406 -48.554688 28.632812 -48.382812 28.875 -48.28125 C 29.113281 -48.1875 29.546875 -48.019531 30.171875 -47.78125 C 30.804688 -47.539062 31.289062 -47.367188 31.625 -47.265625 C 31.96875 -47.171875 32.597656 -47.003906 33.515625 -46.765625 C 34.441406 -46.523438 35.148438 -46.351562 35.640625 -46.25 L 53.96875 -41.3125 C 60.363281 -39.46875 64.914062 -37.015625 67.625 -33.953125 C 70.34375 -30.898438 71.703125 -26.367188 71.703125 -20.359375 C 71.703125 -11.828125 69.226562 -6.035156 64.28125 -2.984375 C 59.34375 0.0664062 50.863281 1.59375 38.84375 1.59375 C 27.195312 1.59375 16.476562 0.769531 6.6875 -0.875 L 8 -14.84375 C 11.488281 -14.644531 19.78125 -14.546875 32.875 -14.546875 C 40.34375 -14.546875 45.210938 -14.859375 47.484375 -15.484375 C 49.765625 -16.117188 50.90625 -17.597656 50.90625 -19.921875 C 50.90625 -20.410156 50.878906 -20.847656 50.828125 -21.234375 C 50.785156 -21.617188 50.664062 -21.984375 50.46875 -22.328125 C 50.28125 -22.671875 50.085938 -22.9375 49.890625 -23.125 C 49.691406 -23.320312 49.375 -23.539062 48.9375 -23.78125 C 48.507812 -24.019531 48.171875 -24.210938 47.921875 -24.359375 C 47.679688 -24.503906 47.222656 -24.695312 46.546875 -24.9375 C 45.867188 -25.1875 45.332031 -25.359375 44.9375 -25.453125 C 44.550781 -25.546875 43.875 -25.710938 42.90625 -25.953125 C 41.9375 -26.203125 41.210938 -26.425781 40.734375 -26.625 Z M 40.734375 -26.625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(514.039086, 207.849388)"><g><path d="M 15.265625 -103.421875 L 24.875 -103.421875 C 29.039062 -103.421875 31.125 -101.332031 31.125 -97.15625 L 31.125 -89.3125 C 31.125 -85.132812 29.039062 -83.046875 24.875 -83.046875 L 15.265625 -83.046875 C 11.097656 -83.046875 9.015625 -85.132812 9.015625 -89.3125 L 9.015625 -97.15625 C 9.015625 -101.332031 11.097656 -103.421875 15.265625 -103.421875 Z M 30.84375 0 L 9.453125 0 L 9.453125 -71.703125 L 30.84375 -71.703125 Z M 30.84375 0 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(554.183307, 207.849388)"><g><path d="M 26.328125 -71.703125 L 27.921875 -61.09375 C 38.296875 -69.53125 48.53125 -73.75 58.625 -73.75 C 65.113281 -73.75 70.078125 -72.050781 73.515625 -68.65625 C 76.960938 -65.257812 78.6875 -60.3125 78.6875 -53.8125 L 78.6875 0 L 57.3125 0 L 57.3125 -47.125 C 57.3125 -50.320312 56.800781 -52.523438 55.78125 -53.734375 C 54.757812 -54.953125 52.941406 -55.5625 50.328125 -55.5625 C 45.765625 -55.5625 39.125 -53.378906 30.40625 -49.015625 L 30.40625 0 L 8.875 0 L 8.875 -71.703125 Z M 26.328125 -71.703125 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(641.307871, 207.849388)"><g><path d="M 81.3125 -62.25 L 72.296875 -61.09375 C 73.453125 -58.375 74.03125 -54.929688 74.03125 -50.765625 C 74.03125 -42.421875 71.53125 -36.503906 66.53125 -33.015625 C 61.539062 -29.523438 52.796875 -27.78125 40.296875 -27.78125 C 36.117188 -27.78125 31.992188 -28.023438 27.921875 -28.515625 C 26.765625 -26.960938 26.546875 -25.210938 27.265625 -23.265625 C 27.992188 -21.328125 29.617188 -20.210938 32.140625 -19.921875 L 58.1875 -16.875 C 65.550781 -16 70.859375 -13.863281 74.109375 -10.46875 C 77.359375 -7.070312 78.984375 -2.078125 78.984375 4.515625 C 78.984375 13.628906 76.242188 19.785156 70.765625 22.984375 C 65.285156 26.179688 55.46875 27.78125 41.3125 27.78125 C 26.570312 27.78125 16.582031 26.253906 11.34375 23.203125 C 6.101562 20.148438 3.484375 14.550781 3.484375 6.40625 C 3.484375 2.71875 4.332031 -0.3125 6.03125 -2.6875 C 7.726562 -5.0625 10.664062 -7.21875 14.84375 -9.15625 C 11.539062 -12.363281 10.203125 -16.316406 10.828125 -21.015625 C 11.460938 -25.722656 13.570312 -29.140625 17.15625 -31.265625 C 10.082031 -34.566406 6.546875 -41.019531 6.546875 -50.625 C 6.546875 -59.050781 9.066406 -65.007812 14.109375 -68.5 C 19.148438 -72 27.925781 -73.75 40.4375 -73.75 C 48 -73.75 54.253906 -73.066406 59.203125 -71.703125 L 82.328125 -71.703125 Z M 40.296875 -41.453125 C 45.523438 -41.453125 49.132812 -42.128906 51.125 -43.484375 C 53.113281 -44.847656 54.109375 -47.273438 54.109375 -50.765625 C 54.109375 -54.347656 53.140625 -56.769531 51.203125 -58.03125 C 49.265625 -59.289062 45.628906 -59.921875 40.296875 -59.921875 C 34.960938 -59.921875 31.300781 -59.289062 29.3125 -58.03125 C 27.320312 -56.769531 26.328125 -54.347656 26.328125 -50.765625 C 26.328125 -47.273438 27.320312 -44.847656 29.3125 -43.484375 C 31.300781 -42.128906 34.960938 -41.453125 40.296875 -41.453125 Z M 46.6875 -2.765625 L 28.65625 -4.65625 C 25.550781 -2.132812 24 0.628906 24 3.640625 C 24 7.128906 25.066406 9.359375 27.203125 10.328125 C 29.335938 11.296875 33.941406 11.78125 41.015625 11.78125 C 48.097656 11.78125 52.773438 11.269531 55.046875 10.25 C 57.328125 9.238281 58.46875 7.128906 58.46875 3.921875 C 58.46875 1.398438 57.738281 -0.195312 56.28125 -0.875 C 54.832031 -1.550781 51.632812 -2.179688 46.6875 -2.765625 Z M 46.6875 -2.765625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(725.52342, 207.849388)"><g><path d="M 14.984375 -21.96875 L 20.796875 -21.96875 C 23.609375 -21.96875 25.570312 -21.429688 26.6875 -20.359375 C 27.800781 -19.296875 28.359375 -17.359375 28.359375 -14.546875 L 28.359375 -7.5625 C 28.359375 -4.75 27.800781 -2.785156 26.6875 -1.671875 C 25.570312 -0.554688 23.609375 0 20.796875 0 L 14.984375 0 C 12.171875 0 10.207031 -0.554688 9.09375 -1.671875 C 7.976562 -2.785156 7.421875 -4.75 7.421875 -7.5625 L 7.421875 -14.546875 C 7.421875 -17.359375 7.976562 -19.296875 9.09375 -20.359375 C 10.207031 -21.429688 12.171875 -21.96875 14.984375 -21.96875 Z M 14.984375 -21.96875 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(895.109668, 207.849388)"><g><path d="M 30.25 -101.8125 L 30.25 -78.984375 C 30.25 -72.285156 29.617188 -66.660156 28.359375 -62.109375 C 35.921875 -69.867188 44.40625 -73.75 53.8125 -73.75 C 63.125 -73.75 69.835938 -70.863281 73.953125 -65.09375 C 78.078125 -59.320312 80.140625 -49.796875 80.140625 -36.515625 C 80.140625 -24.191406 77.617188 -14.734375 72.578125 -8.140625 C 67.535156 -1.546875 58.375 1.75 45.09375 1.75 C 39.269531 1.75 32.742188 1.265625 25.515625 0.296875 C 18.296875 -0.671875 12.648438 -2.03125 8.578125 -3.78125 L 8.578125 -101.8125 Z M 30.109375 -50.46875 L 30.109375 -15.5625 C 35.054688 -14.5 39.90625 -14.0625 44.65625 -14.25 C 49.601562 -14.445312 53.066406 -16.097656 55.046875 -19.203125 C 57.035156 -22.304688 58.03125 -28.023438 58.03125 -36.359375 C 58.03125 -44.316406 57.207031 -49.675781 55.5625 -52.4375 C 53.914062 -55.195312 50.472656 -56.578125 45.234375 -56.578125 C 41.253906 -56.578125 36.210938 -54.539062 30.109375 -50.46875 Z M 30.109375 -50.46875 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(981.216087, 207.849388)"><g><path d="M 40.734375 -26.625 L 22.84375 -31.421875 C 16.25 -33.359375 11.6875 -36 9.15625 -39.34375 C 6.632812 -42.6875 5.375 -47.316406 5.375 -53.234375 C 5.375 -60.703125 7.675781 -65.988281 12.28125 -69.09375 C 16.894531 -72.195312 24.773438 -73.75 35.921875 -73.75 C 48.816406 -73.550781 59.875 -72.628906 69.09375 -70.984375 L 67.640625 -57.15625 C 55.421875 -57.351562 46.207031 -57.453125 40 -57.453125 C 36.601562 -57.453125 34.25 -57.425781 32.9375 -57.375 C 31.632812 -57.332031 30.328125 -57.164062 29.015625 -56.875 C 27.703125 -56.582031 26.898438 -56.117188 26.609375 -55.484375 C 26.328125 -54.859375 26.1875 -53.914062 26.1875 -52.65625 C 26.1875 -52.164062 26.207031 -51.726562 26.25 -51.34375 C 26.300781 -50.957031 26.421875 -50.59375 26.609375 -50.25 C 26.804688 -49.914062 26.976562 -49.648438 27.125 -49.453125 C 27.269531 -49.253906 27.535156 -49.035156 27.921875 -48.796875 C 28.316406 -48.554688 28.632812 -48.382812 28.875 -48.28125 C 29.113281 -48.1875 29.546875 -48.019531 30.171875 -47.78125 C 30.804688 -47.539062 31.289062 -47.367188 31.625 -47.265625 C 31.96875 -47.171875 32.597656 -47.003906 33.515625 -46.765625 C 34.441406 -46.523438 35.148438 -46.351562 35.640625 -46.25 L 53.96875 -41.3125 C 60.363281 -39.46875 64.914062 -37.015625 67.625 -33.953125 C 70.34375 -30.898438 71.703125 -26.367188 71.703125 -20.359375 C 71.703125 -11.828125 69.226562 -6.035156 64.28125 -2.984375 C 59.34375 0.0664062 50.863281 1.59375 38.84375 1.59375 C 27.195312 1.59375 16.476562 0.769531 6.6875 -0.875 L 8 -14.84375 C 11.488281 -14.644531 19.78125 -14.546875 32.875 -14.546875 C 40.34375 -14.546875 45.210938 -14.859375 47.484375 -15.484375 C 49.765625 -16.117188 50.90625 -17.597656 50.90625 -19.921875 C 50.90625 -20.410156 50.878906 -20.847656 50.828125 -21.234375 C 50.785156 -21.617188 50.664062 -21.984375 50.46875 -22.328125 C 50.28125 -22.671875 50.085938 -22.9375 49.890625 -23.125 C 49.691406 -23.320312 49.375 -23.539062 48.9375 -23.78125 C 48.507812 -24.019531 48.171875 -24.210938 47.921875 -24.359375 C 47.679688 -24.503906 47.222656 -24.695312 46.546875 -24.9375 C 45.867188 -25.1875 45.332031 -25.359375 44.9375 -25.453125 C 44.550781 -25.546875 43.875 -25.710938 42.90625 -25.953125 C 41.9375 -26.203125 41.210938 -26.425781 40.734375 -26.625 Z M 40.734375 -26.625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1057.86826, 207.849388)"><g><path d="M 54.546875 -28.65625 L 28.65625 -28.65625 C 29.332031 -23.414062 30.90625 -19.898438 33.375 -18.109375 C 35.851562 -16.316406 39.953125 -15.421875 45.671875 -15.421875 C 53.328125 -15.421875 62.25 -15.953125 72.4375 -17.015625 L 74.46875 -3.640625 C 67 -0.046875 56.578125 1.75 43.203125 1.75 C 29.722656 1.75 20.117188 -1.15625 14.390625 -6.96875 C 8.671875 -12.789062 5.8125 -22.394531 5.8125 -35.78125 C 5.8125 -49.84375 8.597656 -59.6875 14.171875 -65.3125 C 19.753906 -70.9375 29.140625 -73.75 42.328125 -73.75 C 54.253906 -73.75 62.882812 -71.6875 68.21875 -67.5625 C 73.550781 -63.4375 76.265625 -57.160156 76.359375 -48.734375 C 76.359375 -42.035156 74.632812 -37.015625 71.1875 -33.671875 C 67.75 -30.328125 62.203125 -28.65625 54.546875 -28.65625 Z M 28.21875 -41.59375 L 48.578125 -41.59375 C 51.203125 -41.59375 52.972656 -42.222656 53.890625 -43.484375 C 54.804688 -44.742188 55.265625 -46.585938 55.265625 -49.015625 C 55.265625 -52.410156 54.390625 -54.757812 52.640625 -56.0625 C 50.898438 -57.375 47.703125 -58.03125 43.046875 -58.03125 C 37.523438 -58.03125 33.742188 -56.9375 31.703125 -54.75 C 29.671875 -52.570312 28.507812 -48.1875 28.21875 -41.59375 Z M 28.21875 -41.59375 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1139.320266, 207.849388)"><g><path d="M 60.359375 -73.75 L 58.1875 -53.8125 L 52.359375 -53.8125 C 47.609375 -53.8125 40.289062 -52.164062 30.40625 -48.875 L 30.40625 0 L 8.875 0 L 8.875 -71.703125 L 25.59375 -71.703125 L 27.484375 -61.234375 C 37.285156 -69.578125 46.984375 -73.75 56.578125 -73.75 Z M 60.359375 -73.75 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1201.136523, 207.849388)"><g><path d="M 80.71875 -71.703125 L 57.15625 -5.09375 C 56 -1.695312 53.675781 0 50.1875 0 L 31.5625 0 C 28.070312 0 25.742188 -1.695312 24.578125 -5.09375 L 1.015625 -71.703125 L 23.859375 -71.703125 L 36.796875 -26.765625 C 37.867188 -22.785156 38.890625 -18.519531 39.859375 -13.96875 L 41.75 -13.96875 L 45.09375 -26.765625 L 58.03125 -71.703125 Z M 80.71875 -71.703125 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1281.715829, 207.849388)"><g><path d="M 54.546875 -28.65625 L 28.65625 -28.65625 C 29.332031 -23.414062 30.90625 -19.898438 33.375 -18.109375 C 35.851562 -16.316406 39.953125 -15.421875 45.671875 -15.421875 C 53.328125 -15.421875 62.25 -15.953125 72.4375 -17.015625 L 74.46875 -3.640625 C 67 -0.046875 56.578125 1.75 43.203125 1.75 C 29.722656 1.75 20.117188 -1.15625 14.390625 -6.96875 C 8.671875 -12.789062 5.8125 -22.394531 5.8125 -35.78125 C 5.8125 -49.84375 8.597656 -59.6875 14.171875 -65.3125 C 19.753906 -70.9375 29.140625 -73.75 42.328125 -73.75 C 54.253906 -73.75 62.882812 -71.6875 68.21875 -67.5625 C 73.550781 -63.4375 76.265625 -57.160156 76.359375 -48.734375 C 76.359375 -42.035156 74.632812 -37.015625 71.1875 -33.671875 C 67.75 -30.328125 62.203125 -28.65625 54.546875 -28.65625 Z M 28.21875 -41.59375 L 48.578125 -41.59375 C 51.203125 -41.59375 52.972656 -42.222656 53.890625 -43.484375 C 54.804688 -44.742188 55.265625 -46.585938 55.265625 -49.015625 C 55.265625 -52.410156 54.390625 -54.757812 52.640625 -56.0625 C 50.898438 -57.375 47.703125 -58.03125 43.046875 -58.03125 C 37.523438 -58.03125 33.742188 -56.9375 31.703125 -54.75 C 29.671875 -52.570312 28.507812 -48.1875 28.21875 -41.59375 Z M 28.21875 -41.59375 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1363.167861, 207.849388)"><g><path d="M 60.359375 -73.75 L 58.1875 -53.8125 L 52.359375 -53.8125 C 47.609375 -53.8125 40.289062 -52.164062 30.40625 -48.875 L 30.40625 0 L 8.875 0 L 8.875 -71.703125 L 25.59375 -71.703125 L 27.484375 -61.234375 C 37.285156 -69.578125 46.984375 -73.75 56.578125 -73.75 Z M 60.359375 -73.75 "/></g></g></g></svg></div>
+        </div><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></div><nav class="navigation">
+        <ul><li class="navigation__item"><a href="/">Home</a></li><li class="navigation__item"><a href="/about.html">About</a></li><li class="navigation__item"><a href="/blog.html">Blog</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
+      </nav></div>
+  </header>
+</div><div class="page__content"><img class="article__header--cover" src="/assets/cassowary.png" /><div class ="main"><div class="grid grid--reverse">
+
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
+</aside></div>
+
+              <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
+
+<!-- end custom main top snippet -->
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Turla’s Pelmeni Wrapper: How Weak Crypto Exposed Kazuar’s Payload</h1></header></div><meta itemprop="headline" content="Turla’s Pelmeni Wrapper: How Weak Crypto Exposed Kazuar’s Payload"><div class="article__info clearfix"><ul class="left-col menu"><li>
+              <a class="button button--secondary button--pill button--sm"
+                href="/blog.html# "/archive.html" (default)?tag=Observations+on+Threat+Intelligence">Observations on Threat Intelligence</a>
+            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>Jun 23, 2025</span>
+            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-06-23T00:00:00+02:00">
+    <meta itemprop="keywords" content="Observations on Threat Intelligence"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><blockquote>
+  <p><strong>Summary:</strong><br />
+This post analyzes a cryptographic flaw in Pelmeni, a custom loader used by the Turla APT group to deploy Kazuar. While the malware uses environmental keying based on the victim’s host name, it relies on a weak pseudorandom number generator (Ranqd1) and reuses it to decrypt both export names and the embedded payload. By exploiting this weakness, we can recover the decryption seed and extract Kazuar without access to the victim environment. The post provides a reproducible method to identify, decrypt, and track such samples in the wild.</p>
+</blockquote>
+
+<p>Last year, I came across a great <a href="https://lab52.io/blog/pelmeni-wrapper-new-wrapper-of-kazuar-turla-backdoor/">blog post</a> by Lab52 analyzing a new wrapper for the Kazuar malware: <em>Pelmeni</em>. Their breakdown showed how the wrapper encrypts the Kazuar payload and ties decryption to the victim’s computer name. This ensures the malware only runs in the intended environment. That design raised some interesting questions: Was Kazuar used post-compromise for persistence? What does the full infection chain look like?</p>
+
+<p>This blog does not aim to answer those broader questions. Instead, it focuses on a specific and previously undocumented weakness in Pelmeni’s cryptographic design. Lab52 noted that <em>the algorithm used to decrypt the payload and the one used to decrypt the export names is the same, which makes it vulnerable to brute-force attacks,</em> but they did not explain how exactly. Based on their findings, and on additional details from <a href="https://unit42.paloaltonetworks.com/pensive-ursa-uses-upgraded-kazuar-backdoor/">Unit 42’s analysis</a>, this post explains how that vulnerability works and why the cryptographic primitive used in Pelmeni can be exploited.</p>
+
+<h1 id="what-is-pelmeni">What is Pelmeni?</h1>
+<p>Pelmeni (Russian: <em>пельмени</em>, English: dumpling) is the name given by Lab52 to a wrapper used to drop recent variants of the Kazuar (<em>казуар</em>, cassowary) backdoor, which has been linked to Turla (also known as Secret Blizzard, Snake, Uroburos, or Venomous Bear), a threat actor that is allegedly linked to the Russian Federal Security Service (FSB). Rather than deploying Kazuar directly, Pelmeni is used as an intermediary wrapper to embed Kazuar as an encrypted payload. Upon execution, Pelmeni decrypts the payload and transfers execution to the decrypted binary. Moreover, even though Pelmeni is the dropper, it is itself a Dynamic Link Library (DLL) that is executed through the use of DLL Sideloading vulnerabilities in legitimate software from organizations like Nvidia, Brother, Intel, and others.</p>
+
+<p>What makes Pelmeni noteworthy is its use of environmental keying. The decryption key for Kazuar is derived from the victim’s host name. This means that the payload will only decrypt correctly when run on the specific machine it was intended for. This kind of environment binding can serve both as an evasion technique and an operational safeguard.</p>
+
+<p>This approach reflects Turla’s broader pattern: they often rely on tailored malware loaders, multi-stage payload delivery, and environmental checks to ensure stealth and resilience. Their operations typically prioritize long-term access and espionage, with custom tooling that is designed to persist in specific, high-value environments.</p>
+
+<p>In addition to the encrypted payload, Pelmeni contains (randomly generated) export names that it decrypts during execution. These are typically function names that might be used to identify or interact with the payload. According to Lab52, the same algorithm is used to decrypt both the export names and the payload. This shared mechanism turns out to be the weak point in the entire design.</p>
+
+<h1 id="pelmenis-cryptographic-primitives">Pelmeni’s cryptographic primitives</h1>
+<p>As mentioned before, an interesting aspect of the Pelmeni wrapper (sha256:55580aedc4429496ef13080545f2ec6014e4e0f0774918dfa7fd12f048f2bdd2 in this post, but generally applicable) is the fact that its export names are decrypted during execution. The Lab52 blogpost describes that the second entrypoint of the DLL is responsible for executing one of the exported DLL functions. The decryption key to decrypt the export name is generated by providing the (hashed) hostname as a seed for a pseudorandom number generator (PRNG) called Ranqd1, which is a <a href="https://en.wikipedia.org/wiki/Linear_congruential_generator">Linear Congruential Generator (LCG)</a>. This PRNG was recognized by the constants that are, among the rest of the operation, shown in Figure 1 and generates a keystream per four bytes (hence the modulo 32).</p>
+
+<p><img src="../../../assets/entrypoint_2_pelmeni.png" alt="" class="centered-img" />
+<span class="centered-text">Figure 1: Second entrypoint of Pelmeni showing generation of decryption key</span></p>
+
+<p>The algorithm that was used to turn the computername into a reliable seed is called <a href="https://www.drdobbs.com/database/algorithm-alley/184410284">Jenkins’ one at a time</a>, which is part of a non-cryptographic hash function family designed by Bob Jenkins. While known to contain some weak mixing behavior using the avalanche effect over 3-byte keys and commonly having collisions due to the small hash size (8 bytes), it is considered to have preimage resistance at the moment of writing. Unfortunately, this means that brute forcing for the victim’s hostname for victimology purposes may be infeasible. An implementation of Jenkins’ one at a time is shown in Listing 1.</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">uint32_t</span> <span class="nf">jenkins_one_at_a_time_hash</span><span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span><span class="o">*</span> <span class="n">key</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="kt">uint32_t</span> <span class="n">hash</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">!=</span> <span class="n">length</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">hash</span> <span class="o">+=</span> <span class="n">key</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+    <span class="n">hash</span> <span class="o">+=</span> <span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="n">hash</span> <span class="o">^=</span> <span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="n">hash</span> <span class="o">+=</span> <span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">3</span><span class="p">;</span>
+  <span class="n">hash</span> <span class="o">^=</span> <span class="n">hash</span> <span class="o">&gt;&gt;</span> <span class="mi">11</span><span class="p">;</span>
+  <span class="n">hash</span> <span class="o">+=</span> <span class="n">hash</span> <span class="o">&lt;&lt;</span> <span class="mi">15</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">hash</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 1: Jenkins’ one at a time implementation in C</span></p>
+
+<p>In summary: the victim host name is hashed using Jenkins’ one at a time, that hash is XOR’ed with a hardcoded constant (<code class="language-plaintext highlighter-rouge">0x38a55104</code> in this case) and fed into the Ranqd1 PRNG algorithm. The outcome is the key that is used to decrypt the export names during execution. The process is also shown in Figure 2.</p>
+
+<p>At the same time, as also shown in the Lab52 blogpost, the exact same constants and algorithm return right before dropping Kazuar, when Pelmeni has loaded the thread that is supposed to decrypt the payload. This gives away that the decryption routine for the export names and Kazuar itself are the same.</p>
+
+<p><img src="../../../assets/encryption_scheme_pelmeni.png" alt="" class="centered-img" />
+<span class="centered-text">Figure 2: Pelmeni encryption routine</span></p>
+
+<h1 id="weakness-in-key-derivation">Weakness in key derivation</h1>
+<p>As mentioned, the core cryptographic weakness in Pelmeni stems from the reuse of its decryption logic across both the Kazuar payload and the export function names. This shared mechanism enables recovering the seed that can be used to decrypt Kazuar. Specifically the use of the LCG, which is a relatively weak PRNG algorithm, allows for recovering a keystream that can decrypt both the export names and the payload.</p>
+
+<p>Looking at the PRNG in more detail, it is defined as follows:</p>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Provided parameter is the seed</span>
+<span class="kt">uint32_t</span> <span class="nf">rand_nsmb</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="o">*</span><span class="n">state</span><span class="p">){</span>
+    <span class="kt">uint64_t</span> <span class="n">value</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint64_t</span><span class="p">)(</span><span class="o">*</span><span class="n">state</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1664525</span> <span class="o">+</span> <span class="mi">1013904223</span><span class="p">;</span>
+    <span class="k">return</span> <span class="o">*</span><span class="n">state</span> <span class="o">=</span> <span class="n">value</span> <span class="o">+</span> <span class="p">(</span><span class="n">value</span> <span class="o">&gt;&gt;</span> <span class="mi">32</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 2: ranqd1 implementation in C</span></p>
+
+<p>While the XOR operations and processing seem to provide some obfuscation at first, its entire security hinges on the secrecy of the seed. Due to the fact that we know that the routine is based on XOR operations and we have access to both the ciphertext and plaintext of the export function names, we can launch a known plaintext attack to obtain the original seed.</p>
+
+<p>This can be done by taking the first four bytes of the ciphertext and plaintext and XOR’ing those to get the keystream used for the export function name. Then, to obtain the seed, we can reverse the LCG with the known constants.</p>
+
+<p>The process is shown in Figure 3. Where the original keystream is calculated by solving for \(keystream = (seed * a + c) \mod 2^{32}\), the seed can be calculated in a similar fashion by solving for \(seed = (keystream - c) * a^{-1} \mod 2^{32}\). The important detail here is the use of the first constant: \(a\). To reverse the LCG, we have to calculate the multiplicative inverse of this value, which is 1664525, alongside the modulus, which is 32. This leaves us with the number 5, which allows us to start testing the decryption of export function names.</p>
+
+<p><img src="../../../assets/seed_recovery_pelmeni.png" alt="" class="centered-img" />
+<span class="centered-text">Figure 3: Recovering the original seed</span></p>
+
+<h1 id="brute-forcing-the-seed-in-practice">Brute-forcing the seed in practice</h1>
+<p>To reproduce this decryption process without knowing the victim’s host name, we can now calculate the original seed produced by Jenkins’ one at a time that was XOR’ed with the earlier found constant. But first, we need to extract the right data from the binary itself. We know that, on multiple locations in the binary, Pelmeni decrypts export function names. This behavior can be identified in the binary in multiple places, but always with the pattern shown in Listing 3.</p>
+
+<pre><code class="language-asm">703c15c0  c744240406000000   mov     dword [esp+0x4], 0x6       \\ Pushes string size onto stack at [esp+0x4]
+703c15c8  c7042498413e70     mov     dword [esp], 0x703e4198    \\ Pushes RVA of string to [esp]
+</code></pre>
+<p><span class="centered-text">Listing 3: Instructions prior to decrypting export function name</span></p>
+
+<p>The string size varies, as the export names are randomly generated per sample. Therefore, if we want to find the original seed of any sample, we will have to write a regular expression for both the Relative Virtual Address (RVA) and actual string size (6 bytes in the case shown in Listing 3). We can do this as follows.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="n">re</span><span class="p">,</span> <span class="n">struct</span><span class="p">,</span> <span class="n">pefile</span>
+<span class="n">binary_loc</span> <span class="o">=</span> <span class="sh">"</span><span class="s">./55580aedc4429496ef13080545f2ec6014e4e0f0774918dfa7fd12f048f2bdd2</span><span class="sh">"</span>
+<span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">binary_loc</span><span class="p">,</span> <span class="sh">"</span><span class="s">rb</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+    <span class="nb">bin</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="nf">read</span><span class="p">()</span>
+
+<span class="n">regex</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="nf">compile</span><span class="p">(</span>
+    <span class="sa">rb</span><span class="sh">"</span><span class="s">\x85\xC0\xC7\x44\x24\x04(?P&lt;exportname_size&gt;....)</span><span class="sh">"</span> 
+    <span class="sa">rb</span><span class="sh">"</span><span class="s">\xC7\x04\x24(?P&lt;exportname_rva&gt;.{4})</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">re</span><span class="p">.</span><span class="n">DOTALL</span>
+<span class="p">)</span>
+<span class="n">export_name_encrypted</span> <span class="o">=</span> <span class="n">regex</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="nb">bin</span><span class="p">)</span>
+<span class="n">export_name_size</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="nf">unpack</span><span class="p">(</span><span class="sh">"</span><span class="s">&lt;I</span><span class="sh">"</span><span class="p">,</span> <span class="n">export_name_encrypted</span><span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="sh">"</span><span class="s">exportname_size</span><span class="sh">"</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">export_name_rva</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="nf">unpack</span><span class="p">(</span><span class="sh">"</span><span class="s">&lt;I</span><span class="sh">"</span><span class="p">,</span> <span class="n">export_name_encrypted</span><span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="sh">"</span><span class="s">exportname_rva</span><span class="sh">"</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">pe</span> <span class="o">=</span> <span class="n">pefile</span><span class="p">.</span><span class="nc">PE</span><span class="p">(</span><span class="n">binary_loc</span><span class="p">)</span>
+<span class="n">export_name_rva</span> <span class="o">=</span> <span class="n">export_name_rva</span> <span class="o">-</span> <span class="n">pe</span><span class="p">.</span><span class="n">OPTIONAL_HEADER</span><span class="p">.</span><span class="n">ImageBase</span>
+<span class="n">file_offset</span> <span class="o">=</span> <span class="n">pe</span><span class="p">.</span><span class="nf">get_offset_from_rva</span><span class="p">(</span><span class="n">export_name_rva</span><span class="p">)</span>
+
+<span class="n">final_encrypted_string</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">[</span><span class="n">file_offset</span><span class="p">:</span><span class="n">file_offset</span><span class="o">+</span><span class="n">export_name_size</span><span class="p">]</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 4: Retrieving encrypted export names</span></p>
+
+<p>Now that we have one of the encrypted export names, we want to extract all the export names from the binary. With the ciphertext and plaintext versions of the export name, we can construct our known plaintext attack to retrieve the seed. We can obtain seed candidates by reversing the LCG with the earlier described method and attempting to decrypt the ciphertext with the seed candidate. The ranqd1 constants seem to be consistent across samples, so for now we can keep these hardcoded. When the decryption routine with a seed candidate results in a known export name, we know we have the correct and original seed.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">reverse_lcg</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">modulus</span> <span class="o">=</span> <span class="mh">0x19660D</span><span class="p">,</span> <span class="mh">0x3C6EF35F</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+    <span class="n">a_mult_inv</span> <span class="o">=</span> <span class="nf">pow</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">modulo</span><span class="p">)</span>                      <span class="c1"># Compute multiplicative inverse
+</span>    <span class="nf">return </span><span class="p">(</span><span class="n">a_mult_inv</span> <span class="o">*</span> <span class="p">(</span><span class="n">candidate</span> <span class="o">-</span> <span class="n">c</span><span class="p">))</span> <span class="o">%</span> <span class="n">modulus</span> <span class="c1"># Reverse LCG formula
+</span>
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">candidate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+    <span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">modulus</span> <span class="o">=</span> <span class="mh">0x19660D</span><span class="p">,</span> <span class="mh">0x3C6EF35F</span><span class="p">,</span> <span class="mi">2</span><span class="o">**</span><span class="mi">32</span>
+    <span class="n">decrypted</span> <span class="o">=</span> <span class="nf">bytearray</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="nf">len</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)):</span>                <span class="c1"># Reconstruct LCG routine
+</span>        <span class="k">if</span> <span class="n">i</span> <span class="o">&amp;</span> <span class="mi">3</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">candidate</span> <span class="o">=</span> <span class="p">(</span><span class="n">candidate</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span> <span class="o">%</span> <span class="n">modulus</span>
+        <span class="n">lcg_bytes</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="nf">pack</span><span class="p">(</span><span class="sh">"</span><span class="s">&gt;I</span><span class="sh">"</span><span class="p">,</span> <span class="n">candidate</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">decrypted</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">^</span> <span class="n">lcg_bytes</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">4</span><span class="p">])</span>
+    <span class="k">return</span> <span class="nf">bytes</span><span class="p">(</span><span class="n">decrypted</span><span class="p">)</span>
+
+<span class="c1"># Extract plaintext export names
+</span><span class="n">pe_bin</span> <span class="o">=</span> <span class="n">pefile</span><span class="p">.</span><span class="nc">PE</span><span class="p">(</span><span class="n">binary_loc</span><span class="p">)</span>
+<span class="n">pe_bin</span><span class="p">.</span><span class="nf">parse_data_directories</span><span class="p">(</span><span class="n">directories</span><span class="o">=</span><span class="p">[</span><span class="n">pefile</span><span class="p">.</span><span class="n">DIRECTORY_ENTRY</span><span class="p">[</span><span class="sh">"</span><span class="s">IMAGE_DIRECTORY_ENTRY_EXPORT</span><span class="sh">"</span><span class="p">]])</span>
+<span class="n">export_names</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">pe</span><span class="p">.</span><span class="n">DIRECTORY_ENTRY_EXPORT</span><span class="p">.</span><span class="n">symbols</span><span class="p">:</span>
+    <span class="n">identifier</span> <span class="o">=</span> <span class="n">symbol</span><span class="p">.</span><span class="n">ordinal</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">symbol</span><span class="p">.</span><span class="n">name</span>
+    <span class="n">export_names</span><span class="p">.</span><span class="nf">append</span><span class="p">((</span><span class="n">identifier</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
+
+<span class="c1"># Start operating on earlier found ciphertext in order to rebuild key candidate
+</span><span class="k">for</span> <span class="n">identifier</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">export_names</span><span class="p">:</span>
+    <span class="n">name</span> <span class="o">+=</span> <span class="sa">b</span><span class="sh">"</span><span class="se">\x00</span><span class="sh">"</span>                                  <span class="c1"># Decrypted string ends with \x00
+</span>    <span class="n">key_attempt</span> <span class="o">=</span> <span class="nf">bytearray</span><span class="p">()</span>
+    <span class="n">ciphertext_bytes</span> <span class="o">=</span> <span class="n">final_encrypted_string</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">plaintext_bytes</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+        <span class="n">key_attempt</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">ciphertext_bytes</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">^</span> <span class="n">plaintext_bytes</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+    
+    <span class="c1"># Reverse LCG on key candidate
+</span>    <span class="n">key_attempt</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="nf">unpack</span><span class="p">(</span><span class="sh">"</span><span class="s">&lt;I</span><span class="sh">"</span><span class="p">,</span> <span class="n">key_attempt</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">candidate</span> <span class="o">=</span> <span class="nf">reverse_lcg</span><span class="p">(</span><span class="n">key_attempt</span><span class="p">)</span>
+    <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Attempting decryption with </span><span class="si">{</span><span class="nf">hex</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span><span class="si">}</span><span class="s"> against export name </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">final_encrypted_string</span><span class="p">,</span> <span class="n">candidate</span><span class="p">):</span>   <span class="c1"># Seed found
+</span>        <span class="n">seed</span> <span class="o">=</span> <span class="nf">hex</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">[!] Seed </span><span class="si">{</span><span class="n">candidate</span><span class="si">}</span><span class="s"> found to be correct.</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">break</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 5: Executing a known plaintext attack on the seed</span></p>
+
+<p>The terminal output in Listing 6 shows the correct seed for our sample, which was identified as <code class="language-plaintext highlighter-rouge">0xa7655e3f</code> matching on the export name <code class="language-plaintext highlighter-rouge">Shgyo</code>. This is also in line with the length of the encrypted export name that we found using the regular expression, as it is 6 bytes long when a nullbyte is appended. With this information, it is time to start seeking out the encrypted Kazuar sample for decryption.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ python3 decrypt.py
+Attempting decryption with 0x44594765 against export name b'Aoimzajs@0\x00'
+Attempting decryption with 0x91fde603 against export name b'Gmlkwiqm@4\x00'
+Attempting decryption with 0x4261dddc against export name b'Jagiwl@4\x00'
+Attempting decryption with 0xc671d3a1 against export name b'Mfnxhg\x00'
+Attempting decryption with 0x29e60da1 against export name b'Mtkvsmmq@4\x00'
+Attempting decryption with 0x8dc2197a against export name b'Pduouohn@0\x00'
+Attempting decryption with 0x4cb5a27a against export name b'Pqasrqht@4\x00'
+Attempting decryption with 0x332671b5 against export name b'Qirlbb\x00'
+Attempting decryption with 0xa7655e3f against export name b'Shgyo\x00'
+[!] Seed 0xa7655e3f found to be correct.
+</code></pre></div></div>
+<p><span class="centered-text">Listing 6: Terminal output of the script</span></p>
+
+<h1 id="decrypting-kazuar">Decrypting Kazuar</h1>
+<p>The Lab52 blog post already mentioned some hints on where to find the encrypted payload. We have earlier confirmed that the decryption algorithm for the export names and Kazuar itself is the exact same. Hence, we can search for occurrence of the ranqd1 constants throughout the binary. Moreover, the blog post describes the preparation of a thread that decrypts Kazuar and shows a screenshot of what this code looks like. After searching the binary for the ranqd1 constants, the content of Figure 4 showed up. This assembly (and the belonging pseudocode, looking like Figure 1) gives three hints:</p>
+<ul>
+  <li>The address of the buffer containing Kazuar is <code class="language-plaintext highlighter-rouge">0x703e44e0</code></li>
+  <li>The LCG routine starts on <code class="language-plaintext highlighter-rouge">0x703e0d45</code> and performs the XOR operation with the LCG byte on <code class="language-plaintext highlighter-rouge">0x703e0d85</code></li>
+  <li>The size of the Kazuar buffer is included on <code class="language-plaintext highlighter-rouge">0x703e0d95</code>, showing that the payload has an allocated size of <code class="language-plaintext highlighter-rouge">0x2411ff</code> (~2.3mb)</li>
+</ul>
+
+<p>This allows us to write a second regular expression that will allow us to extract and decrypt the Kazuar payload.</p>
+
+<p><img src="../../../assets/locating_kazuar.png" alt="" class="centered-img" />
+<span class="centered-text">Figure 4: Locating the Kazuar payload</span></p>
+
+<p>To make the decryption routine work independently of the sample being analyzed, we need two key details from the binary: the location of the payload and its size. We’ve already identified these values, now we need to extract them. Examining the surrounding opcodes preceding the payload location, there is a consistent instruction sequence:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">mov</code> (<code class="language-plaintext highlighter-rouge">0x8B</code>),</li>
+  <li><code class="language-plaintext highlighter-rouge">add</code> (<code class="language-plaintext highlighter-rouge">0x05</code>), and</li>
+  <li><code class="language-plaintext highlighter-rouge">movzx</code> (<code class="language-plaintext highlighter-rouge">0x0F</code>).</li>
+</ul>
+
+<p>Similarly, the size value is loaded in a loop whose upper bound is defined by:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">cmp [ebp-0xC]</code> (<code class="language-plaintext highlighter-rouge">0x817DF4</code>)</li>
+  <li>followed by a conditional jump <code class="language-plaintext highlighter-rouge">jbe</code> (<code class="language-plaintext highlighter-rouge">0x76</code>),</li>
+  <li>and later on, a <code class="language-plaintext highlighter-rouge">call</code> instruction (<code class="language-plaintext highlighter-rouge">0xE8</code>).</li>
+</ul>
+
+<p>Between the <code class="language-plaintext highlighter-rouge">jbe</code> and <code class="language-plaintext highlighter-rouge">call</code> instructions, there is one variable byte that is skipped over. We do need the <code class="language-plaintext highlighter-rouge">call</code> instruction as this makes the sequence specific enough to use. This will lead to the following regular expression and extraction method.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">payload_location</span> <span class="o">=</span> <span class="sa">b</span><span class="sh">"</span><span class="se">\x8B\x45\xF4\x05</span><span class="s">(?P&lt;payload&gt;....)</span><span class="se">\x0F</span><span class="sh">"</span>
+<span class="n">payload_size</span> <span class="o">=</span> <span class="sa">b</span><span class="sh">"</span><span class="se">\x81\x7D\xF4</span><span class="s">(?P&lt;payload_size&gt;....)</span><span class="se">\x76</span><span class="s">.</span><span class="se">\xE8</span><span class="sh">"</span>
+<span class="n">match_location</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="n">payload_location</span><span class="p">,</span> <span class="nb">bin</span><span class="p">)</span>
+<span class="n">match_size</span> <span class="o">=</span> <span class="n">re</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="n">payload_size</span><span class="p">,</span> <span class="nb">bin</span><span class="p">)</span>
+
+<span class="n">kazuar_address</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="nf">unpack</span><span class="p">(</span><span class="sh">"</span><span class="s">&lt;I</span><span class="sh">"</span><span class="p">,</span> <span class="n">match_location</span><span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="sh">"</span><span class="s">payload</span><span class="sh">"</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">kazuar_size</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="nf">unpack</span><span class="p">(</span><span class="sh">"</span><span class="s">&lt;I</span><span class="sh">"</span><span class="p">,</span> <span class="n">match_size</span><span class="p">.</span><span class="nf">group</span><span class="p">(</span><span class="sh">"</span><span class="s">payload_size</span><span class="sh">"</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">kazuar_rva</span> <span class="o">=</span> <span class="n">kazuar_address</span> <span class="o">-</span> <span class="n">pe</span><span class="p">.</span><span class="n">OPTIONAL_HEADER</span><span class="p">.</span><span class="n">ImageBase</span>
+<span class="n">kazuar_file_offset</span> <span class="o">=</span> <span class="n">pe</span><span class="p">.</span><span class="nf">get_offset_from_rva</span><span class="p">(</span><span class="n">kazuar_rva</span><span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Extracted Kazuar address </span><span class="si">{</span><span class="n">kazuar_address</span><span class="si">}</span><span class="s"> and payload size </span><span class="si">{</span><span class="n">kazuar_size</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+
+<span class="c1"># Start decryption of Kazuar
+</span><span class="n">decrypted</span> <span class="o">=</span> <span class="nf">decrypt</span><span class="p">(</span><span class="nb">bin</span><span class="p">[</span><span class="n">kazuar_file_offset</span><span class="p">:</span><span class="n">kazuar_file_offset</span><span class="o">+</span><span class="n">kazuar_size</span><span class="p">],</span> <span class="n">seed</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">decrypted</span><span class="p">.</span><span class="nf">startswith</span><span class="p">(</span><span class="sa">b</span><span class="sh">"</span><span class="se">\x4d\x5a\x90\x00</span><span class="sh">"</span><span class="p">):</span>   <span class="c1"># If extract starts with MZ header, encryption succeeded
+</span>    <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">kazuar_extract_</span><span class="si">{</span><span class="n">seed</span><span class="si">}</span><span class="s">.exe</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">wb</span><span class="sh">"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">decrypted</span><span class="p">)</span>
+        <span class="nf">print</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Wrote decrypted Kazuar payload for seed </span><span class="si">{</span><span class="n">seed</span><span class="si">}</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+<p><span class="centered-text">Listing 7: Extracting and decrypting Kazuar</span></p>
+
+<p>As can be seen from Listing 7, we are ready to start extracting and decrypting Kazuar payloads. Table 1 shows the results of running this script against all samples of Pelmeni I could find. I will include the file hashes, seeds, resulting Kazuar file hash, and Kazuar file size in the table (which will immediately also be the IoC list for this post). At first sight, there are two different variants based on the large deviation in size.</p>
+
+<p><span class="centered-text">Table 1: Details about various Pelmeni and embedded Kazuar samples</span></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Pelmeni Hash (SHA256)</th>
+      <th>Seed</th>
+      <th>Kazuar Hash (SHA256)</th>
+      <th>Kazuar File Size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>00256c7fd9a36c6a4805c467b15b3a72dbac2e6dbd12abe7d768f20ce6c8f09f</td>
+      <td><code class="language-plaintext highlighter-rouge">0xf1784656</code></td>
+      <td>c41b19a5c5f1fee9f9d7a0a943bec10b8838ff1862b8776c45ee6802d19bfae8</td>
+      <td>2.4mb</td>
+    </tr>
+    <tr>
+      <td>15f5e4808549ff67a79f84e23659da912ebbc1dc7c7b100c12b72384a27e412a</td>
+      <td><code class="language-plaintext highlighter-rouge">0xecc08599</code></td>
+      <td>802e3b92dedcf36df2a3e4032ead5190a0ea856b8bb555f8c5e0e7389076fce2</td>
+      <td>2.4mb</td>
+    </tr>
+    <tr>
+      <td>174b10038dfa52b214e79c950bfdb67fe7489c0c8c06a1af83f96f1e1c6a996c</td>
+      <td><code class="language-plaintext highlighter-rouge">0x7f6eefab</code></td>
+      <td>ae4b2c3eb82bcfdac52d15c521a0b397c067f66f77be0c8a004b1ff824a3715e</td>
+      <td>1.7mb</td>
+    </tr>
+    <tr>
+      <td>18cb3a47679f9c1e5e57d3e8c0d70b521c30227c77705fe20c0eb2057a278ce4</td>
+      <td><code class="language-plaintext highlighter-rouge">0xa77e7107</code></td>
+      <td>c1db26f15d5c3721e45dc8f5a37528e731f0ca4b32ada0b26980e786ced5d5ab</td>
+      <td>2.4mb</td>
+    </tr>
+    <tr>
+      <td>2164d54c415b48e906ad972a14d45c82af7cab814c6cf11729a994249690ed97</td>
+      <td><code class="language-plaintext highlighter-rouge">0xe257eb0e</code></td>
+      <td>2352d77bbd985eea66bfd02bb10a86a171505f981f022bc4451aed1b3cc3705b</td>
+      <td>1.7mb</td>
+    </tr>
+    <tr>
+      <td>55580aedc4429496ef13080545f2ec6014e4e0f0774918dfa7fd12f048f2bdd2</td>
+      <td><code class="language-plaintext highlighter-rouge">0xa7655e3f</code></td>
+      <td>0fd34087b765db5da47c24b5333ddb63ecae0024977b09d9dcd4d2812eeac481</td>
+      <td>1.7mb</td>
+    </tr>
+    <tr>
+      <td>606d19b0ebc8fb039d6c7daccf31b62983dce3a3c517ffbede6a8b620930861e</td>
+      <td><code class="language-plaintext highlighter-rouge">0xfc98a4db</code></td>
+      <td>69a23efb7f0990c1d4e6a594c9992e318a0e557f2d4e79d04ad3db47d82f45da</td>
+      <td>2.4mb</td>
+    </tr>
+    <tr>
+      <td>7d4c1883c4b61ca5c4059f13d5e2c74ed3de728b53d464036c6dbd7828f23c2c</td>
+      <td><code class="language-plaintext highlighter-rouge">0xd9ab6d40</code></td>
+      <td>70848496a300b977cba9a7bdaf89f573dc3f2e049d0ef3a5717abade085d52f5</td>
+      <td>1.7mb</td>
+    </tr>
+    <tr>
+      <td>9b97e740b65bc609210f095cd9407c990a9f71f580f001ea07300228c5256d62</td>
+      <td><code class="language-plaintext highlighter-rouge">0x741e02cd</code></td>
+      <td>2a1269a376cbb05c6449ae5c0079c3a59d10bd9670bbb2500f1fc63dda567067</td>
+      <td>2.4mb</td>
+    </tr>
+    <tr>
+      <td>ac10acd6391e18cbbf2c11198175959caa7adfa15144126f1ce9aa3c9b0f10e4</td>
+      <td><code class="language-plaintext highlighter-rouge">0xd03a4b24</code></td>
+      <td>e3362c7509ad77c6f3ec5ffd026f9d6bd3e8e43559c05e10d3060ef75b1c7f5e</td>
+      <td>1.7mb</td>
+    </tr>
+    <tr>
+      <td>c1fdbf5a33a0288065d99082bde39a9401bc3ab346fdef276bde746e15a889cb</td>
+      <td><code class="language-plaintext highlighter-rouge">0xfbb7f137</code></td>
+      <td>3539f53ac43ac6b8392d1663070772077fe910da69c2a914bc917fd41ec04f4c</td>
+      <td>1.7mb</td>
+    </tr>
+    <tr>
+      <td>cccd6327dd5beee19cc3744b40f954c84ab016564b896c257f6871043a21cf0a</td>
+      <td><code class="language-plaintext highlighter-rouge">0x4ba34f4c</code></td>
+      <td>c8439ce0c1fd34bf56ff022e2b2640901daa61f7b20a8593cab60f96461f1b18</td>
+      <td>2.4mb</td>
+    </tr>
+    <tr>
+      <td>d577e82aec669ab2817c135413e16acd3b871568de04ac8eb65a6dbcb5c7048f</td>
+      <td><code class="language-plaintext highlighter-rouge">0xcb6f7d6</code></td>
+      <td>4111bdb0bc7a39dd10f2a552f0b481f2636079501b703e2e7d28421d76a3fe9f</td>
+      <td>2.4mb</td>
+    </tr>
+    <tr>
+      <td>ebf10222bdd19bd8f14b7e94694c1534d4fe1d1047034aee7ffe9492cad4a92f</td>
+      <td><code class="language-plaintext highlighter-rouge">0x7cc6d6a6</code></td>
+      <td>046fc6ee4bfc51d12ab7b7a643111076744a898fb21011a4ef4a19eefdb152b1</td>
+      <td>1.7mb</td>
+    </tr>
+    <tr>
+      <td>f6b7b3072b3e343c246057c2518693d353c72ee62f9d9aaaa9431af3ce621568</td>
+      <td><code class="language-plaintext highlighter-rouge">0x61f8817c</code></td>
+      <td>41b2449673d811d78d3ccfa354ccb2f19d8ad03f846d3797caf5cbabedc0417c</td>
+      <td>2.4mb</td>
+    </tr>
+    <tr>
+      <td>d216d3a993459cd48ef46afc64c9c341e143051cbfb77727cc7ad71d1eaef84f</td>
+      <td><code class="language-plaintext highlighter-rouge">0xa7655e3f</code></td>
+      <td>e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</td>
+      <td>2.4mb</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>All Kazuar samples extracted from these Pelmeni samples are valid .NET binaries and are consistent with <a href="https://unit42.paloaltonetworks.com/pensive-ursa-uses-upgraded-kazuar-backdoor/">Unit42’s analysis</a>. The metadata of the resulting files also show the altered timestamp and the Kazuar binaries can be decompiled using tools like ILSpy.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ file kazuar_extract_0xa7655e3f.exe
+kazuar_extract_0xa7655e3f.exe: PE32 executable (GUI) Intel 80386 Mono/.Net assembly, for MS Windows
+</code></pre></div></div>
+<p><span class="centered-text">Listing 8: Kazuar file information</span></p>
+
+<h1 id="how-to-proceed">How to proceed?</h1>
+<p>The Pelmeni wrapper demonstrates that even advanced actors like Turla can weaken their own operations through poor cryptographic design. Environmental keying, such as using the victim’s host name to derive the decryption key, is a clever operational safeguard. However, reusing a weak pseudorandom number generator across both export name and payload decryption made the entire scheme vulnerable.</p>
+
+<p>The analysis of the decrypted Kazuar payloads, including command and control infrastructure, is already well documented in the Lab52 post and other sources. This blog focused instead on making the vulnerability in Pelmeni’s cryptographic routine actionable. The ability to recover the seed without needing access to the victim environment provides a practical tool for tracking and analyzing samples in the wild.</p>
+
+<p>This case reinforces a broader lesson in malware analysis: even small implementation flaws in custom cryptographic code can create valuable openings for visibility and intelligence.</p>
+
+<p>If you are a reverse engineer, threat analyst, or incident responder, I hope this post helped you in your work or provided a new perspective. If you come across a new variant or a similar loader with weak crypto, feel free to get in touch.</p>
+</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2025-06-23T00:00:00+02:00"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+<div itemscope itemtype="http://schema.org/Person" class="author-profile card card--flat item"><a href="https://disclosing.observer" class="item__image"><img class="author-profile__avatar" itemprop="image" src="https://avatars.githubusercontent.com/u/25766540" /></a><div class="item__content"><meta itemprop="name" content="Max van der Horst">
+        <p class="author-profile__name"><meta itemprop="url" content="https://disclosing.observer">
+            <a href="https://disclosing.observer">Max van der Horst</a></p><p itemprop="description">Author</p><div class="author-profile__links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://disclosing.observer"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:mhvanderhorst@tudelft.nl" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Linkedin.">
+        <a class="button button--circle linkedin-button" itemprop="sameAs" href="https://www.linkedin.com/in/MaxHorst" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M260.096 155.648c0 27.307008-9.899008 50.516992-29.696 69.632-19.796992 19.115008-45.396992 28.672-76.8 28.672-30.036992 0-54.612992-9.556992-73.728-28.672-19.115008-19.115008-28.672-42.324992-28.672-69.632 0-28.672 9.556992-52.224 28.672-70.656 19.115008-18.432 44.372992-27.648 75.776-27.648 31.403008 0 56.32 9.216 74.752 27.648 18.432 18.432 28.331008 41.984 29.696 70.656 0 0 0 0 0 0m-202.752 808.96c0 0 0-632.832 0-632.832 0 0 196.608 0 196.608 0 0 0 0 632.832 0 632.832 0 0-196.608 0-196.608 0 0 0 0 0 0 0m313.344-430.08c0-58.708992-1.364992-126.292992-4.096-202.752 0 0 169.984 0 169.984 0 0 0 10.24 88.064 10.24 88.064 0 0 4.096 0 4.096 0 40.96-68.267008 105.812992-102.4 194.56-102.4 68.267008 0 123.220992 22.868992 164.864 68.608 41.643008 45.739008 62.464 113.664 62.464 203.776 0 0 0 374.784 0 374.784 0 0-196.608 0-196.608 0 0 0 0-350.208 0-350.208 0-91.476992-33.451008-137.216-100.352-137.216-47.787008 0-81.236992 24.576-100.352 73.728-4.096 8.192-6.144 24.576-6.144 49.152 0 0 0 364.544 0 364.544 0 0-198.656 0-198.656 0 0 0 0-430.08 0-430.08 0 0 0 0 0 0" />
+</svg>
+</div>
+        </a>
+      </li><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Maximand" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+
+    </div>
+</div>
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+</div><div class="article__license"><div class="license">
+    <p>This work is licensed under a <a itemprop="license" rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">Attribution-NonCommercial 4.0 International</a> license.
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Attribution-NonCommercial 4.0 International" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+      </a>
+    </p>
+  </div></div></footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2025/06/14/patching-is-not-enough-persistent-backdoors-after-the-fix.html">Scanning Beyond the Patch: A Public-Interest Hunt for Hidden Shells</a></div></div></div>
+
+</div>
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    $(function() {
+      var $this ,$scroll;
+      var $articleContent = $('.js-article-content');
+      var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+      var scroll = hasSidebar ? '.js-page-main' : 'html, body';
+      $scroll = $(scroll);
+
+      $articleContent.find('.highlight').each(function() {
+        $this = $(this);
+        $this.attr('data-lang', $this.find('code').attr('data-lang'));
+      });
+      $articleContent.find('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').each(function() {
+        $this = $(this);
+        $this.append($('<a class="anchor d-print-none" aria-hidden="true"></a>').html('<i class="fas fa-anchor"></i>'));
+      });
+      $articleContent.on('click', '.anchor', function() {
+        $scroll.scrollToAnchor('#' + $(this).parent().attr('id'), 400);
+      });
+    });
+  });
+})();
+</script>
+</div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
+
+<!-- end custom main bottom snippet -->
+</div>
+            </div></div></div><div class="page__footer d-print-none">
+<footer class="footer py-4 js-page-footer">
+  <div class="main"><div itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Max"><meta itemprop="url" content="https://maximand.github.io"><meta itemprop="description" content="Scan all the things"><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://maximand.github.io"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:mhvanderhorst@tudelft.nl" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Linkedin.">
+        <a class="button button--circle linkedin-button" itemprop="sameAs" href="https://www.linkedin.com/in/maxhorst" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M260.096 155.648c0 27.307008-9.899008 50.516992-29.696 69.632-19.796992 19.115008-45.396992 28.672-76.8 28.672-30.036992 0-54.612992-9.556992-73.728-28.672-19.115008-19.115008-28.672-42.324992-28.672-69.632 0-28.672 9.556992-52.224 28.672-70.656 19.115008-18.432 44.372992-27.648 75.776-27.648 31.403008 0 56.32 9.216 74.752 27.648 18.432 18.432 28.331008 41.984 29.696 70.656 0 0 0 0 0 0m-202.752 808.96c0 0 0-632.832 0-632.832 0 0 196.608 0 196.608 0 0 0 0 632.832 0 632.832 0 0-196.608 0-196.608 0 0 0 0 0 0 0m313.344-430.08c0-58.708992-1.364992-126.292992-4.096-202.752 0 0 169.984 0 169.984 0 0 0 10.24 88.064 10.24 88.064 0 0 4.096 0 4.096 0 40.96-68.267008 105.812992-102.4 194.56-102.4 68.267008 0 123.220992 22.868992 164.864 68.608 41.643008 45.739008 62.464 113.664 62.464 203.776 0 0 0 374.784 0 374.784 0 0-196.608 0-196.608 0 0 0 0-350.208 0-350.208 0-91.476992-33.451008-137.216-100.352-137.216-47.787008 0-81.236992 24.576-100.352 73.728-4.096 8.192-6.144 24.576-6.144 49.152 0 0 0 364.544 0 364.544 0 0-198.656 0-198.656 0 0 0 0-430.08 0-430.08 0 0 0 0 0 0" />
+</svg>
+</div>
+        </a>
+      </li><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Maximand# "user_name" the last part of your profile url, e.g. https://github.com/user_name" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+    </div><div class="site-info mt-2">
+      <div>© Disclosing.Observer 2025,
+        Powered by <a title="Jekyll is a simple, blog-aware, static site generator." href="http://jekyllrb.com/">Jekyll</a> & <a
+        title="TeXt is a super customizable Jekyll theme." href="https://github.com/kitian616/jekyll-TeXt-theme">TeXt Theme</a>.
+      </div>
+    </div>
+  </div>
+</footer>
+</div></div>
+    </div><script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $body = $('body'), $window = $(window);
+    var $pageRoot = $('.js-page-root'), $pageMain = $('.js-page-main');
+    var activeCount = 0;
+    function modal(options) {
+      var $root = this, visible, onChange, hideWhenWindowScroll = false;
+      var scrollTop;
+      function setOptions(options) {
+        var _options = options || {};
+        visible = _options.initialVisible === undefined ? false : show;
+        onChange = _options.onChange;
+        hideWhenWindowScroll = _options.hideWhenWindowScroll;
+      }
+      function init() {
+        setState(visible);
+      }
+      function setState(isShow) {
+        if (isShow === visible) {
+          return;
+        }
+        visible = isShow;
+        if (visible) {
+          activeCount++;
+          scrollTop = $(window).scrollTop() || $pageMain.scrollTop();
+          $root.addClass('modal--show');
+          $pageMain.scrollTop(scrollTop);
+          activeCount === 1 && ($pageRoot.addClass('show-modal'), $body.addClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.on('scroll', hide);
+          $window.on('keyup', handleKeyup);
+        } else {
+          activeCount > 0 && activeCount--;
+          $root.removeClass('modal--show');
+          $window.scrollTop(scrollTop);
+          activeCount === 0 && ($pageRoot.removeClass('show-modal'), $body.removeClass('of-hidden'));
+          hideWhenWindowScroll && window.hasEvent('touchstart') && $window.off('scroll', hide);
+          $window.off('keyup', handleKeyup);
+        }
+        onChange && onChange(visible);
+      }
+      function show() {
+        setState(true);
+      }
+      function hide() {
+        setState(false);
+      }
+      function handleKeyup(e) {
+        // Char Code: 27  ESC
+        if (e.which ===  27) {
+          hide();
+        }
+      }
+      setOptions(options);
+      init();
+      return {
+        show: show,
+        hide: hide,
+        $el: $root
+      };
+    }
+    $.fn.modal = modal;
+  });
+})();
+</script><div class="modal modal--overflow page__search-modal d-print-none js-page-search-modal"><script>
+(function () {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    // search panel
+    var search = (window.search || (window.search = {}));
+    var useDefaultSearchBox = window.useDefaultSearchBox === undefined ?
+      true : window.useDefaultSearchBox ;
+
+    var $searchModal = $('.js-page-search-modal');
+    var $searchToggle = $('.js-search-toggle');
+    var searchModal = $searchModal.modal({ onChange: handleModalChange, hideWhenWindowScroll: true });
+    var modalVisible = false;
+    search.searchModal = searchModal;
+
+    var $searchBox = null;
+    var $searchInput = null;
+    var $searchClear = null;
+
+    function getModalVisible() {
+      return modalVisible;
+    }
+    search.getModalVisible = getModalVisible;
+
+    function handleModalChange(visible) {
+      modalVisible = visible;
+      if (visible) {
+        search.onShow && search.onShow();
+        useDefaultSearchBox && $searchInput[0] && $searchInput[0].focus();
+      } else {
+        search.onShow && search.onHide();
+        useDefaultSearchBox && $searchInput[0] && $searchInput[0].blur();
+        setTimeout(function() {
+          useDefaultSearchBox && ($searchInput.val(''), $searchBox.removeClass('not-empty'));
+          search.clear && search.clear();
+          window.pageAsideAffix && window.pageAsideAffix.refresh();
+        }, 400);
+      }
+    }
+
+    $searchToggle.on('click', function() {
+      modalVisible ? searchModal.hide() : searchModal.show();
+    });
+    // Char Code: 83  S, 191 /
+    $(window).on('keyup', function(e) {
+      if (!modalVisible && !window.isFormElement(e.target || e.srcElement) && (e.which === 83 || e.which === 191)) {
+        modalVisible || searchModal.show();
+      }
+    });
+
+    if (useDefaultSearchBox) {
+      $searchBox = $('.js-search-box');
+      $searchInput = $searchBox.children('input');
+      $searchClear = $searchBox.children('.js-icon-clear');
+      search.getSearchInput = function() {
+        return $searchInput.get(0);
+      };
+      search.getVal = function() {
+        return $searchInput.val();
+      };
+      search.setVal = function(val) {
+        $searchInput.val(val);
+      };
+
+      $searchInput.on('focus', function() {
+        $(this).addClass('focus');
+      });
+      $searchInput.on('blur', function() {
+        $(this).removeClass('focus');
+      });
+      $searchInput.on('input', window.throttle(function() {
+        var val = $(this).val();
+        if (val === '' || typeof val !== 'string') {
+          search.clear && search.clear();
+        } else {
+          $searchBox.addClass('not-empty');
+          search.onInputNotEmpty && search.onInputNotEmpty(val);
+        }
+      }, 400));
+      $searchClear.on('click', function() {
+        $searchInput.val(''); $searchBox.removeClass('not-empty');
+        search.clear && search.clear();
+      });
+    }
+  });
+})();
+</script><div class="search search--dark">
+  <div class="main">
+    <div class="search__header">Search</div>
+    <div class="search-bar">
+      <div class="search-box js-search-box">
+        <div class="search-box__icon-search"><i class="fas fa-search"></i></div>
+        <input type="text" />
+        <div class="search-box__icon-clear js-icon-clear">
+          <a><i class="fas fa-times"></i></a>
+        </div>
+      </div>
+      <button class="button button--theme-dark button--pill search__cancel js-search-toggle">
+        Cancel</button>
+    </div>
+    <div class="search-result js-search-result"></div>
+  </div>
+</div>
+<script>var SOURCES = window.TEXT_VARIABLES.sources;
+var PAHTS = window.TEXT_VARIABLES.paths;
+window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
+  var search = (window.search || (window.search = {}));
+  var searchData = window.TEXT_SEARCH_DATA || {};
+
+  function memorize(f) {
+    var cache = {};
+    return function () {
+      var key = Array.prototype.join.call(arguments, ',');
+      if (key in cache) return cache[key];
+      else return cache[key] = f.apply(this, arguments);
+    };
+  }
+
+  /// search
+  function searchByQuery(query) {
+    var i, j, key, keys, cur, _title, result = {};
+    keys = Object.keys(searchData);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      for (j = 0; j < searchData[key].length; j++) {
+        cur = searchData[key][j], _title = cur.title;
+        if ((result[key] === undefined || result[key] && result[key].length < 4 )
+          && _title.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+          if (result[key] === undefined) {
+            result[key] = [];
+          }
+          result[key].push(cur);
+        }
+      }
+    }
+    return result;
+  }
+
+  var renderHeader = memorize(function(header) {
+    return $('<p class="search-result__header">' + header + '</p>');
+  });
+
+  var renderItem = function(index, title, url) {
+    return $('<li class="search-result__item" data-index="' + index + '"><a class="button" href="' + url + '">' + title + '</a></li>');
+  };
+
+  function render(data) {
+    if (!data) { return null; }
+    var $root = $('<ul></ul>'), i, j, key, keys, cur, itemIndex = 0;
+    keys = Object.keys(data);
+    for (i = 0; i < keys.length; i++) {
+      key = keys[i];
+      $root.append(renderHeader(key));
+      for (j = 0; j < data[key].length; j++) {
+        cur = data[key][j];
+        $root.append(renderItem(itemIndex++, cur.title, cur.url));
+      }
+    }
+    return $root;
+  }
+
+  // search box
+  var $result = $('.js-search-result'), $resultItems;
+  var lastActiveIndex, activeIndex;
+
+  function clear() {
+    $result.html(null);
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+  }
+  function onInputNotEmpty(val) {
+    $result.html(render(searchByQuery(val)));
+    $resultItems = $('.search-result__item'); activeIndex = 0;
+    $resultItems.eq(0).addClass('active');
+  }
+
+  search.clear = clear;
+  search.onInputNotEmpty = onInputNotEmpty;
+
+  function updateResultItems() {
+    lastActiveIndex >= 0 && $resultItems.eq(lastActiveIndex).removeClass('active');
+    activeIndex >= 0 && $resultItems.eq(activeIndex).addClass('active');
+  }
+
+  function moveActiveIndex(direction) {
+    var itemsCount = $resultItems ? $resultItems.length : 0;
+    if (itemsCount > 1) {
+      lastActiveIndex = activeIndex;
+      if (direction === 'up') {
+        activeIndex = (activeIndex - 1 + itemsCount) % itemsCount;
+      } else if (direction === 'down') {
+        activeIndex = (activeIndex + 1 + itemsCount) % itemsCount;
+      }
+      updateResultItems();
+    }
+  }
+
+  // Char Code: 13  Enter, 37  ⬅, 38  ⬆, 39  ➡, 40  ⬇
+  $(window).on('keyup', function(e) {
+    var modalVisible = search.getModalVisible && search.getModalVisible();
+    if (modalVisible) {
+      if (e.which === 38) {
+        modalVisible && moveActiveIndex('up');
+      } else if (e.which === 40) {
+        modalVisible && moveActiveIndex('down');
+      } else if (e.which === 13) {
+        modalVisible && $resultItems && activeIndex >= 0 && $resultItems.eq(activeIndex).children('a')[0].click();
+      }
+    }
+  });
+
+  $result.on('mouseover', '.search-result__item > a', function() {
+    var itemIndex = $(this).parent().data('index');
+    itemIndex >= 0 && (lastActiveIndex = activeIndex, activeIndex = itemIndex, updateResultItems());
+  });
+});
+</script>
+</div></div>
+
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function scrollToAnchor(anchor, duration, callback) {
+      var $root = this;
+      $root.animate({ scrollTop: $(anchor).position().top }, duration, function() {
+        window.history.replaceState(null, '', window.location.href.split('#')[0] + anchor);
+        callback && callback();
+      });
+    }
+    $.fn.scrollToAnchor = scrollToAnchor;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function affix(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroll,
+        offsetBottom = 0, scrollTarget = window, scroll = window.document, disabled = false, isOverallScroller = true,
+        rootTop, rootLeft, rootHeight, scrollBottom, rootBottomTop,
+        hasInit = false, curState;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.offsetBottom && (offsetBottom = _options.offsetBottom);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroll && (scroll = _options.scroll);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $scrollTarget = $(scrollTarget);
+        isOverallScroller = window.isOverallScroller($scrollTarget[0]);
+        $scroll = $(scroll);
+      }
+      function preCalc() {
+        top();
+        rootHeight = $root.outerHeight();
+        rootTop = $root.offset().top + (isOverallScroller ? 0 :  $scrollTarget.scrollTop());
+        rootLeft = $root.offset().left;
+      }
+      function calc(needPreCalc) {
+        needPreCalc && preCalc();
+        scrollBottom = $scroll.outerHeight() - offsetBottom - rootHeight;
+        rootBottomTop = scrollBottom - rootTop;
+      }
+      function top() {
+        if (curState !== 'top') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: 0
+          });
+          curState = 'top';
+        }
+      }
+      function fixed() {
+        if (curState !== 'fixed') {
+          $root.addClass('fixed').css({
+            left: rootLeft + 'px',
+            top: 0
+          });
+          curState = 'fixed';
+        }
+      }
+      function bottom() {
+        if (curState !== 'bottom') {
+          $root.removeClass('fixed').css({
+            left: 0,
+            top: rootBottomTop + 'px'
+          });
+          curState = 'bottom';
+        }
+      }
+      function setState() {
+        var scrollTop = $scrollTarget.scrollTop();
+        if (scrollTop >= rootTop && scrollTop <= scrollBottom) {
+          fixed();
+        } else if (scrollTop < rootTop) {
+          top();
+        } else {
+          bottom();
+        }
+      }
+      function init() {
+        if(!hasInit) {
+          var interval, timeout;
+          calc(true); setState();
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState();
+          });
+          $window.on('resize', function() {
+            disabled || (calc(true), setState());
+          });
+          hasInit = true;
+        }
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions,
+        refresh: function() {
+          calc(true, { animation: false }); setState();
+        }
+      };
+    }
+    $.fn.affix = affix;
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    function toc(options) {
+      var $root = this, $window = $(window), $scrollTarget, $scroller, $tocUl = $('<ul class="toc toc--ellipsis"></ul>'), $tocLi, $headings, $activeLast, $activeCur,
+        selectors = 'h1,h2,h3', container = 'body', scrollTarget = window, scroller = 'html, body', disabled = false,
+        headingsPos, scrolling = false, hasRendered = false, hasInit = false;
+
+      function setOptions(options) {
+        var _options = options || {};
+        _options.selectors && (selectors = _options.selectors);
+        _options.container && (container = _options.container);
+        _options.scrollTarget && (scrollTarget = _options.scrollTarget);
+        _options.scroller && (scroller = _options.scroller);
+        _options.disabled !== undefined && (disabled = _options.disabled);
+        $headings = $(container).find(selectors).filter('[id]');
+        $scrollTarget = $(scrollTarget);
+        $scroller = $(scroller);
+      }
+      function calc() {
+        headingsPos = [];
+        $headings.each(function() {
+          headingsPos.push(Math.floor($(this).position().top));
+        });
+      }
+      function setState(element, disabled) {
+        var scrollTop = $scrollTarget.scrollTop(), i;
+        if (disabled || !headingsPos || headingsPos.length < 1) { return; }
+        if (element) {
+          $activeCur = element;
+        } else {
+          for (i = 0; i < headingsPos.length; i++) {
+            if (scrollTop >= headingsPos[i]) {
+              $activeCur = $tocLi.eq(i);
+            } else {
+              $activeCur || ($activeCur = $tocLi.eq(i));
+              break;
+            }
+          }
+        }
+        $activeLast && $activeLast.removeClass('active');
+        ($activeLast = $activeCur).addClass('active');
+      }
+      function render() {
+        if(!hasRendered) {
+          $root.append($tocUl);
+          $headings.each(function() {
+            var $this = $(this);
+            $tocUl.append($('<li></li>').addClass('toc-' + $this.prop('tagName').toLowerCase())
+              .append($('<a></a>').text($this.text()).attr('href', '#' + $this.prop('id'))));
+          });
+          $tocLi = $tocUl.children('li');
+          $tocUl.on('click', 'a', function(e) {
+            e.preventDefault();
+            var $this = $(this);
+            scrolling = true;
+            setState($this.parent());
+            $scroller.scrollToAnchor($this.attr('href'), 400, function() {
+              scrolling = false;
+            });
+          });
+        }
+        hasRendered = true;
+      }
+      function init() {
+        var interval, timeout;
+        if(!hasInit) {
+          render(); calc(); setState(null, scrolling);
+          // run calc every 100 millisecond
+          interval = setInterval(function() {
+            calc();
+          }, 100);
+          timeout = setTimeout(function() {
+            clearInterval(interval);
+          }, 45000);
+          window.pageLoad.then(function() {
+            setTimeout(function() {
+              clearInterval(interval);
+              clearTimeout(timeout);
+            }, 3000);
+          });
+          $scrollTarget.on('scroll', function() {
+            disabled || setState(null, scrolling);
+          });
+          $window.on('resize', window.throttle(function() {
+            if (!disabled) {
+              render(); calc(); setState(null, scrolling);
+            }
+          }, 100));
+        }
+        hasInit = true;
+      }
+
+      setOptions(options);
+      if (!disabled) {
+        init();
+      }
+      $window.on('resize', window.throttle(function() {
+        init();
+      }, 200));
+      return {
+        setOptions: setOptions
+      };
+    }
+    $.fn.toc = toc;
+  });
+})();
+/*(function () {
+
+})();*/
+</script><script>
+  /* toc must before affix, since affix need to konw toc' height. */(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  var TOC_SELECTOR = window.TEXT_VARIABLES.site.toc.selectors;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window);
+    var $articleContent = $('.js-article-content');
+    var $tocRoot = $('.js-toc-root'), $col2 = $('.js-col-aside');
+    var toc;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+    var hasToc = $articleContent.find(TOC_SELECTOR).length > 0;
+
+    function disabled() {
+      return $col2.css('display') === 'none' || !hasToc;
+    }
+
+    tocDisabled = disabled();
+
+    toc = $tocRoot.toc({
+      selectors: TOC_SELECTOR,
+      container: $articleContent,
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      tocDisabled = disabled();
+      toc && toc.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $pageFooter = $('.js-page-footer');
+    var $pageAside = $('.js-page-aside');
+    var affix;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+
+    affix = $pageAside.affix({
+      offsetBottom: $pageFooter.outerHeight(),
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      scroll: hasSidebar ? $('.js-page-main').children() : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      affix && affix.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+    window.pageAsideAffix = affix;
+  });
+})();
+</script><script>
+  window.Lazyload.js(['https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js', 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js'], function() {
+    var $canvas = null, $this = null, _ctx = null, _text = '';
+    $('.language-chart').each(function(){
+      $this = $(this);
+      $canvas = $('<canvas></canvas>');
+      _text = $this.text();
+      $this.text('').append($canvas);
+      _ctx = $canvas.get(0).getContext('2d');
+      (_ctx && _text) && (new Chart(_ctx, JSON.parse(_text)) && $this.attr('data-processed', true));
+    });
+  });
+</script>
+<script type="text/x-mathjax-config">
+	var _config = { tex2jax: {
+		inlineMath: [['$','$'], ['\\(','\\)']]
+	}};_config.TeX = { equationNumbers: { autoNumber: "all" } };MathJax.Hub.Config(_config);
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  window.Lazyload.js('https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js', function() {
+    mermaid.initialize({
+      startOnLoad: true
+    });
+    mermaid.init(undefined, '.language-mermaid');
+  });
+</script>
+
+    </div>
+    <script>(function () {
+  var $root = document.getElementsByClassName('root')[0];
+  if (window.hasEvent('touchstart')) {
+    $root.dataset.isTouch = true;
+    document.addEventListener('touchstart', function(){}, false);
+  }
+})();
+</script>
+  </body>
+</html>
+
