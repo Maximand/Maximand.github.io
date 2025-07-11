@@ -22,5 +22,5 @@ This website will contain structured braindumps of topics I find interesting dur
 * Reflections on Academia
 * Observations on Cyber Threat Intelligence
 
-If you find any of this as interesting as I do, feel free to connect with me on [LinkedIn](https://linkedin.com/in/maxhorst), through [BlueSky](https://bsky.app/profile/0x5h4un.bsky.social) or via the (historically) [Blue Bird](https://x.com/Shaunitor). As mentioned, I am using this space to think in public. Sometimes this will be with clarity, other times with ambiguity. Either way, it's all about building something meaningful (and hopefully fun) in cybersecurity research. Consider this a sketchbook in motion.
+If you find any of this as interesting as I do, feel free to connect with me on [LinkedIn](https://linkedin.com/in/maxhorst), through [BlueSky](https://bsky.app/profile/disclosing.observer) or via the (historically) [Blue Bird](https://x.com/Shaunitor). As mentioned, I am using this space to think in public. Sometimes this will be with clarity, other times with ambiguity. Either way, it's all about building something meaningful (and hopefully fun) in cybersecurity research. Consider this a sketchbook in motion.
 
