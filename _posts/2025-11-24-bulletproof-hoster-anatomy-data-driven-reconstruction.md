@@ -93,7 +93,7 @@ IPv6
 * `2a0b:7ec0:1320::/48`
 * `2a0b:7ec0:533::/48`
 
-Important to note is that the range `91.240.242.0/24` is registered as being used by customers in *network_ip_history*, but has since been reallocated to *sevencloud.ru*. Therefore, this could show up in the leak but is no longer part of the Media Land infrastructure. Moreover, the range `77.221.134.0/24` is listed internally as *NL Subnet*, which checks out as it is part of a sister company called *ML Cloud Ltd* and geolocates to the Netherlands instead of Russia. The *vm_host_log* table suggests that this subnet is used for customer-facing hypervisor pools.
+Important to note is that the range `91.240.242.0/24` is registered as being used by customers in *network_ip_history*, but has since been reallocated to *sevencloud.ru*. Therefore, this could show up in the leak but is no longer part of the Media Land infrastructure. Moreover, the range `77.221.134.0/24` is listed internally as *NL Subnet*, which checks out as it is part of a sister company called *ML Cloud Ltd* and geolocates to the Netherlands instead of Russia. The *vm_host_log* table suggests that this subnet is used for customer-facing hypervisor pools. For as far as Media Land still owns the prefixes, all of these ranges are announced under AS206728. 
 
 These blocks account for every address observed in the leak, all originating from AS206728 and AS215376. The IP allocation behaviour shows that these prefixes were treated as a shared pool available to many users at the same time, rather than as dedicated ranges tied to individual customers. These ranges can therefore be monitored in passive DNS, BGP announcements, and future threat intelligence feeds to track the re-emergence of related infrastructure.
 
