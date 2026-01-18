@@ -4,7 +4,7 @@ title: "The Ransomware Blame Game: Who Bears the Burden of Sanction Enforcement?
 tags:
   - Cybersecurity Policy & Ethics
   - Observations on Cyber Threat Intelligence
-  - Research Process
+  - Research Progress
 mathjax: true
 author: Max van der Horst
 show_author_profile: true
