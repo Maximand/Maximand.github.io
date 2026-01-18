@@ -159,3 +159,5 @@ Seen this way, sinkholes are not just defensive tools. They are analytical artif
 The broader implication is modest but useful. As coordinated takedowns become more common, especially against domain-heavy abuse ecosystems, passive DNS provides a way to study infrastructure at the exact moment it stops changing. When captured at scale, it can tell us how abuse systems were built to function, and what remains visible once pressure is applied.
 
 In that sense, sinkholing does not end the story. It marks the point where a different kind of analysis can begin.
+
+For those interested, a published list of domains sinkholed in 2025 can be found [here](../../../assets/sinkholed_domains_2025.txt.gz).
