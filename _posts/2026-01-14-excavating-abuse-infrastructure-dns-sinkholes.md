@@ -161,4 +161,4 @@ The broader implication is modest but useful. As coordinated takedowns become mo
 In that sense, sinkholing does not end the story. It marks the point where a different kind of analysis can begin.
 
 ## Indicators of Compromise
-For those interested, a published list of domains sinkholed in 2025 can be found [here](https://github.com/Maximand/Maximand.github.io/blob/main/assets/sinkholed_domains_2025.txt.gz).
+For those interested, a published list of domains sinkholed in 2025 (the same ones used in this post) can be found [here](https://github.com/Maximand/Maximand.github.io/blob/main/assets/sinkholed_domains_2025.txt.gz).
