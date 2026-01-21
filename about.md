@@ -11,7 +11,7 @@ titles:
 key: page-about
 ---
 
-There's no time like the present. As I am writing this, I have recently started my PhD at the Delft University of Technology on internet abuse and vulnerability disclosure practices. Structure is something I’ll need to impose on myself, and to do this, writing is my preferred tool. Welcome to this research diary, in which I will attempt to organize my own ideas. Hopefully you will find something useful in there!
+There's no time like the present. As I am writing this, I have recently started my PhD at the Delft University of Technology on internet abuse and vulnerability disclosure practices. Structure is something I’ll need to impose on myself, and to do this, writing is my preferred tool. My name is Max van der Horst, and this site serves as a space to think in public about cybersecurity research, policy, and practice. Hopefully you will find something useful in there!
 
 Prior to starting at TU Delft, I worked in various roles in the cybersecurity and defence industry. During this time I primarily occupied myself with Cyber Threat Intelligence and Vulnerability Management, the latter of which was heavily influenced by my work at the [Dutch Institute for Vulnerability Disclosure](https://www.divd.nl/who-we-are/team/people/max-van-der-horst/) (DIVD). DIVD is a volunteer-run non-profit foundation that focuses on conducting Coordinated Vulnerability Disclosure for (emerging) cybersecurity vulnerabilities worldwide, and within this foundation I contribute to its CSIRT as a researcher and [CVE Numbering Authority](https://www.cve.org/ProgramOrganization/CNAs) (CNA) administrator.
 

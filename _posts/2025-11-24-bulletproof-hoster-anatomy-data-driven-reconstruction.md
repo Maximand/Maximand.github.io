@@ -9,7 +9,7 @@ mathjax_autoNumber: true
 author: Max van der Horst
 show_author_profile: true
 show_edit_on_github: false
-excerpt: "This post reconstructs how sanctioned Bulletproof Hoster Media Land’s internal platform organised users, subscriptions, and address space, based on a leaked dataset. By linking lifecycle records to known Black Basta indicators, it highlights how customer segments and reseller-like entities provisioned infrastructure later used in ransomware activity. The findings illustrate how internal hosting data can reveal the supply-chain dynamics behind malicious operations"
+excerpt: "This post reconstructs how sanctioned Bulletproof Hoster Media Land’s internal platform organised users, subscriptions, and address space, based on a leaked dataset. By linking lifecycle records to known Black Basta indicators, it highlights how customer segments and reseller-like entities provisioned infrastructure later used in ransomware activity. The findings illustrate how internal hosting data can reveal the supply-chain dynamics behind malicious operations."
 header:
   theme: dark
 article_header:
