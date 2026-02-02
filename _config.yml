@@ -18,10 +18,11 @@
 ##############################
 text_skin: dark # "default" (default), "dark", "forest", "ocean", "chocolate", "orange"
 highlight_theme: tomorrow-night # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
-baseurl : /
+baseurl : ""
+url: "https://disclosing.observer"
 title   : Disclosing.Observer
 description: "Research and analysis on vulnerability disclosure, cyber threat intelligence, and cybersecurity policy."
-og_image: "/assets/images/disclosing_observer_og.png"
+og_image: "/assets/disclosing_observer_og.png"
 
 toc:
   selectors: "h1,h2,h3"
@@ -65,8 +66,8 @@ repository_tree: master
 paths:
   root    : / # title link url, "/" (default)
   home    : / # home layout url, "/" (default)
-  archive : /blog.html# "/archive.html" (default)
-  rss     : # "/feed.xml" (default)
+  archive : /blog.html
+  rss     : /feed.xml
 
 
 ## => Post
@@ -76,10 +77,6 @@ excerpt_separator: <!--more-->
 
 ## license
 license: CC-BY-NC-4.0 # "CC-BY-4.0", "CC-BY-SA-4.0", "CC-BY-NC-4.0", "CC-BY-ND-4.0"
-
-## TOC
-toc:
-  selectors: # "h1,h2,h3" (default)
 
 
 ## => Markdown Enhancements
@@ -213,7 +210,7 @@ defaults:
       license: true
       aside:
         toc: true
-      show_edit_on_github: true
+      show_edit_on_github: false
       show_subscribe: true
       pageview: true
 
