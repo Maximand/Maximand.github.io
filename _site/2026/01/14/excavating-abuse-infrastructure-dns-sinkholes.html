@@ -2,14 +2,37 @@
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>After the Takedown: Excavating Abuse Infrastructure with DNS Sinkholes - Disclosing.Observer</title>
-
 <meta name="description" content="DNS sinkholing does not erase abuse infrastructure but captures it at the moment of intervention, creating a stable boundary from which pre-takedown organiza...">
-<link rel="canonical" href="http://localhost:4000/2026/01/14/excavating-abuse-infrastructure-dns-sinkholes.html"><link rel="alternate" type="application/rss+xml" title="Disclosing.Observer" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<link rel="canonical" href="http://localhost:4000/2026/01/14/excavating-abuse-infrastructure-dns-sinkholes.html">
+
+<meta property="og:type" content="article">
+<meta property="og:title" content="After the Takedown: Excavating Abuse Infrastructure with DNS Sinkholes">
+<meta property="og:description" content="DNS sinkholing does not erase abuse infrastructure but captures it at the moment of intervention, creating a stable boundary from which pre-takedown organiza...">
+<meta property="og:url" content="http://localhost:4000/2026/01/14/excavating-abuse-infrastructure-dns-sinkholes.html">
+<meta property="og:site_name" content="Disclosing.Observer">
+<meta property="og:image" content="http://localhost:4000/assets/images/disclosing_observer_og.png">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="After the Takedown: Excavating Abuse Infrastructure with DNS Sinkholes">
+<meta name="twitter:description" content="DNS sinkholing does not erase abuse infrastructure but captures it at the moment of intervention, creating a stable boundary from which pre-takedown organiza...">
+<meta name="twitter:image" content="http://localhost:4000/assets/images/disclosing_observer_og.png"><link rel="alternate" type="application/rss+xml" title="Disclosing.Observer" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
 <meta name="theme-color" content="#ffffff">
-<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css" ><!-- start custom head snippets -->
+<!-- end favicons snippet --><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "After the Takedown: Excavating Abuse Infrastructure with DNS Sinkholes",
+  "description": "DNS sinkholing does not erase abuse infrastructure but captures it at the moment of intervention, creating a stable boundary from which pre-takedown organiza...",
+  "author": { "@type": "Person", "name": "Max van der Horst" },
+  "datePublished": "2026-01-14T00:00:00+01:00",
+  "dateModified": "2026-01-14T00:00:00+01:00",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "http://localhost:4000/2026/01/14/excavating-abuse-infrastructure-dns-sinkholes.html" },
+  "image": ["http://localhost:4000/assets/images/disclosing_observer_og.png"]
+}
+</script><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css"><!-- start custom head snippets -->
 
 <!-- end custom head snippets -->
 <script>(function() {
@@ -311,7 +334,7 @@ DNS sinkholing is usually treated as the end point of an abuse campaign: a momen
 <p>External sources therefore function only as starting points rather than authorities. Intelligence value comes from correlating DNS behaviour across many events, rather than relying on a single seed. This highlights an important asymmetry: while commercial threat intelligence vendors often sell lists of sinkholed or seized domains as finished products, passive DNS makes it possible to independently reconstruct much of the same context. Because passive DNS is driven by queries from affected systems, it preserves many of the indicators later packaged as commercial intelligence.</p>
 
 <h1 id="identifying-sinkholing-bursts">Identifying Sinkholing Bursts</h1>
-<p>To understand the temporal structure of sinkholing activity, all observed sinkhole transitions were aggregated into a daily time series. Figure 1 shows a total of 22.3M domains being sinkholed per day in 2025, derived exclusively from passive DNS observations. A logarithmic scale is used on the y-axis to make both background activity and extreme spikes visible within the same view.</p>
+<p>To understand the temporal structure of sinkholing activity, all observed sinkhole transitions were aggregated into a daily time series. Figure 1 shows a total of 22.3M domains being sinkholed in 2025, separated by day and derived exclusively from passive DNS observations. A logarithmic scale is used on the y-axis to make both background activity and extreme spikes visible within the same view.</p>
 
 <p>The resulting distribution is highly uneven. While many days exhibit a relatively stable baseline of takedown activity, this background is repeatedly interrupted by sharp spikes in which the number of sinkholed domains increases by one or multiple orders of magnitude within a very short time window. Such abrupt changes are difficult to explain through organic domain churn alone. Instead, they strongly suggest coordinated takedown efforts affecting large numbers of domains simultaneously.</p>
 
@@ -345,7 +368,7 @@ DNS sinkholing is usually treated as the end point of an abuse campaign: a momen
 Figure 2: Observed pre-takedown infrastructure for domains taken down during the April 10–11 burst.
 </span></p>
 
-<p>One additional pattern is worth noting at the NDS delegation layer. Prior to sinkholing, as mentioned before and shown in Figure 2, many of the domains in this burst relied on Cloudflare for authoritative DNS, often reusing identical pairs of Cloudflare nameservers across otherwise unrelated registered domains. These NS pairs reoccur across dozens to hundreds of domains and persist over time, independent of domain naming conventions. While Cloudflare’s NS record naming only uses 51 male and 50 female names as a precaution against <a href="https://blog.cloudflare.com/whats-the-story-behind-the-names-of-cloudflares-name-servers/">collisions in registration</a> leading to ‘only’ 2550 unique combinations, the degree of NS pair reuse in the Badbox burst is significant enough to make a remark about and reinforces the picture of interchangeable domains embedded within shared infrastructure networks.</p>
+<p>One additional pattern is worth noting at the DNS delegation layer. Prior to sinkholing, as mentioned before and shown in Figure 2, many of the domains in this burst relied on Cloudflare for authoritative DNS, often reusing identical pairs of Cloudflare nameservers across otherwise unrelated registered domains. These NS pairs reoccur across dozens to hundreds of domains and persist over time, independent of domain naming conventions. While Cloudflare’s NS record naming only uses 51 male and 50 female names as a precaution against <a href="https://blog.cloudflare.com/whats-the-story-behind-the-names-of-cloudflares-name-servers/">collisions in registration</a> leading to ‘only’ 2550 unique combinations, the degree of NS pair reuse in the Badbox burst is significant enough to make a remark about and reinforces the picture of interchangeable domains embedded within shared infrastructure networks.</p>
 
 <table>
   <thead>
@@ -434,6 +457,8 @@ geequery-spring-boot-auto-configure.meiboot.com
 geequery-spring-boot-auto-configure.tumune3.com
 </code></pre></div></div>
 
+<p>By taking the list of possible subdomain labels, querying passive DNS for all registered domains that are observed to have these subdomains, and counting which registered domains have a high number of hits, nearly all C2 domains included in attachment A of the <a href="https://www.scribd.com/document/889570375/google-v-badbox?v=0.708">Google lawsuit</a> documentation can be reproduced. This indicates that this is a pivot that could potentially be used to monitor for signals about new Badbox infrastructure that has not been taken down yet, especially under the assumption that the standard subdomains are used to facilitate modularity in its C2 infrastructure.</p>
+
 <h1 id="making-sense-of-the-whole">Making Sense of the Whole</h1>
 <p>Taken together, the observations in this worked example describe a form of infrastructure that is deliberately loose, repetitive, and resilient to loss. The pre-takedown hosting data shows that domains were spread across multiple commercial providers rather than concentrated in a single enclave. The nameserver layer shows extensive reuse of identical Cloudflare NS pairs across many otherwise unrelated registered domains. The subdomain structure shows automated expansion that treats individual domains as interchangeable rather than distinct assets.</p>
 
@@ -457,6 +482,9 @@ geequery-spring-boot-auto-configure.tumune3.com
 <p>The broader implication is modest but useful. As coordinated takedowns become more common, especially against domain-heavy abuse ecosystems, passive DNS provides a way to study infrastructure at the exact moment it stops changing. When captured at scale, it can tell us how abuse systems were built to function, and what remains visible once pressure is applied.</p>
 
 <p>In that sense, sinkholing does not end the story. It marks the point where a different kind of analysis can begin.</p>
+
+<h2 id="indicators-of-compromise">Indicators of Compromise</h2>
+<p>For those interested, a published list of domains sinkholed in 2025 (the same ones used in this post) can be found <a href="https://github.com/Maximand/Maximand.github.io/blob/main/assets/sinkholed_domains_2025.txt.gz">here</a>.</p>
 </div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2026-01-14T00:00:00+01:00"><!-- start custom article footer snippet -->
 
 <!-- end custom article footer snippet -->
@@ -530,8 +558,8 @@ geequery-spring-boot-auto-configure.tumune3.com
             </div></div></div><div class="page__footer d-print-none">
 <footer class="footer py-4 js-page-footer">
   <div class="main"><div itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Max"><meta itemprop="url" content="https://maximand.github.io"><meta itemprop="description" content="Scan all the things"><div class="footer__author-links"><div class="author-links">
-  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://maximand.github.io"><li title="Send me an Email.">
+      <meta itemprop="name" content="Max van der Horst"><meta itemprop="url" content="https://disclosing.observer"><meta itemprop="description" content="Scan all the things"><div class="footer__author-links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://disclosing.observer"><li title="Send me an Email.">
       <a class="button button--circle mail-button" itemprop="email" href="mailto:mhvanderhorst@tudelft.nl" target="_blank">
         <i class="fas fa-envelope"></i>
       </a><li title="Follow me on Linkedin.">

@@ -20,8 +20,8 @@ text_skin: dark # "default" (default), "dark", "forest", "ocean", "chocolate", "
 highlight_theme: tomorrow-night # "default" (default), "tomorrow", "tomorrow-night", "tomorrow-night-eighties", "tomorrow-night-blue", "tomorrow-night-bright"
 baseurl : /
 title   : Disclosing.Observer
-description: > # this means to ignore newlines until "Language & timezone"
-  Test
+description: "Research and analysis on vulnerability disclosure, cyber threat intelligence, and cybersecurity policy."
+og_image: "/assets/images/disclosing_observer_og.png"
 
 toc:
   selectors: "h1,h2,h3"
@@ -36,8 +36,8 @@ timezone: Europe/Amsterdam # see https://en.wikipedia.org/wiki/List_of_tz_databa
 ##############################
 author:
   type      : # "person" (default), "organization"
-  name      : Max
-  url       : https://maximand.github.io
+  name      : Max van der Horst
+  url       : https://disclosing.observer
   avatar    : https://avatars.githubusercontent.com/u/25766540?v=4 # path or url of avatar image (square)
   bio       : Scan all the things
   email     : mhvanderhorst@tudelft.nl

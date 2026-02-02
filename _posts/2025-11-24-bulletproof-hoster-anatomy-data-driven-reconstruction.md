@@ -1,22 +1,30 @@
 ---
 layout: article
 title: "The Anatomy of a Bulletproof Hoster: A Data-Driven Reconstruction of Media Land"
+
+description: "A data-driven reconstruction of the bulletproof hosting provider Media Land, using leaked internal records to analyze customer structure, address space allocation, and links to ransomware activity."
+excerpt: "Using leaked internal data, this post reconstructs how the sanctioned bulletproof hoster Media Land organized users, subscriptions, and address space, revealing supply-chain links to ransomware operations."
+
 tags:
   - Research Progress
   - Observations on Threat Intelligence
+
+author: Max van der Horst
 mathjax: true
 mathjax_autoNumber: true
-author: Max van der Horst
+
+# SEO / social
+og_image: /assets/bulletproof_hosting.png
+# last_modified_at: 2025-07-10   # optional if revised later
+
 show_author_profile: true
 show_edit_on_github: false
-excerpt: "This post reconstructs how sanctioned Bulletproof Hoster Media Land’s internal platform organised users, subscriptions, and address space, based on a leaked dataset. By linking lifecycle records to known Black Basta indicators, it highlights how customer segments and reseller-like entities provisioned infrastructure later used in ransomware activity. The findings illustrate how internal hosting data can reveal the supply-chain dynamics behind malicious operations."
+
 header:
   theme: dark
 article_header:
   type: cover
   image:
-    src: /assets/bulletproof_hosting.png
-  og_image:
     src: /assets/bulletproof_hosting.png
 ---
 

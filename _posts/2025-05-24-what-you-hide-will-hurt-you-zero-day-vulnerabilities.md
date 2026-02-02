@@ -1,13 +1,23 @@
 ---
 layout: article
 title: "What You Hide Will Hurt You: The Streisand Effect of Zero-Day Vulnerabilities"
+
+description: "An analysis of how attempts to suppress zero-day vulnerability disclosure can backfire, increasing attention, risk, and harm through a Streisand effect."
+excerpt: "Most vulnerabilities never make headlines. Botched disclosures do. This post examines how attempts to silence researchers can amplify attention and risk rather than contain it."
+
 tags:
   - Vulnerability Disclosure
-mathjax: true
+
 author: Max van der Horst
+mathjax: true
+
+# SEO / social
+og_image: /assets/streisand-effect.png
+# last_modified_at: 2025-06-20   # optional, add if revised later
+
 show_author_profile: true
 show_edit_on_github: false
-excerpt: "Most vulnerabilities never make headlines; botched disclosures do. Trying to muzzle researchers doesn’t shrink risk, it spotlights it."
+
 header:
   theme: dark
 article_header:

@@ -1,14 +1,24 @@
 ---
 layout: article
 title: "Ready, Retain, Fire? The Quiet Fallout of U.S. Offensive Cyber Policy"
+
+description: "An analysis of how U.S. zero-day retention and offensive cyber policy can create arms-race dynamics that undermine global cybersecurity and public defense."
+excerpt: "When one nation hoards cyber capabilities, others feel compelled to follow. This post examines how U.S. zero-day retention policy risks triggering an arms-race dynamic that weakens global security."
+
 tags:
   - Vulnerability Disclosure
   - Cybersecurity Policy & Ethics
-mathjax: true
+
 author: Max van der Horst
+mathjax: true
+
+# SEO / social
+og_image: /assets/dreadnought-retained.png
+# last_modified_at: 2025-07-01   # optional, add if revised later
+
 show_author_profile: true
 show_edit_on_github: false
-excerpt: "When one nation hoards weapons, others feel compelled to follow. The U.S. posture on zero-day retention risks global insecurity through a dynamic we've seen before."
+
 header:
   theme: dark
 article_header:

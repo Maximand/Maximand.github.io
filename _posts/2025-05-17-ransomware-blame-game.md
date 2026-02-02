@@ -1,14 +1,25 @@
 ---
 layout: article
 title: "The Ransomware Blame Game: Who Bears the Burden of Sanction Enforcement?"
+
+description: "An analysis of how ransomware sanctions enforcement relies on fragile attribution signals, and how this shifts legal and financial risk onto victims rather than attackers."
+excerpt: "Sanctions checks in ransomware cases depend on indicators that change faster than policy can keep up. This post examines how attribution uncertainty turns compliance into a burden for victims rather than a constraint on attackers."
+
 tags:
   - Cybersecurity Policy & Ethics
   - Observations on Cyber Threat Intelligence
   - Research Progress
-mathjax: true
+
 author: Max van der Horst
+mathjax: true
+
+# SEO / social
+og_image: /assets/ransomware_blog_banner.png
+# last_modified_at: 2025-06-15   # optional if you revise later
+
 show_author_profile: true
 show_edit_on_github: false
+
 header:
   theme: dark
 article_header:

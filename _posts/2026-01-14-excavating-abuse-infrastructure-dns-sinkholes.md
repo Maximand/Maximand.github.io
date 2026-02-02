@@ -1,22 +1,30 @@
 ---
 layout: article
 title: "After the Takedown: Excavating Abuse Infrastructure with DNS Sinkholes"
+
+description: "A methodological analysis of how DNS sinkholes preserve abuse infrastructure at the moment of takedown, enabling post-hoc reconstruction using passive DNS data."
+excerpt: "DNS sinkholing does not erase abuse infrastructure but captures it at the moment of intervention. This post shows how passive DNS can be used to reconstruct pre-takedown organization from that boundary."
+
 tags:
   - Research Progress
   - Observations on Threat Intelligence
+
+author: Max van der Horst
 mathjax: true
 mathjax_autoNumber: true
-author: Max van der Horst
+
+# SEO / social
+og_image: /assets/sinkholing.png
+# last_modified_at: 2025-07-12   # optional if revised later
+
 show_author_profile: true
 show_edit_on_github: false
-excerpt: "DNS sinkholing does not erase abuse infrastructure but captures it at the moment of intervention, creating a stable boundary from which pre-takedown organization can be reconstructed using passive DNS alone."
+
 header:
   theme: dark
 article_header:
   type: cover
   image:
-    src: /assets/sinkholing.png
-  og_image:
     src: /assets/sinkholing.png
 ---
 

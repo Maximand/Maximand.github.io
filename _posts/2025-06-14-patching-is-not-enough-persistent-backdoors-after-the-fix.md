@@ -1,20 +1,28 @@
 ---
 layout: article
 title: "Scanning Beyond the Patch: A Public-Interest Hunt for Hidden Shells"
+
+description: "An examination of how systems can remain compromised after patching, and how public-interest scanning can ethically uncover persistent backdoors."
+excerpt: "Even after patching, many edge devices remain compromised. This post examines how ethical scanning can uncover persistent backdoors left behind."
+
 tags:
   - Observations on Threat Intelligence
-mathjax: true
+
 author: Max van der Horst
+mathjax: true
+
+# SEO / social
+og_image: /assets/backdoor_castle.png
+# last_modified_at: 2025-06-18   # optional if revised later
+
 show_author_profile: true
 show_edit_on_github: false
-excerpt: "Even after patching, many edge devices remain compromised. This post explores how to ethically scan for backdoors left behind."
+
 header:
   theme: dark
 article_header:
   type: cover
   image:
-    src: /assets/backdoor_castle.png
-  og_image:
     src: /assets/backdoor_castle.png
 ---
 

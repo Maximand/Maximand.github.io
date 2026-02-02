@@ -1,21 +1,29 @@
 ---
 layout: article
 title: "Turla’s Pelmeni Wrapper: How Weak Crypto Exposed Kazuar’s Payload"
+
+description: "A technical analysis of Turla’s Pelmeni wrapper showing how weak cryptographic design enabled payload recovery and created new threat intelligence opportunities."
+excerpt: "Turla’s Pelmeni wrapper illustrates how flawed cryptographic design in malware can expose payloads. This post dissects how a weak pseudorandom generator enabled Kazuar payload recovery and what this means for threat intelligence."
+
 tags:
   - Observations on Threat Intelligence
+
+author: Max van der Horst
 mathjax: true
 mathjax_autoNumber: true
-author: Max van der Horst
+
+# SEO / social
+og_image: /assets/cassowary.png
+# last_modified_at: 2025-06-28   # optional if you revise later
+
 show_author_profile: true
 show_edit_on_github: false
-excerpt: "Turla’s Pelmeni Wrapper reveals how flawed cryptographic choices in malware design can create tracking opportunities. This post dissects how a weak and predictable pseudorandom generator exposed Kazuar’s payload and what this means for threat intelligence."
+
 header:
   theme: dark
 article_header:
   type: cover
   image:
-    src: /assets/cassowary.png
-  og_image:
     src: /assets/cassowary.png
 ---
 
