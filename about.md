@@ -1,5 +1,6 @@
 ---
 layout: article
+description: "About the blog of Max van der Horst, a PhD researcher at TU Delft working on vulnerability disclosure, cyber threat intelligence, and cybersecurity policy."
 titles:
   # @start locale config
   en      : &EN       About
