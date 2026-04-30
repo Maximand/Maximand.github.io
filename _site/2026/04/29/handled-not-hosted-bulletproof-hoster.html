@@ -1,26 +1,38 @@
 <!DOCTYPE html><html lang="en">
   <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Disclosing Observer - Disclosing.Observer</title>
-<meta name="description" content="Research and analysis on vulnerability disclosure, cyber threat intelligence, and cybersecurity policy.">
-<link rel="canonical" href="http://localhost:4000/">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>Handled, Not Hosted: Administrative Activity Inside a Bulletproof Hoster - Disclosing.Observer</title>
+<meta name="description" content="An analysis of administrative activity in the Media Land leak, showing how provider-level behaviour is concentrated, embedded in customer infrastructure, and...">
+<link rel="canonical" href="http://localhost:4000/2026/04/29/handled-not-hosted-bulletproof-hoster.html">
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Disclosing Observer">
-<meta property="og:description" content="Research and analysis on vulnerability disclosure, cyber threat intelligence, and cybersecurity policy.">
-<meta property="og:url" content="http://localhost:4000/">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Handled, Not Hosted: Administrative Activity Inside a Bulletproof Hoster">
+<meta property="og:description" content="An analysis of administrative activity in the Media Land leak, showing how provider-level behaviour is concentrated, embedded in customer infrastructure, and...">
+<meta property="og:url" content="http://localhost:4000/2026/04/29/handled-not-hosted-bulletproof-hoster.html">
 <meta property="og:site_name" content="Disclosing.Observer">
-<meta property="og:image" content="http://localhost:4000/assets/disclosing_observer_og.png">
+<meta property="og:image" content="http://localhost:4000/assets/admin_overreach.png">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Disclosing Observer">
-<meta name="twitter:description" content="Research and analysis on vulnerability disclosure, cyber threat intelligence, and cybersecurity policy.">
-<meta name="twitter:image" content="http://localhost:4000/assets/disclosing_observer_og.png"><link rel="alternate" type="application/rss+xml" title="Disclosing.Observer" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
+<meta name="twitter:title" content="Handled, Not Hosted: Administrative Activity Inside a Bulletproof Hoster">
+<meta name="twitter:description" content="An analysis of administrative activity in the Media Land leak, showing how provider-level behaviour is concentrated, embedded in customer infrastructure, and...">
+<meta name="twitter:image" content="http://localhost:4000/assets/admin_overreach.png"><link rel="alternate" type="application/rss+xml" title="Disclosing.Observer" href="/feed.xml"><!-- start favicons snippet, use https://realfavicongenerator.net/ --><link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png"><link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png"><link rel="manifest" href="/assets/site.webmanifest"><link rel="mask-icon" href="/assets/safari-pinned-tab.svg" color="#fc4d50"><link rel="shortcut icon" href="/assets/favicon.ico">
 
 <meta name="msapplication-TileColor" content="#ffc40d"><meta name="msapplication-config" content="/assets/browserconfig.xml">
 
 <meta name="theme-color" content="#ffffff">
-<!-- end favicons snippet --><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css"><!-- start custom head snippets -->
+<!-- end favicons snippet --><script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Handled, Not Hosted: Administrative Activity Inside a Bulletproof Hoster",
+  "description": "An analysis of administrative activity in the Media Land leak, showing how provider-level behaviour is concentrated, embedded in customer infrastructure, and...",
+  "author": { "@type": "Person", "name": "Max van der Horst" },
+  "datePublished": "2026-04-29T00:00:00+02:00",
+  "dateModified": "2026-04-29T00:00:00+02:00",
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "http://localhost:4000/2026/04/29/handled-not-hosted-bulletproof-hoster.html" },
+  "image": ["http://localhost:4000/assets/admin_overreach.png"]
+}
+</script><link rel="stylesheet" href="/assets/css/main.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/5.15.1/css/all.css"><!-- start custom head snippets -->
 
 <!-- end custom head snippets -->
 <script>(function() {
@@ -265,26 +277,25 @@
 </head>
   <body>
     <div class="root" data-is-touch="false">
-      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport cell cell--auto">
+      <div class="layout--page js-page-root"><div class="page__main js-page-main page__viewport has-aside cell cell--auto">
 
-      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header"><div class="main">
+      <div class="page__main-inner"><div class="page__header d-print-none"><header class="header header--dark"><div class="main">
       <div class="header__title">
         <div class="header__brand">
           <div class="logo-wrapper"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1920" zoomAndPan="magnify" viewBox="0 0 1440 299.999988" height="400" preserveAspectRatio="xMidYMid meet" version="1.0"><defs><g/><clipPath id="2179c428b5"><path d="M 762.960938 78.03125 L 893 78.03125 L 893 209.28125 L 762.960938 209.28125 Z M 762.960938 78.03125 " clip-rule="nonzero"/></clipPath><clipPath id="6ca335b253"><path d="M 762.960938 78.03125 L 893.460938 78.03125 L 893.460938 209.28125 L 762.960938 209.28125 Z M 762.960938 78.03125 " clip-rule="nonzero"/></clipPath></defs><g clip-path="url(#2179c428b5)"><path fill="#fcfcfc" d="M 833.011719 140.859375 L 833.011719 78.03125 C 871.160156 80.519531 893.441406 110.007812 892.820312 140.859375 Z M 782.65625 147.527344 L 762.964844 147.527344 C 762.964844 181.753906 790.710938 209.5 824.9375 209.5 L 824.9375 189.808594 C 801.585938 189.808594 782.65625 170.878906 782.65625 147.527344 Z M 801.441406 147.527344 L 790.496094 147.527344 C 790.496094 166.546875 805.917969 181.96875 824.9375 181.96875 L 824.9375 171.023438 C 811.960938 171.023438 801.441406 160.503906 801.441406 147.527344 Z M 801.441406 147.527344 " fill-opacity="1" fill-rule="evenodd"/></g><g clip-path="url(#6ca335b253)"><path fill="#ffb000" d="M 801.441406 140.476562 L 790.496094 140.476562 C 790.496094 121.453125 805.917969 106.035156 824.9375 106.035156 L 824.9375 116.976562 C 811.960938 116.976562 801.441406 127.5 801.441406 140.476562 Z M 831.359375 189.808594 L 831.359375 209.5 C 865.585938 209.5 893.332031 181.753906 893.332031 147.527344 L 873.640625 147.527344 C 873.640625 170.878906 854.710938 189.808594 831.359375 189.808594 Z M 831.359375 171.023438 L 831.359375 181.96875 C 850.382812 181.96875 865.800781 166.546875 865.800781 147.527344 L 854.855469 147.527344 C 854.855469 160.503906 844.335938 171.023438 831.359375 171.023438 Z M 782.65625 140.476562 L 762.964844 140.476562 C 762.964844 106.246094 790.710938 78.5 824.9375 78.5 L 824.9375 98.195312 C 801.585938 98.195312 782.65625 117.125 782.65625 140.476562 Z M 782.65625 140.476562 " fill-opacity="1" fill-rule="evenodd"/></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(15.000028, 207.849388)"><g><path d="M 10.1875 0 L 10.1875 -100.359375 C 23.957031 -101.234375 36.945312 -101.671875 49.15625 -101.671875 C 65.15625 -101.671875 76.28125 -97.984375 82.53125 -90.609375 C 88.789062 -83.242188 91.921875 -69.765625 91.921875 -50.171875 C 91.921875 -30.585938 88.789062 -17.109375 82.53125 -9.734375 C 76.28125 -2.367188 65.15625 1.3125 49.15625 1.3125 C 36.945312 1.3125 23.957031 0.875 10.1875 0 Z M 32.296875 -84.21875 L 32.296875 -16.296875 C 33.941406 -16.296875 36.628906 -16.269531 40.359375 -16.21875 C 44.097656 -16.164062 47.03125 -16.140625 49.15625 -16.140625 C 56.625 -16.140625 61.738281 -18.515625 64.5 -23.265625 C 67.269531 -28.023438 68.65625 -37 68.65625 -50.1875 C 68.65625 -63.375 67.269531 -72.363281 64.5 -77.15625 C 61.738281 -81.957031 56.625 -84.359375 49.15625 -84.359375 Z M 32.296875 -84.21875 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(113.906046, 207.849388)"><g><path d="M 15.265625 -103.421875 L 24.875 -103.421875 C 29.039062 -103.421875 31.125 -101.332031 31.125 -97.15625 L 31.125 -89.3125 C 31.125 -85.132812 29.039062 -83.046875 24.875 -83.046875 L 15.265625 -83.046875 C 11.097656 -83.046875 9.015625 -85.132812 9.015625 -89.3125 L 9.015625 -97.15625 C 9.015625 -101.332031 11.097656 -103.421875 15.265625 -103.421875 Z M 30.84375 0 L 9.453125 0 L 9.453125 -71.703125 L 30.84375 -71.703125 Z M 30.84375 0 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(154.050241, 207.849388)"><g><path d="M 40.734375 -26.625 L 22.84375 -31.421875 C 16.25 -33.359375 11.6875 -36 9.15625 -39.34375 C 6.632812 -42.6875 5.375 -47.316406 5.375 -53.234375 C 5.375 -60.703125 7.675781 -65.988281 12.28125 -69.09375 C 16.894531 -72.195312 24.773438 -73.75 35.921875 -73.75 C 48.816406 -73.550781 59.875 -72.628906 69.09375 -70.984375 L 67.640625 -57.15625 C 55.421875 -57.351562 46.207031 -57.453125 40 -57.453125 C 36.601562 -57.453125 34.25 -57.425781 32.9375 -57.375 C 31.632812 -57.332031 30.328125 -57.164062 29.015625 -56.875 C 27.703125 -56.582031 26.898438 -56.117188 26.609375 -55.484375 C 26.328125 -54.859375 26.1875 -53.914062 26.1875 -52.65625 C 26.1875 -52.164062 26.207031 -51.726562 26.25 -51.34375 C 26.300781 -50.957031 26.421875 -50.59375 26.609375 -50.25 C 26.804688 -49.914062 26.976562 -49.648438 27.125 -49.453125 C 27.269531 -49.253906 27.535156 -49.035156 27.921875 -48.796875 C 28.316406 -48.554688 28.632812 -48.382812 28.875 -48.28125 C 29.113281 -48.1875 29.546875 -48.019531 30.171875 -47.78125 C 30.804688 -47.539062 31.289062 -47.367188 31.625 -47.265625 C 31.96875 -47.171875 32.597656 -47.003906 33.515625 -46.765625 C 34.441406 -46.523438 35.148438 -46.351562 35.640625 -46.25 L 53.96875 -41.3125 C 60.363281 -39.46875 64.914062 -37.015625 67.625 -33.953125 C 70.34375 -30.898438 71.703125 -26.367188 71.703125 -20.359375 C 71.703125 -11.828125 69.226562 -6.035156 64.28125 -2.984375 C 59.34375 0.0664062 50.863281 1.59375 38.84375 1.59375 C 27.195312 1.59375 16.476562 0.769531 6.6875 -0.875 L 8 -14.84375 C 11.488281 -14.644531 19.78125 -14.546875 32.875 -14.546875 C 40.34375 -14.546875 45.210938 -14.859375 47.484375 -15.484375 C 49.765625 -16.117188 50.90625 -17.597656 50.90625 -19.921875 C 50.90625 -20.410156 50.878906 -20.847656 50.828125 -21.234375 C 50.785156 -21.617188 50.664062 -21.984375 50.46875 -22.328125 C 50.28125 -22.671875 50.085938 -22.9375 49.890625 -23.125 C 49.691406 -23.320312 49.375 -23.539062 48.9375 -23.78125 C 48.507812 -24.019531 48.171875 -24.210938 47.921875 -24.359375 C 47.679688 -24.503906 47.222656 -24.695312 46.546875 -24.9375 C 45.867188 -25.1875 45.332031 -25.359375 44.9375 -25.453125 C 44.550781 -25.546875 43.875 -25.710938 42.90625 -25.953125 C 41.9375 -26.203125 41.210938 -26.425781 40.734375 -26.625 Z M 40.734375 -26.625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(230.702414, 207.849388)"><g><path d="M 67.640625 -17.015625 L 69.53125 -3.046875 C 62.15625 0.148438 52.894531 1.75 41.75 1.75 C 28.5625 1.75 19.273438 -1.082031 13.890625 -6.75 C 8.503906 -12.425781 5.8125 -22.148438 5.8125 -35.921875 C 5.8125 -49.796875 8.523438 -59.566406 13.953125 -65.234375 C 19.390625 -70.910156 28.75 -73.75 42.03125 -73.75 C 52.894531 -73.75 61.722656 -72.242188 68.515625 -69.234375 L 66.1875 -55.859375 C 55.707031 -56.046875 48.867188 -56.140625 45.671875 -56.140625 C 39.078125 -56.140625 34.539062 -54.734375 32.0625 -51.921875 C 29.59375 -49.109375 28.359375 -43.773438 28.359375 -35.921875 C 28.359375 -28.066406 29.59375 -22.734375 32.0625 -19.921875 C 34.539062 -17.109375 39.078125 -15.703125 45.671875 -15.703125 C 54.109375 -15.703125 61.429688 -16.140625 67.640625 -17.015625 Z M 67.640625 -17.015625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(304.445572, 207.849388)"><g><path d="M 30.40625 -101.8125 L 30.40625 -23.421875 C 30.40625 -18.566406 33.117188 -16.140625 38.546875 -16.140625 L 44.359375 -16.140625 L 46.828125 -1.15625 C 43.148438 0.78125 37.429688 1.75 29.671875 1.75 C 23.273438 1.75 18.234375 0.03125 14.546875 -3.40625 C 10.859375 -6.851562 9.015625 -11.726562 9.015625 -18.03125 L 9.015625 -101.8125 Z M 30.40625 -101.8125 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(352.007724, 207.849388)"><g><path d="M 42.765625 -73.75 C 56.140625 -73.75 65.613281 -70.863281 71.1875 -65.09375 C 76.769531 -59.320312 79.5625 -49.550781 79.5625 -35.78125 C 79.5625 -22.007812 76.769531 -12.285156 71.1875 -6.609375 C 65.613281 -0.941406 56.140625 1.890625 42.765625 1.890625 C 29.285156 1.890625 19.753906 -0.941406 14.171875 -6.609375 C 8.597656 -12.285156 5.8125 -22.007812 5.8125 -35.78125 C 5.8125 -49.644531 8.597656 -59.4375 14.171875 -65.15625 C 19.753906 -70.882812 29.285156 -73.75 42.765625 -73.75 Z M 42.765625 -57.59375 C 37.046875 -57.59375 33.210938 -56.140625 31.265625 -53.234375 C 29.328125 -50.328125 28.359375 -44.507812 28.359375 -35.78125 C 28.359375 -27.25 29.328125 -21.523438 31.265625 -18.609375 C 33.210938 -15.703125 37.046875 -14.25 42.765625 -14.25 C 48.285156 -14.25 52.039062 -15.703125 54.03125 -18.609375 C 56.019531 -21.523438 57.015625 -27.25 57.015625 -35.78125 C 57.015625 -44.414062 56.046875 -50.207031 54.109375 -53.15625 C 52.171875 -56.113281 48.390625 -57.59375 42.765625 -57.59375 Z M 42.765625 -57.59375 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(437.386889, 207.849388)"><g><path d="M 40.734375 -26.625 L 22.84375 -31.421875 C 16.25 -33.359375 11.6875 -36 9.15625 -39.34375 C 6.632812 -42.6875 5.375 -47.316406 5.375 -53.234375 C 5.375 -60.703125 7.675781 -65.988281 12.28125 -69.09375 C 16.894531 -72.195312 24.773438 -73.75 35.921875 -73.75 C 48.816406 -73.550781 59.875 -72.628906 69.09375 -70.984375 L 67.640625 -57.15625 C 55.421875 -57.351562 46.207031 -57.453125 40 -57.453125 C 36.601562 -57.453125 34.25 -57.425781 32.9375 -57.375 C 31.632812 -57.332031 30.328125 -57.164062 29.015625 -56.875 C 27.703125 -56.582031 26.898438 -56.117188 26.609375 -55.484375 C 26.328125 -54.859375 26.1875 -53.914062 26.1875 -52.65625 C 26.1875 -52.164062 26.207031 -51.726562 26.25 -51.34375 C 26.300781 -50.957031 26.421875 -50.59375 26.609375 -50.25 C 26.804688 -49.914062 26.976562 -49.648438 27.125 -49.453125 C 27.269531 -49.253906 27.535156 -49.035156 27.921875 -48.796875 C 28.316406 -48.554688 28.632812 -48.382812 28.875 -48.28125 C 29.113281 -48.1875 29.546875 -48.019531 30.171875 -47.78125 C 30.804688 -47.539062 31.289062 -47.367188 31.625 -47.265625 C 31.96875 -47.171875 32.597656 -47.003906 33.515625 -46.765625 C 34.441406 -46.523438 35.148438 -46.351562 35.640625 -46.25 L 53.96875 -41.3125 C 60.363281 -39.46875 64.914062 -37.015625 67.625 -33.953125 C 70.34375 -30.898438 71.703125 -26.367188 71.703125 -20.359375 C 71.703125 -11.828125 69.226562 -6.035156 64.28125 -2.984375 C 59.34375 0.0664062 50.863281 1.59375 38.84375 1.59375 C 27.195312 1.59375 16.476562 0.769531 6.6875 -0.875 L 8 -14.84375 C 11.488281 -14.644531 19.78125 -14.546875 32.875 -14.546875 C 40.34375 -14.546875 45.210938 -14.859375 47.484375 -15.484375 C 49.765625 -16.117188 50.90625 -17.597656 50.90625 -19.921875 C 50.90625 -20.410156 50.878906 -20.847656 50.828125 -21.234375 C 50.785156 -21.617188 50.664062 -21.984375 50.46875 -22.328125 C 50.28125 -22.671875 50.085938 -22.9375 49.890625 -23.125 C 49.691406 -23.320312 49.375 -23.539062 48.9375 -23.78125 C 48.507812 -24.019531 48.171875 -24.210938 47.921875 -24.359375 C 47.679688 -24.503906 47.222656 -24.695312 46.546875 -24.9375 C 45.867188 -25.1875 45.332031 -25.359375 44.9375 -25.453125 C 44.550781 -25.546875 43.875 -25.710938 42.90625 -25.953125 C 41.9375 -26.203125 41.210938 -26.425781 40.734375 -26.625 Z M 40.734375 -26.625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(514.039086, 207.849388)"><g><path d="M 15.265625 -103.421875 L 24.875 -103.421875 C 29.039062 -103.421875 31.125 -101.332031 31.125 -97.15625 L 31.125 -89.3125 C 31.125 -85.132812 29.039062 -83.046875 24.875 -83.046875 L 15.265625 -83.046875 C 11.097656 -83.046875 9.015625 -85.132812 9.015625 -89.3125 L 9.015625 -97.15625 C 9.015625 -101.332031 11.097656 -103.421875 15.265625 -103.421875 Z M 30.84375 0 L 9.453125 0 L 9.453125 -71.703125 L 30.84375 -71.703125 Z M 30.84375 0 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(554.183307, 207.849388)"><g><path d="M 26.328125 -71.703125 L 27.921875 -61.09375 C 38.296875 -69.53125 48.53125 -73.75 58.625 -73.75 C 65.113281 -73.75 70.078125 -72.050781 73.515625 -68.65625 C 76.960938 -65.257812 78.6875 -60.3125 78.6875 -53.8125 L 78.6875 0 L 57.3125 0 L 57.3125 -47.125 C 57.3125 -50.320312 56.800781 -52.523438 55.78125 -53.734375 C 54.757812 -54.953125 52.941406 -55.5625 50.328125 -55.5625 C 45.765625 -55.5625 39.125 -53.378906 30.40625 -49.015625 L 30.40625 0 L 8.875 0 L 8.875 -71.703125 Z M 26.328125 -71.703125 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(641.307871, 207.849388)"><g><path d="M 81.3125 -62.25 L 72.296875 -61.09375 C 73.453125 -58.375 74.03125 -54.929688 74.03125 -50.765625 C 74.03125 -42.421875 71.53125 -36.503906 66.53125 -33.015625 C 61.539062 -29.523438 52.796875 -27.78125 40.296875 -27.78125 C 36.117188 -27.78125 31.992188 -28.023438 27.921875 -28.515625 C 26.765625 -26.960938 26.546875 -25.210938 27.265625 -23.265625 C 27.992188 -21.328125 29.617188 -20.210938 32.140625 -19.921875 L 58.1875 -16.875 C 65.550781 -16 70.859375 -13.863281 74.109375 -10.46875 C 77.359375 -7.070312 78.984375 -2.078125 78.984375 4.515625 C 78.984375 13.628906 76.242188 19.785156 70.765625 22.984375 C 65.285156 26.179688 55.46875 27.78125 41.3125 27.78125 C 26.570312 27.78125 16.582031 26.253906 11.34375 23.203125 C 6.101562 20.148438 3.484375 14.550781 3.484375 6.40625 C 3.484375 2.71875 4.332031 -0.3125 6.03125 -2.6875 C 7.726562 -5.0625 10.664062 -7.21875 14.84375 -9.15625 C 11.539062 -12.363281 10.203125 -16.316406 10.828125 -21.015625 C 11.460938 -25.722656 13.570312 -29.140625 17.15625 -31.265625 C 10.082031 -34.566406 6.546875 -41.019531 6.546875 -50.625 C 6.546875 -59.050781 9.066406 -65.007812 14.109375 -68.5 C 19.148438 -72 27.925781 -73.75 40.4375 -73.75 C 48 -73.75 54.253906 -73.066406 59.203125 -71.703125 L 82.328125 -71.703125 Z M 40.296875 -41.453125 C 45.523438 -41.453125 49.132812 -42.128906 51.125 -43.484375 C 53.113281 -44.847656 54.109375 -47.273438 54.109375 -50.765625 C 54.109375 -54.347656 53.140625 -56.769531 51.203125 -58.03125 C 49.265625 -59.289062 45.628906 -59.921875 40.296875 -59.921875 C 34.960938 -59.921875 31.300781 -59.289062 29.3125 -58.03125 C 27.320312 -56.769531 26.328125 -54.347656 26.328125 -50.765625 C 26.328125 -47.273438 27.320312 -44.847656 29.3125 -43.484375 C 31.300781 -42.128906 34.960938 -41.453125 40.296875 -41.453125 Z M 46.6875 -2.765625 L 28.65625 -4.65625 C 25.550781 -2.132812 24 0.628906 24 3.640625 C 24 7.128906 25.066406 9.359375 27.203125 10.328125 C 29.335938 11.296875 33.941406 11.78125 41.015625 11.78125 C 48.097656 11.78125 52.773438 11.269531 55.046875 10.25 C 57.328125 9.238281 58.46875 7.128906 58.46875 3.921875 C 58.46875 1.398438 57.738281 -0.195312 56.28125 -0.875 C 54.832031 -1.550781 51.632812 -2.179688 46.6875 -2.765625 Z M 46.6875 -2.765625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(725.52342, 207.849388)"><g><path d="M 14.984375 -21.96875 L 20.796875 -21.96875 C 23.609375 -21.96875 25.570312 -21.429688 26.6875 -20.359375 C 27.800781 -19.296875 28.359375 -17.359375 28.359375 -14.546875 L 28.359375 -7.5625 C 28.359375 -4.75 27.800781 -2.785156 26.6875 -1.671875 C 25.570312 -0.554688 23.609375 0 20.796875 0 L 14.984375 0 C 12.171875 0 10.207031 -0.554688 9.09375 -1.671875 C 7.976562 -2.785156 7.421875 -4.75 7.421875 -7.5625 L 7.421875 -14.546875 C 7.421875 -17.359375 7.976562 -19.296875 9.09375 -20.359375 C 10.207031 -21.429688 12.171875 -21.96875 14.984375 -21.96875 Z M 14.984375 -21.96875 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(895.109668, 207.849388)"><g><path d="M 30.25 -101.8125 L 30.25 -78.984375 C 30.25 -72.285156 29.617188 -66.660156 28.359375 -62.109375 C 35.921875 -69.867188 44.40625 -73.75 53.8125 -73.75 C 63.125 -73.75 69.835938 -70.863281 73.953125 -65.09375 C 78.078125 -59.320312 80.140625 -49.796875 80.140625 -36.515625 C 80.140625 -24.191406 77.617188 -14.734375 72.578125 -8.140625 C 67.535156 -1.546875 58.375 1.75 45.09375 1.75 C 39.269531 1.75 32.742188 1.265625 25.515625 0.296875 C 18.296875 -0.671875 12.648438 -2.03125 8.578125 -3.78125 L 8.578125 -101.8125 Z M 30.109375 -50.46875 L 30.109375 -15.5625 C 35.054688 -14.5 39.90625 -14.0625 44.65625 -14.25 C 49.601562 -14.445312 53.066406 -16.097656 55.046875 -19.203125 C 57.035156 -22.304688 58.03125 -28.023438 58.03125 -36.359375 C 58.03125 -44.316406 57.207031 -49.675781 55.5625 -52.4375 C 53.914062 -55.195312 50.472656 -56.578125 45.234375 -56.578125 C 41.253906 -56.578125 36.210938 -54.539062 30.109375 -50.46875 Z M 30.109375 -50.46875 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(981.216087, 207.849388)"><g><path d="M 40.734375 -26.625 L 22.84375 -31.421875 C 16.25 -33.359375 11.6875 -36 9.15625 -39.34375 C 6.632812 -42.6875 5.375 -47.316406 5.375 -53.234375 C 5.375 -60.703125 7.675781 -65.988281 12.28125 -69.09375 C 16.894531 -72.195312 24.773438 -73.75 35.921875 -73.75 C 48.816406 -73.550781 59.875 -72.628906 69.09375 -70.984375 L 67.640625 -57.15625 C 55.421875 -57.351562 46.207031 -57.453125 40 -57.453125 C 36.601562 -57.453125 34.25 -57.425781 32.9375 -57.375 C 31.632812 -57.332031 30.328125 -57.164062 29.015625 -56.875 C 27.703125 -56.582031 26.898438 -56.117188 26.609375 -55.484375 C 26.328125 -54.859375 26.1875 -53.914062 26.1875 -52.65625 C 26.1875 -52.164062 26.207031 -51.726562 26.25 -51.34375 C 26.300781 -50.957031 26.421875 -50.59375 26.609375 -50.25 C 26.804688 -49.914062 26.976562 -49.648438 27.125 -49.453125 C 27.269531 -49.253906 27.535156 -49.035156 27.921875 -48.796875 C 28.316406 -48.554688 28.632812 -48.382812 28.875 -48.28125 C 29.113281 -48.1875 29.546875 -48.019531 30.171875 -47.78125 C 30.804688 -47.539062 31.289062 -47.367188 31.625 -47.265625 C 31.96875 -47.171875 32.597656 -47.003906 33.515625 -46.765625 C 34.441406 -46.523438 35.148438 -46.351562 35.640625 -46.25 L 53.96875 -41.3125 C 60.363281 -39.46875 64.914062 -37.015625 67.625 -33.953125 C 70.34375 -30.898438 71.703125 -26.367188 71.703125 -20.359375 C 71.703125 -11.828125 69.226562 -6.035156 64.28125 -2.984375 C 59.34375 0.0664062 50.863281 1.59375 38.84375 1.59375 C 27.195312 1.59375 16.476562 0.769531 6.6875 -0.875 L 8 -14.84375 C 11.488281 -14.644531 19.78125 -14.546875 32.875 -14.546875 C 40.34375 -14.546875 45.210938 -14.859375 47.484375 -15.484375 C 49.765625 -16.117188 50.90625 -17.597656 50.90625 -19.921875 C 50.90625 -20.410156 50.878906 -20.847656 50.828125 -21.234375 C 50.785156 -21.617188 50.664062 -21.984375 50.46875 -22.328125 C 50.28125 -22.671875 50.085938 -22.9375 49.890625 -23.125 C 49.691406 -23.320312 49.375 -23.539062 48.9375 -23.78125 C 48.507812 -24.019531 48.171875 -24.210938 47.921875 -24.359375 C 47.679688 -24.503906 47.222656 -24.695312 46.546875 -24.9375 C 45.867188 -25.1875 45.332031 -25.359375 44.9375 -25.453125 C 44.550781 -25.546875 43.875 -25.710938 42.90625 -25.953125 C 41.9375 -26.203125 41.210938 -26.425781 40.734375 -26.625 Z M 40.734375 -26.625 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1057.86826, 207.849388)"><g><path d="M 54.546875 -28.65625 L 28.65625 -28.65625 C 29.332031 -23.414062 30.90625 -19.898438 33.375 -18.109375 C 35.851562 -16.316406 39.953125 -15.421875 45.671875 -15.421875 C 53.328125 -15.421875 62.25 -15.953125 72.4375 -17.015625 L 74.46875 -3.640625 C 67 -0.046875 56.578125 1.75 43.203125 1.75 C 29.722656 1.75 20.117188 -1.15625 14.390625 -6.96875 C 8.671875 -12.789062 5.8125 -22.394531 5.8125 -35.78125 C 5.8125 -49.84375 8.597656 -59.6875 14.171875 -65.3125 C 19.753906 -70.9375 29.140625 -73.75 42.328125 -73.75 C 54.253906 -73.75 62.882812 -71.6875 68.21875 -67.5625 C 73.550781 -63.4375 76.265625 -57.160156 76.359375 -48.734375 C 76.359375 -42.035156 74.632812 -37.015625 71.1875 -33.671875 C 67.75 -30.328125 62.203125 -28.65625 54.546875 -28.65625 Z M 28.21875 -41.59375 L 48.578125 -41.59375 C 51.203125 -41.59375 52.972656 -42.222656 53.890625 -43.484375 C 54.804688 -44.742188 55.265625 -46.585938 55.265625 -49.015625 C 55.265625 -52.410156 54.390625 -54.757812 52.640625 -56.0625 C 50.898438 -57.375 47.703125 -58.03125 43.046875 -58.03125 C 37.523438 -58.03125 33.742188 -56.9375 31.703125 -54.75 C 29.671875 -52.570312 28.507812 -48.1875 28.21875 -41.59375 Z M 28.21875 -41.59375 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1139.320266, 207.849388)"><g><path d="M 60.359375 -73.75 L 58.1875 -53.8125 L 52.359375 -53.8125 C 47.609375 -53.8125 40.289062 -52.164062 30.40625 -48.875 L 30.40625 0 L 8.875 0 L 8.875 -71.703125 L 25.59375 -71.703125 L 27.484375 -61.234375 C 37.285156 -69.578125 46.984375 -73.75 56.578125 -73.75 Z M 60.359375 -73.75 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1201.136523, 207.849388)"><g><path d="M 80.71875 -71.703125 L 57.15625 -5.09375 C 56 -1.695312 53.675781 0 50.1875 0 L 31.5625 0 C 28.070312 0 25.742188 -1.695312 24.578125 -5.09375 L 1.015625 -71.703125 L 23.859375 -71.703125 L 36.796875 -26.765625 C 37.867188 -22.785156 38.890625 -18.519531 39.859375 -13.96875 L 41.75 -13.96875 L 45.09375 -26.765625 L 58.03125 -71.703125 Z M 80.71875 -71.703125 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1281.715829, 207.849388)"><g><path d="M 54.546875 -28.65625 L 28.65625 -28.65625 C 29.332031 -23.414062 30.90625 -19.898438 33.375 -18.109375 C 35.851562 -16.316406 39.953125 -15.421875 45.671875 -15.421875 C 53.328125 -15.421875 62.25 -15.953125 72.4375 -17.015625 L 74.46875 -3.640625 C 67 -0.046875 56.578125 1.75 43.203125 1.75 C 29.722656 1.75 20.117188 -1.15625 14.390625 -6.96875 C 8.671875 -12.789062 5.8125 -22.394531 5.8125 -35.78125 C 5.8125 -49.84375 8.597656 -59.6875 14.171875 -65.3125 C 19.753906 -70.9375 29.140625 -73.75 42.328125 -73.75 C 54.253906 -73.75 62.882812 -71.6875 68.21875 -67.5625 C 73.550781 -63.4375 76.265625 -57.160156 76.359375 -48.734375 C 76.359375 -42.035156 74.632812 -37.015625 71.1875 -33.671875 C 67.75 -30.328125 62.203125 -28.65625 54.546875 -28.65625 Z M 28.21875 -41.59375 L 48.578125 -41.59375 C 51.203125 -41.59375 52.972656 -42.222656 53.890625 -43.484375 C 54.804688 -44.742188 55.265625 -46.585938 55.265625 -49.015625 C 55.265625 -52.410156 54.390625 -54.757812 52.640625 -56.0625 C 50.898438 -57.375 47.703125 -58.03125 43.046875 -58.03125 C 37.523438 -58.03125 33.742188 -56.9375 31.703125 -54.75 C 29.671875 -52.570312 28.507812 -48.1875 28.21875 -41.59375 Z M 28.21875 -41.59375 "/></g></g></g><g fill="#fcfcfc" fill-opacity="1"><g transform="translate(1363.167861, 207.849388)"><g><path d="M 60.359375 -73.75 L 58.1875 -53.8125 L 52.359375 -53.8125 C 47.609375 -53.8125 40.289062 -52.164062 30.40625 -48.875 L 30.40625 0 L 8.875 0 L 8.875 -71.703125 L 25.59375 -71.703125 L 27.484375 -61.234375 C 37.285156 -69.578125 46.984375 -73.75 56.578125 -73.75 Z M 60.359375 -73.75 "/></g></g></g></svg></div>
         </div><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></div><nav class="navigation">
-        <ul><li class="navigation__item navigation__item--active"><a href="/">Home</a></li><li class="navigation__item"><a href="/about.html">About</a></li><li class="navigation__item"><a href="/blog.html">Blog</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
+        <ul><li class="navigation__item"><a href="/">Home</a></li><li class="navigation__item"><a href="/about.html">About</a></li><li class="navigation__item"><a href="/blog.html">Blog</a></li><li><button class="button button--secondary button--circle search-button js-search-toggle"><i class="fas fa-search"></i></button></li></ul>
       </nav></div>
   </header>
-</div><div class="page__content"><div class ="main"><div class="grid grid--reverse">
+</div><div class="page__content"><img class="article__header--cover" src="/assets/admin_overreach.png" /><div class ="main"><div class="grid grid--reverse">
 
-              <div class="col-aside d-print-none js-col-aside"></div>
+              <div class="col-aside d-print-none js-col-aside"><aside class="page__aside js-page-aside"><div class="toc-aside js-toc-root"></div>
+</aside></div>
 
               <div class="col-main cell cell--auto"><!-- start custom main top snippet -->
 
 <!-- end custom main top snippet -->
-<article itemscope itemtype="http://schema.org/WebPage"><header style="display:none;"><h1>Disclosing Observer</h1></header><meta itemprop="headline" content="Disclosing Observer"><meta itemprop="author" content="Max van der Horst"/><div class="js-article-content"><div class="layout--articles"><div class="article-list items items--divided"><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
-          <header><a href="/2026/04/29/handled-not-hosted-bulletproof-hoster.html"><h2 itemprop="headline" class="item__header">Handled, Not Hosted: Administrative Activity Inside a Bulletproof Hoster</h2></a></header>
-          <div class="item__description"><div class="article__content" itemprop="description articleBody">Administrative activity in Media Land is concentrated, shared across administrators, and embedded in customer infrastructure, with direct overlap with ransomware-linked systems. This post shows what that looks like in practice.</div><p><a href="/2026/04/29/handled-not-hosted-bulletproof-hoster.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
+<article itemscope itemtype="http://schema.org/Article"><div class="article__header"><header><h1>Handled, Not Hosted: Administrative Activity Inside a Bulletproof Hoster</h1></header></div><meta itemprop="headline" content="Handled, Not Hosted: Administrative Activity Inside a Bulletproof Hoster"><div class="article__info clearfix"><ul class="left-col menu"><li>
               <a class="button button--secondary button--pill button--sm"
                 href="/blog.html?tag=Research+Progress">Research Progress</a>
             </li><li>
@@ -292,96 +303,397 @@
                 href="/blog.html?tag=Observations+on+Threat+Intelligence">Observations on Threat Intelligence</a>
             </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>Apr 29, 2026</span>
             </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2026-04-29T00:00:00+02:00">
-    <meta itemprop="keywords" content="Research Progress,Observations on Threat Intelligence"></div>
-      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
-          <header><a href="/2026/01/14/excavating-abuse-infrastructure-dns-sinkholes.html"><h2 itemprop="headline" class="item__header">After the Takedown: Excavating Abuse Infrastructure with DNS Sinkholes</h2></a></header>
-          <div class="item__description"><div class="article__content" itemprop="description articleBody">DNS sinkholing does not erase abuse infrastructure but captures it at the moment of intervention. This post shows how passive DNS can be used to reconstruct pre-takedown organization from that boundary.</div><p><a href="/2026/01/14/excavating-abuse-infrastructure-dns-sinkholes.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Research+Progress">Research Progress</a>
-            </li><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Observations+on+Threat+Intelligence">Observations on Threat Intelligence</a>
-            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>Jan 14, 2026</span>
-            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2026-01-14T00:00:00+01:00">
-    <meta itemprop="keywords" content="Research Progress,Observations on Threat Intelligence"></div>
-      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
-          <header><a href="/2025/11/24/bulletproof-hoster-anatomy-data-driven-reconstruction.html"><h2 itemprop="headline" class="item__header">The Anatomy of a Bulletproof Hoster: A Data-Driven Reconstruction of Media Land</h2></a></header>
-          <div class="item__description"><div class="article__content" itemprop="description articleBody">Using leaked internal data, this post reconstructs how the sanctioned bulletproof hoster Media Land organized users, subscriptions, and address space, revealing supply-chain links to ransomware operations.</div><p><a href="/2025/11/24/bulletproof-hoster-anatomy-data-driven-reconstruction.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Research+Progress">Research Progress</a>
-            </li><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Observations+on+Threat+Intelligence">Observations on Threat Intelligence</a>
-            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>Nov 24, 2025</span>
-            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-11-24T00:00:00+01:00">
-    <meta itemprop="keywords" content="Research Progress,Observations on Threat Intelligence"></div>
-      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
-          <header><a href="/2025/10/28/virtue-before-permission-ethical-vulnerability-disclosure.html"><h2 itemprop="headline" class="item__header">Virtue Before Permission: The Ethical Character of Vulnerability Disclosure</h2></a></header>
-          <div class="item__description"><div class="article__content" itemprop="description articleBody">Responsible vulnerability disclosure begins with character. This post argues that honesty, restraint, and care matter more than formal permission when assessing the ethics of unsolicited hacking.</div><p><a href="/2025/10/28/virtue-before-permission-ethical-vulnerability-disclosure.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Vulnerability+Disclosure">Vulnerability Disclosure</a>
-            </li><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Cybersecurity+Policy+%26+Ethics">Cybersecurity Policy & Ethics</a>
-            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>Oct 28, 2025</span>
-            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-10-28T00:00:00+01:00">
-    <meta itemprop="keywords" content="Vulnerability Disclosure,Cybersecurity Policy & Ethics"></div>
-      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
-          <header><a href="/2025/06/23/turla-pelmeni-wrapper-weak-crypto-kazuar-payload.html"><h2 itemprop="headline" class="item__header">Turla’s Pelmeni Wrapper: How Weak Crypto Exposed Kazuar’s Payload</h2></a></header>
-          <div class="item__description"><div class="article__content" itemprop="description articleBody">Turla’s Pelmeni wrapper illustrates how flawed cryptographic design in malware can expose payloads. This post dissects how a weak pseudorandom generator enabled Kazuar payload recovery and what this means for threat intelligence.</div><p><a href="/2025/06/23/turla-pelmeni-wrapper-weak-crypto-kazuar-payload.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Observations+on+Threat+Intelligence">Observations on Threat Intelligence</a>
-            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>Jun 23, 2025</span>
-            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-06-23T00:00:00+02:00">
-    <meta itemprop="keywords" content="Observations on Threat Intelligence"></div>
-      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
-          <header><a href="/2025/06/14/patching-is-not-enough-persistent-backdoors-after-the-fix.html"><h2 itemprop="headline" class="item__header">Scanning Beyond the Patch: A Public-Interest Hunt for Hidden Shells</h2></a></header>
-          <div class="item__description"><div class="article__content" itemprop="description articleBody">Even after patching, many edge devices remain compromised. This post examines how ethical scanning can uncover persistent backdoors left behind.</div><p><a href="/2025/06/14/patching-is-not-enough-persistent-backdoors-after-the-fix.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Observations+on+Threat+Intelligence">Observations on Threat Intelligence</a>
-            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>Jun 14, 2025</span>
-            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-06-14T00:00:00+02:00">
-    <meta itemprop="keywords" content="Observations on Threat Intelligence"></div>
-      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
-          <header><a href="/2025/05/30/us-cyber-policy-zero-day-retention.html"><h2 itemprop="headline" class="item__header">Ready, Retain, Fire? The Quiet Fallout of U.S. Offensive Cyber Policy</h2></a></header>
-          <div class="item__description"><div class="article__content" itemprop="description articleBody">When one nation hoards cyber capabilities, others feel compelled to follow. This post examines how U.S. zero-day retention policy risks triggering an arms-race dynamic that weakens global security.</div><p><a href="/2025/05/30/us-cyber-policy-zero-day-retention.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Vulnerability+Disclosure">Vulnerability Disclosure</a>
-            </li><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Cybersecurity+Policy+%26+Ethics">Cybersecurity Policy & Ethics</a>
-            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>May 30, 2025</span>
-            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-05-30T00:00:00+02:00">
-    <meta itemprop="keywords" content="Vulnerability Disclosure,Cybersecurity Policy & Ethics"></div>
-      </article><article class="item" itemscope itemtype="http://schema.org/BlogPosting"><div class="item__content">
-          <header><a href="/2025/05/24/what-you-hide-will-hurt-you-zero-day-vulnerabilities.html"><h2 itemprop="headline" class="item__header">What You Hide Will Hurt You: The Streisand Effect of Zero-Day Vulnerabilities</h2></a></header>
-          <div class="item__description"><div class="article__content" itemprop="description articleBody">Most vulnerabilities never make headlines. Botched disclosures do. This post examines how attempts to silence researchers can amplify attention and risk rather than contain it.</div><p><a href="/2025/05/24/what-you-hide-will-hurt-you-zero-day-vulnerabilities.html">Read more</a></p></div><div class="article__info clearfix"><ul class="left-col menu"><li>
-              <a class="button button--secondary button--pill button--sm"
-                href="/blog.html?tag=Vulnerability+Disclosure">Vulnerability Disclosure</a>
-            </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Max van der Horst</span></li><li><i class="far fa-calendar-alt"></i> <span>May 24, 2025</span>
-            </li></ul></div><meta itemprop="author" content="Max van der Horst"/><meta itemprop="datePublished" content="2025-05-24T00:00:00+02:00">
-    <meta itemprop="keywords" content="Vulnerability Disclosure"></div>
-      </article></div>
-</div><div class="layout--home"><div class="pagination"><p>10 post articles, 2 pages.</p>
-    <div class="pagination__menu">
-      <ul class="menu menu--nowrap"><li><div class="button button--secondary button--circle disabled">
-            <i class="fas fa-angle-left"></i>
-          </div></li><li>
-              <div class="button button--primary button--circle focus"><span>1</span></div>
-            </li><li>
-                <a class="button button--secondary button--circle" href="/page2"><span>2</span></a>
-              </li><li><a class="button button--secondary button--circle" href="/page2">
-            <i class="fas fa-angle-right"></i>
-          </a></li></ul>
+    <meta itemprop="keywords" content="Research Progress,Observations on Threat Intelligence"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
+
+<!-- end custom article top snippet -->
+<div class="article__content" itemprop="articleBody"><blockquote>
+  <p><strong>Summary:</strong>
+This post analyzes administrative activity in the leaked Media Land dataset and shows that provider-level behaviour is concentrated, shared across administrators, and embedded in the same access layer as customer operations. These interactions disproportionately target high-capacity accounts linked to ransomware infrastructure and persist over time. In addition, administrator-linked SSH key material is present on live systems in that environment. While this does not establish intent, it shows how provider access and abuse infrastructure can become intertwined in practice.</p>
+</blockquote>
+
+<p>Two posts ago, I decided to <a href="https://disclosing.observer/2025/11/24/bulletproof-hoster-anatomy-data-driven-reconstruction.html">go through</a> the leaked internal database of the <a href="https://www.nationalcrimeagency.gov.uk/news/prolific-bulletproof-hosting-service-sanctioned-by-the-uk-and-allies">Media Land</a> bulletproof hoster to reconstruct and understand its internal structure. That analysis focused on customer-side resource allocation: which accounts received infrastructure, how address space moved through the platform, and which users overlapped with IP addresses mentioned in the <a href="https://www.first.org/blog/20250321-black-basta-ransomware-leak">Black Basta leak</a>.</p>
+
+<p>This post continues from the same dataset, but looks at a different layer of the platform. Instead of asking which customers were assigned abuse-linked infrastructure, I figured it was worth investigating how Media Land’s own administrative accounts interacted with that infrastructure, and whether provider-level access artifacts can still be observed on systems linked to the same operational ecosystem.</p>
+
+<p>The previous post established several findings that this analysis builds on directly. Cross-referencing Media Land’s internal IP assignment history with indicators from the Black Basta leak identified 74 customer accounts whose assigned infrastructure overlapped with Black Basta activity between September 2023 and September 2024. One account dominated that overlap: a user registered under the name “Mr Reseller” (Мистер Ресселер), identified through password reuse across two accounts, who managed 1902 unique IP assignments and had 207 Black Basta-linked IPs in that period. That account also showed patterns consistent with reseller behaviour: high subscription volume, high IP churn, and significant cryptocurrency payments. SSH key analysis additionally showed that several clusters of accounts shared key material, and that these keys could in principle be scanned for on live systems. Those findings form the customer-side baseline. This post examines what the administrative layer was doing with the same infrastructure.</p>
+
+<p>That distinction between customer-side allocation and provider-level access matters. A hosting provider’s default relationship with customer infrastructure is structurally passive: provision the resource, maintain uptime, step back. That argument becomes harder to sustain when the provider’s behaviour is instead structurally active, meaning sustained and concentrated engagement with specific high-risk accounts across multiple administrators. Of course, this does not by itself prove intent or direct operation, but it does show that the separation between customer infrastructure and provider access was not clean. The underlying question is what evidence of provider control looks like at the infrastructure level, and the analysis that follows treats it as an empirical one.</p>
+
+<p>Under Article 6 of the European <a href="https://eur-lex.europa.eu/eli/reg/2022/2065/oj/eng">Digital Services Act</a>, hosters even have a liability exemption for whatever happens on their infrastructure until they can have <em>actual</em> knowledge or awareness of illegal activity or content, the provider does not act <em>expeditiously</em> to remove or disable access, or the user is acting under authority or control of the provider. This last aspect is important, as it directly relates to whether provider involvement goes beyond passive hosting and into forms of control.</p>
+
+<h1 id="administrative-data-and-observability">Administrative Data and Observability</h1>
+<p>As discussed in the previous post, the Media Land leak includes not only customer-side records, but also a limited set of administrative artifacts. These consist of administrator accounts, their assigned roles, and authentication logs capturing timestamps, source IPs, and client fingerprints. While incomplete, this data provides a direct view into how the platform was accessed and operated from the provider side.</p>
+
+<p>Unlike customer data, which reflects how infrastructure is allocated and used, these records capture who has control over that infrastructure and how that control is exercised. On their own, they do not reveal specific actions or intent, but they establish the identities and access patterns of the administrative layer.</p>
+
+<p>This distinction matters for the analysis that follows. The same identifiers, IP addresses, and access patterns observed here reappear elsewhere in the dataset, and in some cases outside the platform entirely. Before linking those layers, it is necessary to establish which administrative identities exist and how they appear in the data.</p>
+
+<p>The table below lists the administrative accounts observed in the leak. These accounts form the control surface through which the platform is managed and provide the anchor points for the analysis that follows.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th style="text-align: left">name</th>
+      <th style="text-align: center">email</th>
+      <th style="text-align: right">role</th>
+      <th style="text-align: right">created_at</th>
+      <th style="text-align: right">blocked</th>
+      <th style="text-align: right">note</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>ea1f2758-7cc0-41c6-95c8-50405f9c2728</td>
+      <td style="text-align: left">Д***</td>
+      <td style="text-align: center">daniil.p******@sshvps.net</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2023-02-07 20:20:07</td>
+      <td style="text-align: right">no</td>
+      <td style="text-align: right"> </td>
+    </tr>
+    <tr>
+      <td>ed8ccba6-c077-4a42-9e5c-54fcdca0c8b7</td>
+      <td style="text-align: left">С*** Б***</td>
+      <td style="text-align: center">aleksandr.b******@sshvps.net</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2023-02-07 20:22:07</td>
+      <td style="text-align: right">no</td>
+      <td style="text-align: right"> </td>
+    </tr>
+    <tr>
+      <td>04b2c153-89e9-43b2-926b-f768c0cd80a4</td>
+      <td style="text-align: left">Д*** Б***</td>
+      <td style="text-align: center">dmitrij.b******@sshvps.net</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2023-02-08 12:09:30</td>
+      <td style="text-align: right">yes</td>
+      <td style="text-align: right">uvolen</td>
+    </tr>
+    <tr>
+      <td>8c6342f0-ee4c-45f6-9106-e30f13eaa1b4</td>
+      <td style="text-align: left">—</td>
+      <td style="text-align: center">bulat.t******@sshvps.net</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2023-05-11 13:06:02</td>
+      <td style="text-align: right">no</td>
+      <td style="text-align: right"> </td>
+    </tr>
+    <tr>
+      <td>1525e327-515f-4efd-84a1-d08830346a51</td>
+      <td style="text-align: left">tester_2</td>
+      <td style="text-align: center">bulat.t******@gmail.com</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2023-05-31 14:09:52</td>
+      <td style="text-align: right">no</td>
+      <td style="text-align: right">test</td>
+    </tr>
+    <tr>
+      <td>100d7eea-31be-4007-b2d6-0ab127e70508</td>
+      <td style="text-align: left">Е*** Д***</td>
+      <td style="text-align: center">e.d<strong>**</strong>**@sshvps.net</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2023-05-29 13:16:10</td>
+      <td style="text-align: right">no</td>
+      <td style="text-align: right"> </td>
+    </tr>
+    <tr>
+      <td>2a0dbc3c-bfd2-491c-979f-c4a2b4165045</td>
+      <td style="text-align: left">А*** К***</td>
+      <td style="text-align: center">andrey.k******@sshvps.net</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2022-06-10 13:47:27</td>
+      <td style="text-align: right">yes</td>
+      <td style="text-align: right">del</td>
+    </tr>
+    <tr>
+      <td>7ca909e0-b297-4386-b6db-4e5164e36cb5</td>
+      <td style="text-align: left">С***</td>
+      <td style="text-align: center">stanislav.r******@sshvps.net</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2023-02-07 20:07:06</td>
+      <td style="text-align: right">no</td>
+      <td style="text-align: right">key ref</td>
+    </tr>
+    <tr>
+      <td>56a29d25-5414-424c-98d8-c1d9c48e3650</td>
+      <td style="text-align: left">К***</td>
+      <td style="text-align: center">ek.b<em>**</em>@sshvps.net</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2023-05-24 14:11:37</td>
+      <td style="text-align: right">yes</td>
+      <td style="text-align: right">Админ</td>
+    </tr>
+    <tr>
+      <td>167df3d9-b030-4f8e-bdff-04547c334bc2</td>
+      <td style="text-align: left">Boss</td>
+      <td style="text-align: center">a@aa3.ru</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2023-02-08 11:59:54</td>
+      <td style="text-align: right">yes</td>
+      <td style="text-align: right">d</td>
+    </tr>
+    <tr>
+      <td>94ed2348-726e-43c0-9bfe-2b2d19549014</td>
+      <td style="text-align: left">alex</td>
+      <td style="text-align: center">alex.k****@gmail.com</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2025-01-08 14:41:28</td>
+      <td style="text-align: right">no</td>
+      <td style="text-align: right"> </td>
+    </tr>
+    <tr>
+      <td>4803d42c-482b-485d-9a26-c80a4a95ad11</td>
+      <td style="text-align: left">alex</td>
+      <td style="text-align: center">alex@ml.cloud</td>
+      <td style="text-align: right">admin</td>
+      <td style="text-align: right">2025-02-05 16:42:19</td>
+      <td style="text-align: right">no</td>
+      <td style="text-align: right"> </td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="centered-text">Table 1: Admin accounts in the Media Land leak</span></p>
+
+<h1 id="from-administrative-identities-to-activity">From Administrative Identities to Activity</h1>
+
+<p>Identifying administrative accounts establishes who operates the platform. The next step is to examine how these accounts behave in practice.</p>
+
+<p>This section analyzes administrative activity as observed in authentication logs. By focusing on events explicitly marked as administrative, it captures interactions performed through the provider’s control plane rather than independent user behaviour. This makes it possible to observe how administrative accounts engage with customer accounts, which accounts receive sustained attention, and how this activity is distributed across administrators.</p>
+
+<p>The goal is not to infer intent from individual actions, but to characterize patterns of interaction. In particular, the analysis focuses on whether administrative activity is evenly distributed, as would be expected from routine support, or concentrated around specific accounts and infrastructure. These patterns provide context for interpreting the relationship between the provider’s administrative layer and accounts independently linked to abuse infrastructure.</p>
+
+<h2 id="administrative-activity-in-authentication-logs">Administrative Activity in Authentication Logs</h2>
+
+<p>With the set of administrative identities established, the next step is to examine how these accounts appear in the authentication logs.</p>
+
+<p>A subset of user authentication events is explicitly marked as administrative (<code class="language-plaintext highlighter-rouge">is_admin = true</code>) and linked to specific administrator IDs. These events represent actions performed through the administrative control plane, rather than independent user logins. They therefore provide a view into how provider-side accounts interacted with customer accounts over time.</p>
+
+<p>The activity is highly concentrated. A single administrative account, referred to here as “Boss” (admin uid <code class="language-plaintext highlighter-rouge">167df3d9-...</code>), dominates the dataset, appearing in 876 admin-mediated user authentication events across 201 distinct user accounts. Other administrators are present, including accounts such as <code class="language-plaintext highlighter-rouge">alex@ml.cloud</code>, but their activity is much more limited by comparison.</p>
+
+<h2 id="concentrated-interaction-with-high-risk-accounts">Concentrated Interaction with High-Risk Accounts</h2>
+
+<p>The distribution of target accounts is similarly skewed.</p>
+
+<p>One account, identified in the <a href="https://disclosing.observer/2025/11/24/bulletproof-hoster-anatomy-data-driven-reconstruction.html#hunting-black-basta">previous blogpost</a> as “Mr Reseller” (Мистер Ресселер), is the most frequently admin-accessed user account in the dataset. Across all administrators, it accounts for 352 admin-mediated events and is accessed by five distinct administrative identities. The “Boss” account accounts for most of this activity, with 307 events, but the account is not handled by a single operator.</p>
+
+<p>This matters because “Mr Reseller” was previously shown to have a disproportionately large overlap with IP addresses linked to Black Basta activity. The logs therefore show repeated administrative interaction with the account that also sits at the centre of the observed abuse-linked infrastructure.</p>
+
+<p>The remaining interactions form a long tail across smaller accounts. Some administrative access is expected in a hosting environment (support, provisioning, troubleshooting), but the distribution here is not flat. It is strongly concentrated around a small number of accounts, with “Mr Reseller” as the clearest focal point. That pattern is not consistent with incidental support activity alone.</p>
+
+<p>These interactions also occur over extended periods rather than isolated bursts, indicating sustained engagement with specific accounts.</p>
+
+<div class="plot-embed">
+  <iframe src="/assets/boss_mr_reseller_vs_other_weekly.html" width="100%" height="520" style="border:0; border-radius: 8px; background: transparent;" loading="lazy"></iframe>
+</div>
+<p><span class="centered-text">
+Figure 1: Weekly admin-mediated authentication events by the “Boss” account, highlighting sustained interaction with “Mr Reseller”.
+</span></p>
+
+<p>Figure 1 shows that the concentration is not a one-off artifact. The same administrator repeatedly interacts with the same account over time.</p>
+
+<h2 id="shared-handling-across-administrators">Shared Handling Across Administrators</h2>
+
+<p>Administrative activity is not limited to a single operator.</p>
+
+<p>As shown in Figure 2, multiple administrative accounts repeatedly interact with the same small set of high-activity users, with “Mr Reseller” acting as a shared focal point. This indicates that the observed pattern reflects platform-level handling rather than isolated behaviour by a single administrator.</p>
+
+<div class="plot-embed">
+  <iframe src="/assets/medialand_admin_user_heatmap.html" width="100%" height="520" style="border:0; border-radius: 8px; background: transparent;" loading="lazy"></iframe>
+</div>
+<p><span class="centered-text">
+Figure 2: Admin–user interaction matrix showing the distribution of admin-mediated authentication events across administrators and user accounts.
+</span></p>
+
+<h2 id="shared-access-infrastructure-and-internal-accounts">Shared Access Infrastructure and Internal Accounts</h2>
+
+<p>The same administrative identity also appears repeatedly in admin-mediated authentication events for a user ID linked to Media Land’s corporate account (<code class="language-plaintext highlighter-rouge">info@ml.cloud</code>). This account is associated with confirmed company payment records referencing ООО “Медиа Лэнд” and Alexander Volosovik (AKA Yalishanda), who was <a href="https://www.nationalcrimeagency.gov.uk/news/prolific-bulletproof-hosting-service-sanctioned-by-the-uk-and-allies">sanctioned</a> by the UK, US, and Australia. These interactions occur over extended periods and originate from the same infrastructure endpoints used for reseller-facing activity.</p>
+
+<p>At the network level, access is similarly concentrated. A small number of IP addresses account for a large share of both administrative and user authentication events. The clearest example is <code class="language-plaintext highlighter-rouge">213.21.57.80</code>, an IP owned by <a href="https://bgp.tools/as/31500">Global Network Management</a>, which appears consistently across sessions linked to the “Boss” account.</p>
+
+<p>This address is also associated with a large number of user authentication events, often in close temporal proximity to administrative actions tied to the same identity. This suggests that some observed user activity from this address reflects administrative interaction with user accounts through a shared access point, rather than independent user logins.</p>
+
+<p>Beyond these centralized access points, administrative activity is observed from a heterogeneous set of IP addresses spanning consumer ISPs, hosting providers, and infrastructure networks across regions including Russia, Thailand, and China. Most of these IPs appear sporadically. This pattern is consistent with a mixed access surface combining stable infrastructure with more distributed or proxied access.</p>
+
+<h2 id="direct-credential-linkage-to-external-actor-activity">Direct Credential Linkage to External Actor Activity</h2>
+
+<p>So far, the analysis has focused on patterns: which accounts admins interact with, and how activity is distributed. There is also a more direct link between the internal data and external actor activity. The example below is not a one-off. Similar overlaps show up on other hosts in the same ranges, but this case is enough to show how the linkage works.</p>
+
+<p>In the Black Basta leak, a chat message attributed to the actor “slim shady” (<a href="https://analyst1.com/wp-content/uploads/2026/01/Yalishanda.pdf">identified</a> as Kirill Zatolokin, also included in the <a href="https://www.nationalcrimeagency.gov.uk/news/prolific-bulletproof-hosting-service-sanctioned-by-the-uk-and-allies">sanctions</a> on Media Land) includes access details for a server at <code class="language-plaintext highlighter-rouge">45.141.87.77</code>:</p>
+
+<ul>
+  <li>Username: <code class="language-plaintext highlighter-rouge">root</code></li>
+  <li>Password: <code class="language-plaintext highlighter-rouge">pVKwpAhne8ytrsS</code></li>
+</ul>
+
+<div class="plot-embed" style="text-align:center;">
+  <img src="/assets/blackbasta_leak_screenshot.png" style="width:80%; border-radius:8px;" loading="lazy" />
+</div>
+<p><span class="centered-text">
+Figure 3: Excerpt from Black Basta chat logs showing credentials for a host later identified in the Media Land dataset.
+</span></p>
+
+<p>That same password appears in the Media Land dataset in provisioning logs (<code class="language-plaintext highlighter-rouge">hosting_hosting_sagas.csv</code>) and instance data (<code class="language-plaintext highlighter-rouge">hosting_instance.csv</code>). It is tied to a specific machine (<code class="language-plaintext highlighter-rouge">truck_86</code>) with the same IP address (<code class="language-plaintext highlighter-rouge">45.141.87.77</code>), assigned to the user account of Mr Reseller. Further billing records link this instance to the Boss account.</p>
+
+<p>In other words, the same system shows up in:</p>
+
+<ul>
+  <li>the Black Basta chat logs,</li>
+  <li>the internal provisioning data,</li>
+  <li>and the platform’s billing records.</li>
+</ul>
+
+<p>This is not based on IP overlap or DNS data, which can be noisy. It is the same credential tied to the same machine inside the platform. This does not show how the system was used in detail. What it does show is that a system provisioned through the platform, assigned to a high-risk customer account, and linked to administrative activity, appears directly in actor communication associated with ransomware operations. It also aligns with <a href="https://www.nationalcrimeagency.gov.uk/news/prolific-bulletproof-hosting-service-sanctioned-by-the-uk-and-allies">public reporting</a> on the roles of Volosovik and Zatolokin, who are described as coordinating and supporting cybercrime infrastructure.</p>
+
+<h2 id="interpretation-and-transition">Interpretation and Transition</h2>
+
+<p>Taken together, the authentication logs show three things. First, administrative activity is concentrated in a small number of accounts, especially “Boss.” Second, that activity disproportionately targets a small set of user accounts, most notably “Mr Reseller.” Third, the same access infrastructure appears across administrative, reseller-facing, and corporate-account activity.</p>
+
+<p>These observations do not prove intent or direct involvement in abuse operations. They do, however, establish operational proximity between the provider’s administrative layer and accounts independently linked to abuse infrastructure.</p>
+
+<p>The next section shifts from administrative behaviour to administrative presence. The logs show how provider-side accounts interacted with user accounts. The following analysis examines whether provider-linked access artifacts persist on systems associated with abuse infrastructure. These are distinct forms of evidence and are treated separately.</p>
+
+<h1 id="administrative-artifacts-beyond-the-platform">Administrative Artifacts Beyond the Platform</h1>
+
+<p>The internal data already shows that administrative access is embedded in the same environment as customer activity. To test whether this overlap extends beyond the platform, I looked for external traces of provider-side access artifacts.</p>
+
+<p>As discussed in the previous blogpost, the <a href="https://www.usenix.org/conference/usenixsecurity25/presentation/munteanu">Catch-22 paper</a> by Munteanu et al. can be used to confirm the presence of SSH public keys on internet-facing systems. Using SSH keys recovered from the leak, I identified a small number of live hosts (as of April 30th, 2026) in Media Land address space that contained one of these keys.</p>
+
+<p>The key in question is associated in the dataset with the name DevOps (also included in Figure 2), which is also one of the user accounts most frequently accessed by administrators. The same key corresponds to a public key attributed elsewhere to a Media Land administrator, linking it to the administrative layer without requiring direct attribution of its use on these systems.</p>
+
+<p>The key is still present on active systems as of April 30th, 2026, indicating that provider-linked access material persists on live infrastructure. Passive DNS shows that several of these hosts also appear in infrastructure associated with <code class="language-plaintext highlighter-rouge">fuck-you-usa.com</code>, which has been <a href="https://blog.eclecticiq.com/inside-bruted-black-basta-raas-members-used-automated-brute-forcing-framework-to-target-edge-network-devices">documented</a> as a SOCKS proxy network used by the BRUTED framework of Black Basta.</p>
+
+<p>This infrastructure is not incidental. Analyses of the BRUTED framework show that Black Basta relies on large-scale automated scanning and credential stuffing against edge devices, using such proxy networks to distribute and obscure attack traffic. The observed hosts therefore align with the group’s primary access mechanism rather than a peripheral component of their operations.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>IP address</th>
+      <th style="text-align: center">DNS overlap with <code class="language-plaintext highlighter-rouge">fuck-you-usa.com</code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>45.141.84.5</td>
+      <td style="text-align: center">yes</td>
+    </tr>
+    <tr>
+      <td>45.141.84.73</td>
+      <td style="text-align: center">no</td>
+    </tr>
+    <tr>
+      <td>45.141.86.222</td>
+      <td style="text-align: center">yes</td>
+    </tr>
+    <tr>
+      <td>45.141.87.68</td>
+      <td style="text-align: center">yes</td>
+    </tr>
+    <tr>
+      <td>45.141.87.130</td>
+      <td style="text-align: center">yes</td>
+    </tr>
+    <tr>
+      <td>45.141.87.169</td>
+      <td style="text-align: center">no</td>
+    </tr>
+    <tr>
+      <td>45.141.87.175</td>
+      <td style="text-align: center">no</td>
+    </tr>
+    <tr>
+      <td>45.141.87.215</td>
+      <td style="text-align: center">no</td>
+    </tr>
+    <tr>
+      <td>194.26.29.42</td>
+      <td style="text-align: center">yes</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><span class="centered-text">Table 2: Live hosts in the Media Land range that contain administrator-linked SSH public keys as of 30-04-2026</span></p>
+
+<p>The continued presence of administrator-linked SSH keys on these hosts has an important methodological implication. Because these systems are still reachable and retain the same access artifacts, they are unlikely to represent reassigned or repurposed IP addresses. This reduces the risk that the observed passive DNS overlap is an artifact of IP churn, and strengthens the interpretation that these hosts are part of the same operational environment rather than transient or historical allocations.</p>
+
+<p>This does not establish intent or direct operation. However, it does show that administrator-linked access material is present on multiple systems that are also used in abuse-related infrastructure.</p>
+
+<p>Taken together, this strengthens the earlier observation: administrative access is not cleanly separated from customer-controlled systems, including in environments where those systems are used for large-scale abuse.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>The analysis connects three observations that reinforce each other. Administrative activity in the Media Land dataset is persistent, highly concentrated, and not confined to a separate control plane; it is embedded within the same access layer as customer operations. That activity disproportionately targets a small number of high-capacity accounts, most notably “Mr Reseller,” and is distributed across multiple administrators, indicating this reflects platform-level handling rather than isolated operator behavior. Finally, administrator-linked SSH key material persists on live hosts in Media Land address space, several of which overlap with infrastructure used in Black Basta’s BRUTED proxy network.</p>
+
+<p>None of this establishes intent or direct operation of abuse infrastructure. What it does establish is that the boundary between provider access and customer-controlled systems was not maintained in practice.</p>
+
+<p>Bulletproof hosting is often framed primarily as a permissiveness problem: providers that ignore abuse complaints, resist takedowns, or shelter behind permissive jurisdictions. What this dataset suggests is that the relationship can be more direct. The access patterns here are not consistent with a provider that looks the other way. They are consistent with one that is present. Whether that presence constitutes control in a legal sense is a question for regulators and courts, but the data provides a concrete example of how facilitating a criminal ecosystem can manifest at the level of infrastructure and access, even without direct evidence of operator involvement. The infrastructure record does not resolve intent, but it does narrow the space of plausible explanations and changes what questions can be asked of it.</p>
+</div><section class="article__sharing d-print-none"></section><div class="d-print-none"><footer class="article__footer"><meta itemprop="dateModified" content="2026-04-29T00:00:00+02:00"><!-- start custom article footer snippet -->
+
+<!-- end custom article footer snippet -->
+<div itemscope itemtype="http://schema.org/Person" class="author-profile card card--flat item"><a href="https://disclosing.observer" class="item__image"><img class="author-profile__avatar" itemprop="image" src="https://avatars.githubusercontent.com/u/25766540" /></a><div class="item__content"><meta itemprop="name" content="Max van der Horst">
+        <p class="author-profile__name"><meta itemprop="url" content="https://disclosing.observer">
+            <a href="https://disclosing.observer">Max van der Horst</a></p><p itemprop="description">Author</p><div class="author-profile__links"><div class="author-links">
+  <ul class="menu menu--nowrap menu--inline"><link itemprop="url" href="https://disclosing.observer"><li title="Send me an Email.">
+      <a class="button button--circle mail-button" itemprop="email" href="mailto:mhvanderhorst@tudelft.nl" target="_blank">
+        <i class="fas fa-envelope"></i>
+      </a><li title="Follow me on Linkedin.">
+        <a class="button button--circle linkedin-button" itemprop="sameAs" href="https://www.linkedin.com/in/MaxHorst" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path d="M260.096 155.648c0 27.307008-9.899008 50.516992-29.696 69.632-19.796992 19.115008-45.396992 28.672-76.8 28.672-30.036992 0-54.612992-9.556992-73.728-28.672-19.115008-19.115008-28.672-42.324992-28.672-69.632 0-28.672 9.556992-52.224 28.672-70.656 19.115008-18.432 44.372992-27.648 75.776-27.648 31.403008 0 56.32 9.216 74.752 27.648 18.432 18.432 28.331008 41.984 29.696 70.656 0 0 0 0 0 0m-202.752 808.96c0 0 0-632.832 0-632.832 0 0 196.608 0 196.608 0 0 0 0 632.832 0 632.832 0 0-196.608 0-196.608 0 0 0 0 0 0 0m313.344-430.08c0-58.708992-1.364992-126.292992-4.096-202.752 0 0 169.984 0 169.984 0 0 0 10.24 88.064 10.24 88.064 0 0 4.096 0 4.096 0 40.96-68.267008 105.812992-102.4 194.56-102.4 68.267008 0 123.220992 22.868992 164.864 68.608 41.643008 45.739008 62.464 113.664 62.464 203.776 0 0 0 374.784 0 374.784 0 0-196.608 0-196.608 0 0 0 0-350.208 0-350.208 0-91.476992-33.451008-137.216-100.352-137.216-47.787008 0-81.236992 24.576-100.352 73.728-4.096 8.192-6.144 24.576-6.144 49.152 0 0 0 364.544 0 364.544 0 0-198.656 0-198.656 0 0 0 0-430.08 0-430.08 0 0 0 0 0 0" />
+</svg>
+</div>
+        </a>
+      </li><li title="Follow me on Github.">
+        <a class="button button--circle github-button" itemprop="sameAs" href="https://github.com/Maximand" target="_blank">
+          <div class="icon"><svg fill="#000000" width="24px" height="24px" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path class="svgpath" data-index="path_0" fill="#272636" d="M0 525.2c0 223.6 143.3 413.7 343 483.5 26.9 6.8 22.8-12.4 22.8-25.4l0-88.7c-155.3 18.2-161.5-84.6-172-101.7-21.1-36-70.8-45.2-56-62.3 35.4-18.2 71.4 4.6 113.1 66.3 30.2 44.7 89.1 37.2 119 29.7 6.5-26.9 20.5-50.9 39.7-69.6C248.8 728.2 181.7 630 181.7 513.2c0-56.6 18.7-108.7 55.3-150.7-23.3-69.3 2.2-128.5 5.6-137.3 66.5-6 135.5 47.6 140.9 51.8 37.8-10.2 80.9-15.6 129.1-15.6 48.5 0 91.8 5.6 129.8 15.9 12.9-9.8 77-55.8 138.8-50.2 3.3 8.8 28.2 66.7 6.3 135 37.1 42.1 56 94.6 56 151.4 0 117-67.5 215.3-228.8 243.7 26.9 26.6 43.6 63.4 43.6 104.2l0 128.8c0.9 10.3 0 20.5 17.2 20.5C878.1 942.4 1024 750.9 1024 525.3c0-282.9-229.3-512-512-512C229.1 13.2 0 242.3 0 525.2L0 525.2z" />
+</svg>
+</div>
+        </a>
+      </li></ul>
+</div>
+</div>
+
     </div>
-  </div></div>
-<script>/*(function () {
+</div>
+<div class="article__subscribe"><div class="subscribe"><i class="fas fa-rss"></i> <a type="application/rss+xml" href="/feed.xml">Subscribe</a></div>
+</div><div class="article__license"><div class="license">
+    <p>This work is licensed under a <a itemprop="license" rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">Attribution-NonCommercial 4.0 International</a> license.
+      <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">
+        <img alt="Attribution-NonCommercial 4.0 International" src="https://i.creativecommons.org/l/by-nc/4.0/88x31.png" />
+      </a>
+    </p>
+  </div></div></footer>
+<div class="article__section-navigator clearfix"><div class="previous"><span>PREVIOUS</span><a href="/2026/01/14/excavating-abuse-infrastructure-dns-sinkholes.html">After the Takedown: Excavating Abuse Infrastructure with DNS Sinkholes</a></div></div></div>
 
-})();*/
+</div>
+
+<script>(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    $(function() {
+      var $this ,$scroll;
+      var $articleContent = $('.js-article-content');
+      var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+      var scroll = hasSidebar ? '.js-page-main' : 'html, body';
+      $scroll = $(scroll);
+
+      $articleContent.find('.highlight').each(function() {
+        $this = $(this);
+        $this.attr('data-lang', $this.find('code').attr('data-lang'));
+      });
+      $articleContent.find('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]').each(function() {
+        $this = $(this);
+        $this.append($('<a class="anchor d-print-none" aria-hidden="true"></a>').html('<i class="fas fa-anchor"></i>'));
+      });
+      $articleContent.on('click', '.anchor', function() {
+        $scroll.scrollToAnchor('#' + $(this).parent().attr('id'), 400);
+      });
+    });
+  });
+})();
 </script>
-
-
-
 </div><section class="page__comments d-print-none"></section></article><!-- start custom main bottom snippet -->
 
 <!-- end custom main bottom snippet -->
@@ -937,6 +1249,68 @@ window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
 
 })();*/
 </script><script>
+  /* toc must before affix, since affix need to konw toc' height. */(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  var TOC_SELECTOR = window.TEXT_VARIABLES.site.toc.selectors;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window);
+    var $articleContent = $('.js-article-content');
+    var $tocRoot = $('.js-toc-root'), $col2 = $('.js-col-aside');
+    var toc;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+    var hasToc = $articleContent.find(TOC_SELECTOR).length > 0;
+
+    function disabled() {
+      return $col2.css('display') === 'none' || !hasToc;
+    }
+
+    tocDisabled = disabled();
+
+    toc = $tocRoot.toc({
+      selectors: TOC_SELECTOR,
+      container: $articleContent,
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      tocDisabled = disabled();
+      toc && toc.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+  });
+})();
+(function() {
+  var SOURCES = window.TEXT_VARIABLES.sources;
+  window.Lazyload.js(SOURCES.jquery, function() {
+    var $window = $(window), $pageFooter = $('.js-page-footer');
+    var $pageAside = $('.js-page-aside');
+    var affix;
+    var tocDisabled = false;
+    var hasSidebar = $('.js-page-root').hasClass('layout--page--sidebar');
+
+    affix = $pageAside.affix({
+      offsetBottom: $pageFooter.outerHeight(),
+      scrollTarget: hasSidebar ? '.js-page-main' : null,
+      scroller: hasSidebar ? '.js-page-main' : null,
+      scroll: hasSidebar ? $('.js-page-main').children() : null,
+      disabled: tocDisabled
+    });
+
+    $window.on('resize', window.throttle(function() {
+      affix && affix.setOptions({
+        disabled: tocDisabled
+      });
+    }, 100));
+
+    window.pageAsideAffix = affix;
+  });
+})();
+</script><script>
   window.Lazyload.js(['https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js', 'https://cdn.bootcss.com/Chart.js/2.7.2/Chart.bundle.min.js'], function() {
     var $canvas = null, $this = null, _ctx = null, _text = '';
     $('.language-chart').each(function(){
@@ -949,6 +1323,12 @@ window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
     });
   });
 </script>
+<script type="text/x-mathjax-config">
+	var _config = { tex2jax: {
+		inlineMath: [['$','$'], ['\\(','\\)']]
+	}};_config.TeX = { equationNumbers: { autoNumber: "all" } };MathJax.Hub.Config(_config);
+</script>
+<script type="text/javascript" src="https://cdn.bootcss.com/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
 <script>
   window.Lazyload.js('https://cdn.bootcss.com/mermaid/8.0.0-rc.8/mermaid.min.js', function() {
     mermaid.initialize({
