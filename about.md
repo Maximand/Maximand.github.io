@@ -1,20 +1,16 @@
 ---
-
 layout: article
-description: "About the blog of Max van der Horst, a PhD researcher at TU Delft studying internet abuse, cybersecurity governance, vulnerability disclosure, and cyber threat intelligence."
+description: "About the blog of Max van der Horst, a PhD researcher at TU Delft working on vulnerability disclosure, cyber threat intelligence, and cybersecurity policy."
 titles:
-
-# @start locale config
-
-en      : &EN       About
-en-GB   : *EN
-en-US   : *EN
-en-CA   : *EN
-en-AU   : *EN
-
-# @end locale config
-
-## key: page-about
+  # @start locale config
+  en      : &EN       About
+  en-GB   : *EN
+  en-US   : *EN
+  en-CA   : *EN
+  en-AU   : *EN
+  # @end locale config
+key: page-about
+---
 
 There's no time like the present.
 
