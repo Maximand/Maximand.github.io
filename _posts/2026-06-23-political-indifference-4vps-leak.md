@@ -48,6 +48,7 @@ The customer table is the spine of the leak. After expanding and deduplicating t
 The long tail here is ordinary. Seven out of ten accounts hold a single machine. The structurally relevant part is the top of the distribution. Eight accounts hold a tenth of the entire address space, and forty-two accounts hold fifty machines or more. These accounts are consistent with reseller-style usage patterns. Their holdings are unusually large, and the server labels in the `stat.txt` such as `Eva_RU_02` and `Eva_GBR_04` suggest segmentation patterns typical of downstream provisioning rather than end-user deployment. This assumes that these labels belong to a reseller-like account in the dump, `eva***@gmail.com`, who holds 785 unique addresses according to the database. The concentration is important because it suggests that a meaningful portion of the platform may have been operated through intermediaries rather than direct end users. If these accounts functioned as resellers, 4VPS occupied a position further upstream in the ecosystem, supplying infrastructure that was subsequently redistributed to other customers. This introduces an additional layer between the provider and the eventual tenants and may help explain some of the diversity observed elsewhere in the dataset. Under such a model, the composition of the customer base reflects not only the provider’s decisions, but also those of downstream operators provisioning infrastructure to their own users.
 
 <span class="centered-text">Table 1: Concentration of the 4vps.su customer base by address holdings</span>
+
 |---
 | Tier (VPS held) | Accounts | Share of accounts | VPS held | Share of address space
 |:-|-:|-:|-:|-:
@@ -61,6 +62,7 @@ The long tail here is ordinary. Seven out of ten accounts hold a single machine.
 The fifth row of Listing 2 is the one worth paying attention to. The fifth-largest customer on this platform consists of infrastructure of a proxy service that was previously known in Russia for [being a censorship-circumvention tool](https://www.recoverymaster.ru/frigate-google-chrome.html) called friGate. It seems to have been provisioned through the same billing system as the provider’s internal accounts and reseller infrastructure, and appears no different from any other customer on the platform. The next two sections examine why that matters, and what else is sharing the same environment.
 
 <span class="centered-text">Table 2: Selected accounts from the reseller tier.</span>
+
 |---
 | VPS | Account (partially redacted) | Reading
 |-:|:-|:-

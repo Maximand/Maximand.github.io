@@ -436,30 +436,102 @@ Figure 1: PwnForums post of user blv offering the 4vps.su leak for sale.
 
 <p>The long tail here is ordinary. Seven out of ten accounts hold a single machine. The structurally relevant part is the top of the distribution. Eight accounts hold a tenth of the entire address space, and forty-two accounts hold fifty machines or more. These accounts are consistent with reseller-style usage patterns. Their holdings are unusually large, and the server labels in the <code class="language-plaintext highlighter-rouge">stat.txt</code> such as <code class="language-plaintext highlighter-rouge">Eva_RU_02</code> and <code class="language-plaintext highlighter-rouge">Eva_GBR_04</code> suggest segmentation patterns typical of downstream provisioning rather than end-user deployment. This assumes that these labels belong to a reseller-like account in the dump, <code class="language-plaintext highlighter-rouge">eva***@gmail.com</code>, who holds 785 unique addresses according to the database. The concentration is important because it suggests that a meaningful portion of the platform may have been operated through intermediaries rather than direct end users. If these accounts functioned as resellers, 4VPS occupied a position further upstream in the ecosystem, supplying infrastructure that was subsequently redistributed to other customers. This introduces an additional layer between the provider and the eventual tenants and may help explain some of the diversity observed elsewhere in the dataset. Under such a model, the composition of the customer base reflects not only the provider’s decisions, but also those of downstream operators provisioning infrastructure to their own users.</p>
 
-<p><span class="centered-text">Table 1: Concentration of the 4vps.su customer base by address holdings</span>
-|—
-| Tier (VPS held) | Accounts | Share of accounts | VPS held | Share of address space
-|:-|-:|-:|-:|-:
-| 1 | 16,690 | 69.9% | 16,690 | 34.9%
-| 2 to 9 | 6,827 | 28.6% | 17,617 | 36.8%
-| 10 to 49 | 306 | 1.3% | 5,769 | 12.0%
-| 50 to 199 | 34 | 0.1% | 3,007 | 6.3%
-| 200 or more | 8 | 0.03% | 4,795 | 10.0%
-|—</p>
+<p><span class="centered-text">Table 1: Concentration of the 4vps.su customer base by address holdings</span></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: left">Tier (VPS held)</th>
+      <th style="text-align: right">Accounts</th>
+      <th style="text-align: right">Share of accounts</th>
+      <th style="text-align: right">VPS held</th>
+      <th style="text-align: right">Share of address space</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left">1</td>
+      <td style="text-align: right">16,690</td>
+      <td style="text-align: right">69.9%</td>
+      <td style="text-align: right">16,690</td>
+      <td style="text-align: right">34.9%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">2 to 9</td>
+      <td style="text-align: right">6,827</td>
+      <td style="text-align: right">28.6%</td>
+      <td style="text-align: right">17,617</td>
+      <td style="text-align: right">36.8%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">10 to 49</td>
+      <td style="text-align: right">306</td>
+      <td style="text-align: right">1.3%</td>
+      <td style="text-align: right">5,769</td>
+      <td style="text-align: right">12.0%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">50 to 199</td>
+      <td style="text-align: right">34</td>
+      <td style="text-align: right">0.1%</td>
+      <td style="text-align: right">3,007</td>
+      <td style="text-align: right">6.3%</td>
+    </tr>
+    <tr>
+      <td style="text-align: left">200 or more</td>
+      <td style="text-align: right">8</td>
+      <td style="text-align: right">0.03%</td>
+      <td style="text-align: right">4,795</td>
+      <td style="text-align: right">10.0%</td>
+    </tr>
+  </tbody>
+</table>
 
 <p>The fifth row of Listing 2 is the one worth paying attention to. The fifth-largest customer on this platform consists of infrastructure of a proxy service that was previously known in Russia for <a href="https://www.recoverymaster.ru/frigate-google-chrome.html">being a censorship-circumvention tool</a> called friGate. It seems to have been provisioned through the same billing system as the provider’s internal accounts and reseller infrastructure, and appears no different from any other customer on the platform. The next two sections examine why that matters, and what else is sharing the same environment.</p>
 
-<p><span class="centered-text">Table 2: Selected accounts from the reseller tier.</span>
-|—
-| VPS | Account (partially redacted) | Reading
-|-:|:-|:-
-| 1,564 | sig***@gmail.com | Largest single tenant
-| 785 | eva***@gmail.com | Geo-distributed reseller
-| 607 | 4vp***@gmail.com | Insider account
-| 547 | bor***@mail.ru | Heavy tenant
-| 493 | add***@fri-gate.org | Large-scale proxy infrastructure
-| 297 | dev***@mogotech.net | Heavy tenant
-|—</p>
+<p><span class="centered-text">Table 2: Selected accounts from the reseller tier.</span></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: right">VPS</th>
+      <th style="text-align: left">Account (partially redacted)</th>
+      <th style="text-align: left">Reading</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: right">1,564</td>
+      <td style="text-align: left">sig***@gmail.com</td>
+      <td style="text-align: left">Largest single tenant</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">785</td>
+      <td style="text-align: left">eva***@gmail.com</td>
+      <td style="text-align: left">Geo-distributed reseller</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">607</td>
+      <td style="text-align: left">4vp***@gmail.com</td>
+      <td style="text-align: left">Insider account</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">547</td>
+      <td style="text-align: left">bor***@mail.ru</td>
+      <td style="text-align: left">Heavy tenant</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">493</td>
+      <td style="text-align: left">add***@fri-gate.org</td>
+      <td style="text-align: left">Large-scale proxy infrastructure</td>
+    </tr>
+    <tr>
+      <td style="text-align: right">297</td>
+      <td style="text-align: left">dev***@mogotech.net</td>
+      <td style="text-align: left">Heavy tenant</td>
+    </tr>
+  </tbody>
+</table>
 
 <h1 id="not-the-customer-you-would-expect">Not the customer you would expect</h1>
 <p>Now the underlying legal registrations for 4VPS and GIR, Global Internet Solutions LLC and <a href="https://find-and-update.company-information.service.gov.uk/company/OC450701">Global Connectivity Solutions LLP</a>, both <a href="https://www.qurium.org/alerts/exposing-the-evil-empire-of-doppelganger-disinformation/">documented by Qurium</a> to be related to an individual called Marinko Evgeni Valentinovich, are by now registered in the Seychelles. However, eSentire <a href="https://www.esentire.com/security-advisories/network-infrastructure-abused-in-ongoing-phishing-attacks">documented</a> GIS/GIR as being registered in Russia before and most (if not all) of its prefixes seem to originate from Russia. The conventional image of a Russian-market bulletproof hoster assumes an informal arrangement with the local environment. Avoid harming domestic targets, and enjoy a degree of tolerance in return. If that arrangement were doing work at the hosting layer, the hoster would be expected to avoid tenants whose activity runs against Russian interests. At least two tenants in this dataset run against those interests, in different ways, and the host carries both.</p>
