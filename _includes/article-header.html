@@ -1,47 +1,108 @@
-{%- include snippets/get-article-title.html article=include.article-%}
+{%- comment -%}
+  disclosing.observer — article header override for the TeXt theme.
+
+  WHY THIS FILE (read the README): the theme's full-bleed cover banner is NOT
+  rendered here — it is an <img class="article__header--cover"> emitted by
+  _layouts/page.html whenever a post's front matter sets `article_header.type:
+  cover`. So replacing this include can never remove the banner. The correct,
+  theme-native way to get the target full-bleed *typographic* hero (above the
+  content + TOC grid, no photo) is `article_header.type: overlay`.
+
+  This override therefore:
+   • when the post uses `type: overlay` AND this is the visible call
+     (include.html != false) → renders our editorial hero
+     (kicker → title → standfirst → byline · date), with the eye-disc.
+   • otherwise → reproduces the theme's stock behaviour byte-for-byte, so
+     every other page (about, default posts, the hidden col-main call) is
+     unchanged.
+   • always honours include.semantic for the <meta itemprop="headline">.
+{%- endcomment -%}
+{%- include snippets/get-article-title.html article=include.article -%}
 {%- assign _article_title = __return -%}
+
+{%- assign _ah_type = include.article.article_header.type | default: layout.article_header.type -%}
 
 {%- if include.html != false -%}
 
-  {%- include snippets/assign.html
-    target=site.data.variables.default.page.show_title
-    source0=layout.show_title source1=include.article.show_title -%}
-  {%- assign _show_title = __return -%}
-
-  {%- include snippets/assign.html
-    target=site.data.variables.default.page.show_edit_on_github
-    source0=layout.show_edit_on_github source1=include.article.show_edit_on_github -%}
-  {%- assign _show_edit_on_github = __return -%}
-
-  {%- if _show_title or _show_edit_on_github -%}
-    <div class="article__header">
-      {%- if _show_title -%}
-        <header><h1>{{ _article_title }}</h1></header>
-      {%- endif -%}
-      {%- if _show_edit_on_github -%}
-        {%- if site.repository and site.repository_tree -%}
-          {%- include snippets/is_collection.html page=include.article -%}
-          {%- assign _is_article_collection = __return -%}
-          {%- include snippets/get-locale-string.html key='POST_ON_GITHUB' -%}
-          {%- assign _locale_post_on_github = __return -%}
-          {%- if _is_article_collection -%}
-            {%- include snippets/prepend-path.html path=include.article.path prepend_path=site.collections_dir -%}
-            {%- assign _article_path = __return -%}
-          {%- else -%}
-            {%- assign _article_path = include.article.path -%}
-          {%- endif -%}
-          {%- assign _github_path = site.repository | append: '/tree/' | append: site.repository_tree | append: '/' | append: _article_path | replace:'//','/' -%}
-          <span class="split-space">&nbsp;</span>
-          <a class="edit-on-github"
-            title="{{ _locale_post_on_github }}"
-            href="https://github.com/{{ _github_path }}">
-            <i class="far fa-edit"></i></a>
+  {%- if _ah_type == 'overlay' -%}
+    {%- comment -%} ---- disclosing.observer editorial hero ---- {%- endcomment -%}
+    {%- assign _author = site.data.authors[include.article.author] | default: site.author -%}
+    <div class="do-hero">
+      <svg class="do-hero__eye" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <path fill="rgba(251,250,247,0.028)" fill-rule="evenodd" d="M3 50 a47 47 0 1 0 94 0 a47 47 0 1 0 -94 0 Z M13.59 52.57 C30.32 32.89 60.82 30.92 86.41 46.66 C63.78 68.31 33.27 70.28 13.59 52.57 Z"></path>
+        <circle cx="53.6" cy="51.2" r="11.4" fill="rgba(232,161,0,0.06)"></circle>
+      </svg>
+      <div class="do-hero__in">
+        {%- if include.article.tags[0] -%}
+          <div class="do-hero__kicker">
+            {%- for _tag in include.article.tags -%}
+              {%- unless forloop.first -%}<span class="do-hero__dot">·</span>{%- endunless -%}
+              <span class="{% if forloop.first %}is-amber{% else %}is-muted{% endif %}">{{ _tag }}</span>
+            {%- endfor -%}
+          </div>
         {%- endif -%}
-      {%- endif -%}
+
+        <h1 class="do-hero__title">{{ _article_title }}</h1>
+
+        {%- if include.article.description -%}
+          <p class="do-hero__standfirst">{{ include.article.description }}</p>
+        {%- endif -%}
+
+        <div class="do-hero__meta">
+          {%- if include.article.author -%}
+            <span class="do-hero__by"><i class="fas fa-user" aria-hidden="true"></i> {{ _author.name }}</span>
+          {%- endif -%}
+          {%- if include.article.date -%}
+            <span class="do-hero__sep" aria-hidden="true">|</span>
+            <span class="do-hero__date"><i class="far fa-calendar-alt" aria-hidden="true"></i> {{ include.article.date | date: "%b %d, %Y" }}</span>
+          {%- endif -%}
+        </div>
+      </div>
     </div>
+
   {%- else -%}
-    <header style="display:none;"><h1>{{ _article_title }}</h1></header>
+    {%- comment -%} ---- theme stock header (unchanged) ---- {%- endcomment -%}
+    {%- include snippets/assign.html
+      target=site.data.variables.default.page.show_title
+      source0=layout.show_title source1=include.article.show_title -%}
+    {%- assign _show_title = __return -%}
+
+    {%- include snippets/assign.html
+      target=site.data.variables.default.page.show_edit_on_github
+      source0=layout.show_edit_on_github source1=include.article.show_edit_on_github -%}
+    {%- assign _show_edit_on_github = __return -%}
+
+    {%- if _show_title or _show_edit_on_github -%}
+      <div class="article__header">
+        {%- if _show_title -%}
+          <header><h1>{{ _article_title }}</h1></header>
+        {%- endif -%}
+        {%- if _show_edit_on_github -%}
+          {%- if site.repository and site.repository_tree -%}
+            {%- include snippets/is_collection.html page=include.article -%}
+            {%- assign _is_article_collection = __return -%}
+            {%- include snippets/get-locale-string.html key='POST_ON_GITHUB' -%}
+            {%- assign _locale_post_on_github = __return -%}
+            {%- if _is_article_collection -%}
+              {%- include snippets/prepend-path.html path=include.article.path prepend_path=site.collections_dir -%}
+              {%- assign _article_path = __return -%}
+            {%- else -%}
+              {%- assign _article_path = include.article.path -%}
+            {%- endif -%}
+            {%- assign _github_path = site.repository | append: '/tree/' | append: site.repository_tree | append: '/' | append: _article_path | replace:'//','/' -%}
+            <span class="split-space">&nbsp;</span>
+            <a class="edit-on-github" title="{{ _locale_post_on_github }}" href="https://github.com/{{ _github_path }}">
+              <i class="far fa-edit"></i></a>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    {%- else -%}
+      <header style="display:none;"><h1>{{ _article_title }}</h1></header>
+    {%- endif -%}
   {%- endif -%}
+
+{%- else -%}
+  <header style="display:none;"><h1>{{ _article_title }}</h1></header>
 {%- endif -%}
 
 {%- if include.semantic != false -%}

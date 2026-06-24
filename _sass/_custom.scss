@@ -1,0 +1,244 @@
+// =============================================================
+// disclosing.observer — editorial brand layer for the TeXt theme
+// -------------------------------------------------------------
+// Imported LAST by assets/css/main.scss (the trailing `"custom"`
+// in its @import list), so every rule here wins by cascade order.
+// Paste at the END of _sass/_custom.scss and rebuild.
+// Delete to revert — nothing else in the theme is touched.
+//
+// Your dark skin already sets the brand colours (amber #E8A100 on
+// ink #14181F); head/custom.html already loads Newsreader + IBM
+// Plex Mono. This layer makes the type speak the brand and turns
+// the post header into the full-bleed typographic hero.
+// =============================================================
+
+$do-serif: "Newsreader", Georgia, Cambria, "Times New Roman", serif;
+$do-mono:  "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+$do-amber: #E8A100;
+$do-ink:   #14181F;
+$do-paper: #FBFAF7;          // titles on the dark skin
+$do-muted: rgba(#FBFAF7, .55);
+
+// ── Type voices ──────────────────────────────────────────────
+body { font-family: $do-serif; }
+
+code, kbd, pre, tt,
+.highlight,
+.article__content figure.highlight::before { font-family: $do-mono; }
+
+h1, h2, h3, h4, h5, h6,
+.article__header h1 {
+  font-family: $do-serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+// ── Body copy: comfortable reading measure & rhythm ──────────
+.article__content {
+  font-family: $do-serif;
+  font-size: 1.12rem;
+  line-height: 1.72;
+  max-width: 46rem;
+  p, ul, ol, blockquote { text-wrap: pretty; }
+}
+
+// ── Inline links: amber with an offset underline ─────────────
+.article__content a {
+  color: $do-amber;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba($do-amber, .5);
+  &:hover { text-decoration-color: $do-amber; }
+}
+
+// ── Callout / pull-quote: amber-ruled, roman (readable) ──────
+.article__content blockquote {
+  font-family: $do-serif;
+  font-style: normal;
+  font-size: 1.18rem;
+  line-height: 1.6;
+  color: rgba(#FBFAF7, .9);
+  padding-left: 1.5rem;
+  border-left: 3px solid $do-amber;
+  box-shadow: none;
+  p { margin: .5rem 0; }
+}
+
+// ── ###### (h6) / {:.kicker} as a mono section label ─────────
+.article__content h6,
+.article__content .kicker {
+  font-family: $do-mono;
+  font-size: .8rem;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: $do-amber;
+  border-bottom: none;
+}
+
+// ── Header wordmark / nav / meta / footer in mono ────────────
+.header__brand > a { font-family: $do-mono; font-weight: 500; letter-spacing: -0.01em; }
+.navigation { font-family: $do-mono; }
+.navigation__item a { font-size: .95rem; letter-spacing: .02em; }
+.article__info, .article__footer, .article-list .article__info { font-family: $do-mono; }
+.footer { font-family: $do-mono; }
+
+// ── Tag chips ────────────────────────────────────────────────
+.site-tags .tag-button, .tag-button, .article__tags .tag {
+  font-family: $do-mono;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-size: .72rem;
+}
+
+// =============================================================
+// FULL-BLEED TYPOGRAPHIC POST HERO  (pairs with the overridden
+// _includes/article-header.html). Triggered by a post using
+//   article_header:
+//     type: overlay        <-- NOT `cover`; no image needed
+// The theme renders the overlay band ABOVE the content+TOC grid,
+// so the hero is genuinely full-width and the TOC drops below it
+// — exactly the target layout. We:
+//   • hide the photographic cover banner (if any post still has it)
+//   • hide the theme's duplicate info + excerpt inside the band
+//   • paint a calm editorial stack over a faint eye-disc.
+// =============================================================
+
+// Kill the old full-bleed photo banner anywhere it appears.
+.article__header--cover { display: none; }
+
+// The overlay band → ink, full-bleed, eye-disc anchor.
+.article__header--overlay {
+  margin-bottom: 0;
+
+  .hero.overlay {
+    position: relative;
+    overflow: hidden;
+    min-height: 28rem;
+    padding: 0;
+    background: $do-ink;          // override the theme's empty background-image
+  }
+
+  // Let the eye-disc anchor to the full-width .hero, not the inner column.
+  .hero__content { position: static; display: block; width: 100%; padding: 0; }
+  .hero .main    { position: static; padding-top: 4.75rem; padding-bottom: 2.75rem; }
+
+  // Hide the theme's stock meta + excerpt — our hero renders its own.
+  .article__info,
+  .overlay__excerpt,
+  .menu { display: none; }
+}
+
+.do-hero { position: static; }
+
+.do-hero__eye {
+  position: absolute;
+  right: -150px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 660px;
+  height: auto;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.do-hero__in {
+  position: relative;
+  z-index: 1;
+  max-width: 44rem;
+  // a quiet rule under the hero, at content width (matches the target)
+  border-bottom: 1px solid rgba(#FBFAF7, .09);
+  padding-bottom: 2.25rem;
+}
+
+.do-hero__kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .55rem;
+  font-family: $do-mono;
+  font-size: .8rem;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  margin-bottom: 1.75rem;
+  .is-amber  { color: $do-amber; }
+  .is-muted  { color: $do-muted; }
+  .do-hero__dot { color: $do-muted; opacity: .65; }
+}
+
+// NOTE: `.article__header--overlay` prefix raises specificity above the
+// theme's `.hero--dark h1` rule, which otherwise forces the title dark.
+.article__header--overlay .do-hero__title {
+  display: block;
+  font-family: $do-serif;
+  font-weight: 500;
+  font-size: 3.3rem;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  margin: 0;
+  color: $do-paper;
+  max-width: none;
+  text-wrap: balance;
+}
+
+.do-hero__standfirst {
+  font-family: $do-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: rgba(#FBFAF7, .78);
+  margin: 1.6rem 0 0;
+  max-width: 34rem;
+  text-wrap: pretty;
+}
+
+.do-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .7rem;
+  margin-top: 2.5rem;
+  font-family: $do-mono;
+  font-size: .92rem;
+  color: $do-muted;
+  i { margin-right: .15rem; }
+  .do-hero__sep { opacity: .4; }
+}
+
+@media screen and (max-width: 768px) {
+  .article__header--overlay .hero.overlay { min-height: 0; }
+  .article__header--overlay .hero .main { padding-top: 3rem; padding-bottom: 2rem; }
+  .do-hero__title { font-size: 2.1rem; max-width: none; }
+  .do-hero__standfirst { font-size: 1.2rem; }
+  .do-hero__eye { right: -220px; width: 440px; opacity: .8; }
+}
+
+// =============================================================
+// NEAT TABLES (the leak datasets read better this way)
+// =============================================================
+.article__content table {
+  font-family: $do-mono;
+  font-size: .82rem;
+  border: 1px solid $border-color-l;
+  border-radius: map-get($base, border-radius);
+  overflow: hidden;
+  thead th {
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: .03em;
+    color: $text-color-l;
+    background-color: $text-background-color;
+  }
+  th, td { border: none; border-bottom: 1px solid $border-color-l; }
+  tbody tr:last-child td { border-bottom: none; }
+}
+
+.centered-text {
+  display: block;
+  font-family: $do-mono;
+  font-size: .8rem;
+  text-align: center;
+  color: $text-color-l;
+}
