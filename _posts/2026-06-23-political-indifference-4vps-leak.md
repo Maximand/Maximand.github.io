@@ -2,8 +2,8 @@
 layout: article
 title: "No Side to Take: Political Indifference Inside the 4vps.su Leak"
 
-description: "A leaked dataset from 4vps.su shows a hosting environment where proxy networks, criminal infrastructure, and targeted attack activity coexist without requiring any shared political alignment. The post argues that these apparent contradictions only arise when applying a political model that the system itself does not support."
-excerpt: "The 4vps.su leak can be read as political contradiction: a provider hosting proxy networks, ransomware-adjacent services, and operators targeting Russian networks. But this interpretation assumes the platform has a position to contradict. The dataset instead suggests something simpler. What appears as inconsistency is what a system looks like when it does not take sides in the first place."
+description: "A leaked dataset from 4vps[.]su shows a hosting environment where proxy networks, criminal infrastructure, and targeted attack activity coexist without requiring any shared political alignment. The post argues that these apparent contradictions only arise when applying a political model that the system itself does not support."
+excerpt: "The 4vps[.]su leak can be read as political contradiction: a provider hosting proxy networks, ransomware-adjacent services, and operators targeting Russian networks. But this interpretation assumes the platform has a position to contradict. The dataset instead suggests something simpler. What appears as inconsistency is what a system looks like when it does not take sides in the first place."
 
 tags:
   - Research Progress
