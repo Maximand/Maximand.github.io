@@ -13,17 +13,14 @@ author: Max van der Horst
 mathjax: true
 mathjax_autoNumber: true
 
-og_image: /assets/admin_overreach.png
-
 show_author_profile: true
 show_edit_on_github: false
 
 header:
   theme: dark
 article_header:
-  type: cover
-  image:
-    src: /assets/admin_overreach.png
+  type: overlay
+show_tags: false
 ---
 
 > **Summary:**

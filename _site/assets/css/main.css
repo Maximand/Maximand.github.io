@@ -6508,41 +6508,139 @@ html,
   font-size: 1.8rem;
 }
 
-/* start custom scss snippet */
-/* disclosing.observer house style */
-body, .article__content, p, li, blockquote {
-  font-family: "Newsreader", Georgia, "Times New Roman", serif;
+body {
+  font-family: "Newsreader", Georgia, Cambria, "Times New Roman", serif;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: "Newsreader", Georgia, serif;
+code, kbd, pre, tt,
+.highlight,
+.article__content figure.highlight::before {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+h1, h2, h3, h4, h5, h6,
+.article__header h1 {
+  font-family: "Newsreader", Georgia, Cambria, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.article__content {
+  font-family: "Newsreader", Georgia, Cambria, "Times New Roman", serif;
+  font-size: 1.12rem;
+  line-height: 1.72;
+  max-width: 60rem;
+}
+.article__content p, .article__content ul, .article__content ol, .article__content blockquote {
+  text-wrap: pretty;
+}
+
+.article__content a {
+  color: #E8A100;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  text-decoration-color: rgba(232, 161, 0, 0.5);
+}
+.article__content a:hover {
+  text-decoration-color: #E8A100;
+}
+
+.article__content blockquote {
+  font-family: "Newsreader", Georgia, Cambria, "Times New Roman", serif;
+  font-style: normal;
+  font-size: 1.18rem;
+  line-height: 1.6;
+  color: rgba(251, 250, 247, 0.9);
+  padding-left: 1.5rem;
+  border-left: 3px solid #E8A100;
+  box-shadow: none;
+}
+.article__content blockquote p {
+  margin: 0.5rem 0;
+}
+
+.article__content h6,
+.article__content .kicker {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #E8A100;
+  border-bottom: none;
+}
+
+.header__brand > a {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
 
-code, pre, kbd, samp,
-.navigation, .article-info, .tags, .tag, time {
-  font-family: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+.navigation {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
-.home-watermark {
-  position: fixed;
-  top: 50%;
-  right: -9vw;
-  transform: translateY(-50%);
-  width: min(640px, 62vh);
-  aspect-ratio: 1/1;
-  background: url("/assets/brand-eye.svg") center/contain no-repeat;
-  opacity: 0.05;
-  z-index: 2; /* was -1, which hid it behind .page__main-inner */
-  pointer-events: none; /* it never blocks clicks or text selection */
+.navigation__item a {
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
 }
 
-@media (max-width: 1100px) {
-  .home-watermark {
-    display: none;
-  }
+.article__info, .article__footer, .article-list .article__info {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
 }
-/* end custom scss snippet */
+
+.footer {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+.site-tags .tag-button, .tag-button, .article__tags .tag {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+}
+
+.article__header--cover {
+  display: none;
+}
+
+.article__content table {
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  border: 1px solid #2c2f35;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+.article__content table thead th {
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.article__content table th, .article__content table td {
+  border: none;
+  border-bottom: 1px solid #2c2f35;
+}
+.article__content table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.centered-text {
+  display: block;
+  font-family: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.8rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.layout--page .page__content > .main {
+  padding-top: 1.5rem;
+}
+
+.layout--page .page__content > .main .col-main > article > .js-article-content > :first-child {
+  margin-top: 0;
+}
 
 /*# sourceMappingURL=main.css.map */

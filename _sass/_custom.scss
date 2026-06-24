@@ -38,7 +38,7 @@ h1, h2, h3, h4, h5, h6,
   font-family: $do-serif;
   font-size: 1.12rem;
   line-height: 1.72;
-  max-width: 46rem;
+  max-width: 60rem;   // reading column width — raise/lower to taste (was 46rem)
   p, ul, ol, blockquote { text-wrap: pretty; }
 }
 
@@ -93,127 +93,17 @@ h1, h2, h3, h4, h5, h6,
 }
 
 // =============================================================
-// FULL-BLEED TYPOGRAPHIC POST HERO  (pairs with the overridden
-// _includes/article-header.html). Triggered by a post using
-//   article_header:
-//     type: overlay        <-- NOT `cover`; no image needed
-// The theme renders the overlay band ABOVE the content+TOC grid,
-// so the hero is genuinely full-width and the TOC drops below it
-// — exactly the target layout. We:
-//   • hide the photographic cover banner (if any post still has it)
-//   • hide the theme's duplicate info + excerpt inside the band
-//   • paint a calm editorial stack over a faint eye-disc.
+// POST HERO — note
+// -------------------------------------------------------------
+// The full-bleed typographic hero now lives ENTIRELY inside the
+// overridden _includes/article-header.html (a scoped <style> block
+// that loads after the theme CSS, so it can't lose the cascade on a
+// GitHub Pages rebuild). Nothing hero-related is needed here.
+//
+// We only kill the old photographic cover banner, in case any post
+// still carries `article_header: type: cover`.
 // =============================================================
-
-// Kill the old full-bleed photo banner anywhere it appears.
 .article__header--cover { display: none; }
-
-// The overlay band → ink, full-bleed, eye-disc anchor.
-.article__header--overlay {
-  margin-bottom: 0;
-
-  .hero.overlay {
-    position: relative;
-    overflow: hidden;
-    min-height: 28rem;
-    padding: 0;
-    background: $do-ink;          // override the theme's empty background-image
-  }
-
-  // Let the eye-disc anchor to the full-width .hero, not the inner column.
-  .hero__content { position: static; display: block; width: 100%; padding: 0; }
-  .hero .main    { position: static; padding-top: 4.75rem; padding-bottom: 2.75rem; }
-
-  // Hide the theme's stock meta + excerpt — our hero renders its own.
-  .article__info,
-  .overlay__excerpt,
-  .menu { display: none; }
-}
-
-.do-hero { position: static; }
-
-.do-hero__eye {
-  position: absolute;
-  right: -150px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 660px;
-  height: auto;
-  z-index: 0;
-  pointer-events: none;
-}
-
-.do-hero__in {
-  position: relative;
-  z-index: 1;
-  max-width: 44rem;
-  // a quiet rule under the hero, at content width (matches the target)
-  border-bottom: 1px solid rgba(#FBFAF7, .09);
-  padding-bottom: 2.25rem;
-}
-
-.do-hero__kicker {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: .55rem;
-  font-family: $do-mono;
-  font-size: .8rem;
-  font-weight: 500;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  margin-bottom: 1.75rem;
-  .is-amber  { color: $do-amber; }
-  .is-muted  { color: $do-muted; }
-  .do-hero__dot { color: $do-muted; opacity: .65; }
-}
-
-// NOTE: `.article__header--overlay` prefix raises specificity above the
-// theme's `.hero--dark h1` rule, which otherwise forces the title dark.
-.article__header--overlay .do-hero__title {
-  display: block;
-  font-family: $do-serif;
-  font-weight: 500;
-  font-size: 3.3rem;
-  line-height: 1.06;
-  letter-spacing: -0.025em;
-  margin: 0;
-  color: $do-paper;
-  max-width: none;
-  text-wrap: balance;
-}
-
-.do-hero__standfirst {
-  font-family: $do-serif;
-  font-weight: 400;
-  font-size: 1.4rem;
-  line-height: 1.5;
-  color: rgba(#FBFAF7, .78);
-  margin: 1.6rem 0 0;
-  max-width: 34rem;
-  text-wrap: pretty;
-}
-
-.do-hero__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: .7rem;
-  margin-top: 2.5rem;
-  font-family: $do-mono;
-  font-size: .92rem;
-  color: $do-muted;
-  i { margin-right: .15rem; }
-  .do-hero__sep { opacity: .4; }
-}
-
-@media screen and (max-width: 768px) {
-  .article__header--overlay .hero.overlay { min-height: 0; }
-  .article__header--overlay .hero .main { padding-top: 3rem; padding-bottom: 2rem; }
-  .do-hero__title { font-size: 2.1rem; max-width: none; }
-  .do-hero__standfirst { font-size: 1.2rem; }
-  .do-hero__eye { right: -220px; width: 440px; opacity: .8; }
-}
 
 // =============================================================
 // NEAT TABLES (the leak datasets read better this way)
@@ -242,3 +132,14 @@ h1, h2, h3, h4, h5, h6,
   text-align: center;
   color: $text-color-l;
 }
+
+// =============================================================
+// GAP BETWEEN THE OVERLAY HERO AND THE FIRST LINE OF THE POST
+// -------------------------------------------------------------
+// The theme adds top spacing to the content column under the hero.
+// Lower this number to tighten the gap before the first paragraph,
+// raise it to loosen. Only applies to posts using `type: overlay`.
+// =============================================================
+.layout--page .page__content > .main { padding-top: 1.5rem; }
+.layout--page .page__content > .main .col-main > article > .js-article-content > :first-child { margin-top: 0; }
+
