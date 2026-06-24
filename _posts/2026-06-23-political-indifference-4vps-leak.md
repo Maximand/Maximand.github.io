@@ -85,7 +85,7 @@ The second tenant is one of the co-resident operator directories included in the
 Neither tenant fits the profile one might expect from a provider commonly associated with the Russian abuse-tolerant hosting ecosystem. One operates as a service the Russian state legislates against. The other attacks targets inside the state's own borders.
 
 ![](../../../assets/crushftp.png)
-<span class="centered-text">Figure 3: `.bash_history` from one of the hosts targeting Russian systems.</span>
+<span class="centered-text">Figure 3: `.bash_history` from one of the hosts targeting Russian systems in the `tmmw` folder.</span>
 
 # A verified provider
 The third tenant relevant here is a ransomware operation whose internal chat was leaked separately. The group, called Gentlemen, was allegedly [renting infrastructure on 4vps.su](https://www.reddit.com/r/pwnhub/comments/1t53stk/the_gentlemen_ransomware_group_breached_after/) and its leak has been [extensively documented](https://socradar.io/blog/gentlemen-ransomware-leak/) by now. In January 2026, the group explicitly mentions 4vps.su in a vetted list of providers for self-hosted VPN and related needs (alongside `JustHost.asia`, `ishosting.com`, `cp.inferno.name`, and `4dedic.io`) and 4vps.su appears on it marked as verified. In March, another member writes that he rents on 4vps.su and runs self-hosted AmneziaVPN there.
