@@ -55,11 +55,18 @@
         padding-bottom:var(--hero-pad-bottom) !important;
       }
       .article__header--overlay .hero__content{
-        position:static; margin-top:0; margin-bottom:0;   /* kill the theme's 3rem top margin; keep its side gutter */
+        position:static; margin:0; padding:0; width:100%;
       }
       .article__header--overlay .hero .main{
         position:static;
-        padding-top:0; padding-bottom:0;   /* spacing lives on the band above; sides untouched */
+        max-width:1170px; margin:0 auto;
+        padding:0 3rem;
+      }
+      @media (max-width:1024px){
+        .article__header--overlay .hero .main{ max-width:950px; padding:0 1.5rem; }
+      }
+      @media (max-width:500px){
+        .article__header--overlay .hero .main{ padding:0 1rem; }
       }
       /* Hide the theme's stock meta / excerpt / tag-pills inside the band —
          our hero renders its own kicker + standfirst + byline. */
