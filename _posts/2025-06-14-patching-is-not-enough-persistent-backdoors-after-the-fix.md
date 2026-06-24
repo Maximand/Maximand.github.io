@@ -11,19 +11,14 @@ tags:
 author: Max van der Horst
 mathjax: true
 
-# SEO / social
-og_image: /assets/backdoor_castle.png
-# last_modified_at: 2025-06-18   # optional if revised later
-
 show_author_profile: true
 show_edit_on_github: false
 
 header:
   theme: dark
 article_header:
-  type: cover
-  image:
-    src: /assets/backdoor_castle.png
+  type: overlay
+show_tags: false
 ---
 
 > **Summary:**  

@@ -11,19 +11,14 @@ tags:
 author: Max van der Horst
 mathjax: true
 
-# SEO / social
-og_image: /assets/streisand-effect.png
-# last_modified_at: 2025-06-20   # optional, add if revised later
-
 show_author_profile: true
 show_edit_on_github: false
 
 header:
   theme: dark
 article_header:
-  type: cover
-  image:
-    src: /assets/streisand-effect.png
+  type: overlay
+show_tags: false
 ---
 
 When I first became a CVE Numbering Authority (CNA) administrator at DIVD, I assumed most software vendors would welcome a heads-up about critical vulnerabilities in their products. We're not selling zero-days, we're helping these vendors remediate them. However, over time, I learned a strange truth: many vendors would rather silence the messenger than fix the message. From legal threats to ostrich politics, the instinct to cover-up a zero-day vulnerability runs deep. Ironically, it's this reaction (rather than the vulnerability itself) that often causes the most reputational damage. What you hide will hurt you. And in cybersecurity, few things backfire harder than trying to bury insecurity.

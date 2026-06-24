@@ -12,19 +12,14 @@ tags:
 author: Max van der Horst
 mathjax: true
 
-# SEO / social
-og_image: /assets/dreadnought-retained.png
-# last_modified_at: 2025-07-01   # optional, add if revised later
-
 show_author_profile: true
 show_edit_on_github: false
 
 header:
   theme: dark
 article_header:
-  type: cover
-  image:
-    src: /assets/dreadnought-retained.png
+  type: overlay
+show_tags: false
 ---
 
 Being a CNA administrator means having access to something most people never see: zero-day vulnerabilities. That access comes with responsibility, but also perspective. It’s made me think about how other actors, especially governments, handle this kind of knowledge, and what it means when one side holds a stockpile of vulnerabilities capable of large-scale surveillance or disruption. The U.S. military even [considered](https://cyber.army.mil/News/Article/1325442/stockpiling-zero-day-exploits-the-next-international-weapons-taboo/) classifying zero-days as weapons subject to export controls.

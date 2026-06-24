@@ -13,19 +13,14 @@ tags:
 author: Max van der Horst
 mathjax: true
 
-# SEO / social
-og_image: /assets/ransomware_blog_banner.png
-# last_modified_at: 2025-06-15   # optional if you revise later
-
 show_author_profile: true
 show_edit_on_github: false
 
 header:
   theme: dark
 article_header:
-  type: cover
-  image:
-    src: /assets/ransomware_blog_banner.png
+  type: overlay
+show_tags: false
 ---
 
 When I worked in a Computer Emergency Response Team (CERT), ransomware cases were part of the routine. A company would be hit, backups failed, and the question of ransom payment would come up. Every so often, the team would offer the option of a sanction checking service to verify whether payment was even legal. However, these sanction checks would depend on indicators like cryptocurrency wallet addresses, file hashes, IP addresses, and domain names. These were all indicators that were known to be volatile, so I wondered: *how effective is this really?*. 
